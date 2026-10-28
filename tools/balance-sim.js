@@ -11,11 +11,11 @@ global.document={querySelector:el,querySelectorAll:()=>[],createElement:el};
 global.matchMedia=()=>({matches:false});global.addEventListener=noop;global.window=global;global.navigator={};
 global.performance={now:()=>0};global.requestAnimationFrame=noop;global.ResizeObserver=class{observe(){}};
 const mk=()=>new Function(src+`
-;const st={rounds:[],hits:0,defThrows:0};
-const _e=endRound;endRound=function(w,sw,t,big){if(G.phase!=='roundover'&&G.phase!=='over')st.rounds.push({att:G.attacking,w,t,stacked:G.stacked,rebuild:45-G.timer});return _e(w,sw,t,big)};
-const _h=hitOut;hitOut=function(p){st.hits++;return _h(p)};
-const _tb=throwBall;throwBall=function(p,a,s){if(G.phase==='rebuild'&&p.team!==G.attacking&&s>400)st.defThrows++;return _tb(p,a,s)};
-;${process.env.PATCH||""};return {G,setupRound,update,human,throwBall,st};`)();
+;const stats_={rounds:[],hits:0,defThrows:0};
+const _e=endRound;endRound=function(w,sw,t,big){if(G.phase!=='roundover'&&G.phase!=='over')stats_.rounds.push({att:G.attacking,w,t,stacked:G.stacked,rebuild:45-G.timer});return _e(w,sw,t,big)};
+const _h=hitOut;hitOut=function(p){stats_.hits++;return _h(p)};
+const _tb=throwBall;throwBall=function(p,a,s){if(G.phase==='rebuild'&&p.team!==G.attacking&&s>400)stats_.defThrows++;return _tb(p,a,s)};
+;${process.env.PATCH||""};return {G,setupRound,update,human,throwBall,st:stats_};`)();
 const N=+process.argv[2]||10;
 // "average human" bot: decent aim when attacking, decent aim when defending, moves toward next stone when rebuilding
 function bot(S){

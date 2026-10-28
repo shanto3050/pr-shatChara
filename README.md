@@ -15,6 +15,8 @@ Open `index.html` in any modern browser (desktop or phone). There's no build ste
 Fields: **Village** (haystacks, banana trees and drums to hide behind) or **Classic** (open field).
 Rivals: Easy, Normal or Hard.
 
+**Team:** pick 4 of the 8 village kids (রানা Rana, মিতু Mitu, বাবলু Bablu, টুনি Tuni, সজীব Sajib, নুসরাত Nusrat, জয় Joy, শিউলি Shiuli). Your first pick is you, and the other four play for the rivals. Each character has Speed, Aim, Power and Agility stats. See the [character design sheet](docs/characters.md).
+
 ## Balance simulator
 
 `tools/balance-sim.js` plays headless matches of `index.html` with a scripted player and reports win rates, rebuild times and hit rates per field and difficulty.
@@ -31,10 +33,10 @@ PATCH='SK.normal.react=.8' node tools/balance-sim.js 100
 
 All the balance values are in the `TUNE`, `SK` (rival skill per difficulty) and `ALLY` (your teammates) blocks at the top of the script in `index.html`.
 
-Current results (150 matches per setting): about 87% wins on Easy, 53% on Normal and 39% on Hard, with a median rebuild of 11–15 seconds.
+Current results with the default team (150 matches per setting): about 80% wins on Easy, 62% on Normal and 45% on Hard, with a median rebuild of 11–14 seconds. Team choice moves Normal by about ±10%.
 
 ## Roadmap
 
-1. Phase 0, browser prototype: rules, AI, hiding and tactics (this repo)
-2. Character design sheet: roster, looks, outfits, stats
+1. ✅ Browser prototype: rules, AI, hiding and tactics, balance tuning
+2. ✅ Character roster: design sheet, 8 playable characters with stats, team picker
 3. Unity (C#) Android game: 3D low-poly village, characters, animations, Bangla/English UI

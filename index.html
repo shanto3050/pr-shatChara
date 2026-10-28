@@ -13,7 +13,7 @@
   --soil:#241b14; --soil-2:#33271d; --soil-3:#433427;
   --chalk:#f3ecdc; --chalk-dim:#c2b59c;
   --marigold:#f2a516; --ink:#2a1a05;
-  --you:#3d6fc4; --you-l:#9dbcf2; --rival:#c0472e; --rival-l:#f29d86;
+  --you:#3d6fc4; --you-l:#9dbcf2; --rival:#c0472e; --rival-l:#f29d86; --pick-bg:#2b3042;
   --display:"Baloo Da 2","Hind Siliguri",system-ui,sans-serif;
   --body:"Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:dark;
@@ -60,6 +60,20 @@ button{font:inherit;cursor:pointer}
 .card ul b{color:var(--chalk)}
 .row{display:flex;gap:8px;flex-wrap:wrap}
 .opt{display:flex;flex-direction:column;gap:6px}
+.card.wide{max-width:430px}
+.roster{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pick{position:relative;text-align:left;border:0;border-radius:12px;padding:10px;background:var(--soil);color:var(--chalk);
+  display:flex;flex-direction:column;gap:4px;min-width:0;box-shadow:inset 0 0 0 2px transparent}
+.pick[aria-pressed="true"]{background:var(--pick-bg);box-shadow:inset 0 0 0 2px var(--you-l)}
+.pick:focus-visible{outline:3px solid var(--chalk);outline-offset:2px}
+.av{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,var(--s) 0 33%,transparent 34%),var(--b);box-shadow:inset 0 0 0 3px var(--t)}
+.nm{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.1}
+.nm small{font-family:var(--body);font-weight:600;font-size:12px;color:var(--chalk-dim)}
+.rl{font-size:12px;color:var(--chalk-dim)}
+.st{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:6px;font-size:10px;color:var(--chalk-dim)}
+.st i{font-style:normal;letter-spacing:.04em}
+.st b{height:5px;border-radius:3px;background:linear-gradient(90deg,var(--marigold) calc(var(--v) * 20%),var(--soil-3) 0)}
+.badge{position:absolute;top:8px;right:8px;font-family:var(--display);font-weight:800;font-size:12px;line-height:1.4;background:var(--you);color:var(--chalk);border-radius:999px;padding:1px 8px}
 </style>
 
 <div class="app">
@@ -98,7 +112,21 @@ button{font:inherit;cursor:pointer}
             <button id="d-hard" data-d="hard" aria-pressed="false">Hard</button>
           </div>
         </div>
-        <button class="btn" id="startBtn">Start match</button>
+        <button class="btn" id="startBtn">Choose team</button>
+      </div>
+    </div>
+
+    <div class="overlay" id="team" hidden>
+      <div class="card wide">
+        <span class="tag">Choose your team</span>
+        <h2>Pick 4 players</h2>
+        <p>Your first pick is you. The other four play for the rivals.</p>
+        <div class="roster" id="roster"></div>
+        <div class="row" style="align-items:center">
+          <button class="btn" id="playBtn">Play</button>
+          <button class="btn ghost" id="backBtn">Back</button>
+          <span class="tag" id="pickCount"></span>
+        </div>
       </div>
     </div>
 
@@ -133,7 +161,7 @@ const RADII=[19,17,15.5,14,12.5,11,9.5];
 // Rival skill rises from Easy to Hard. "react" is how long a defender waits for a clean shot:
 // weak rivals throw quickly and badly, strong rivals hold the ball and pin you down.
 const SK={
-  easy:  {aimErr:.14,react:.55,lead:.2, throwSpd:500,dodge:.35,attErr:.10, catchSpd:80, fake:0,  hide:.35,decoy:false,kick:false},
+  easy:  {aimErr:.17,react:.50,lead:.2, throwSpd:500,dodge:.28,attErr:.11, catchSpd:80, fake:0,  hide:.35,decoy:false,kick:false},
   normal:{aimErr:.11,react:.70,lead:.5, throwSpd:560,dodge:.45,attErr:.07, catchSpd:110,fake:.15,hide:.6, decoy:false,kick:true},
   hard:  {aimErr:.08,react:.72,lead:.8, throwSpd:610,dodge:.6, attErr:.055,catchSpd:140,fake:.3, hide:.8, decoy:true, kick:true}
 };
@@ -144,11 +172,26 @@ const VILLAGE=[
   {x:118,y:178,r:24,k:'banana'},{x:486,y:205,r:24,k:'banana'},
   {x:388,y:418,r:16,k:'drum'},{x:208,y:282,r:16,k:'drum'}
 ];
+// Eight village kids, 13 stat points each (see docs/characters.md)
+const ROSTER=[
+  {id:'rana',  bn:'রানা',  en:'Rana',  role:'Fast runner',  body:'#f2efe6',trim:'#24345c',skin:'#b97a4f',hair:'short',   spd:5,aim:2,pow:3,agi:3},
+  {id:'mitu',  bn:'মিতু',  en:'Mitu',  role:'Sharp shooter',body:'#2f8f5b',trim:'#f08a24',skin:'#c48a5c',hair:'bun',     spd:3,aim:5,pow:2,agi:3},
+  {id:'bablu', bn:'বাবলু', en:'Bablu', role:'Power thrower',body:'#3c5aa8',trim:'#c8372d',skin:'#9c6440',hair:'short',   spd:2,aim:3,pow:5,agi:3},
+  {id:'tuni',  bn:'টুনি',  en:'Tuni',  role:'Little dodger',body:'#d6453d',trim:'#f6d34a',skin:'#c9915f',hair:'braids',  spd:4,aim:2,pow:2,agi:5},
+  {id:'sajib', bn:'সজীব',  en:'Sajib', role:'Captain',      body:'#0f7a4a',trim:'#e0312b',skin:'#b07148',hair:'short',   spd:3,aim:4,pow:3,agi:3},
+  {id:'nusrat',bn:'নুসরাত',en:'Nusrat',role:'Strategist',   body:'#7a2638',trim:'#f4f1ea',skin:'#c9915f',hair:'hijab',   spd:3,aim:4,pow:2,agi:4},
+  {id:'joy',   bn:'জয়',    en:'Joy',   role:'Joker',        body:'#e8b828',trim:'#5a3b1e',skin:'#a86b43',hair:'curly',   spd:4,aim:3,pow:4,agi:2},
+  {id:'shiuli',bn:'শিউলি', en:'Shiuli',role:'All-rounder',  body:'#e7e0f2',trim:'#e46a1f',skin:'#b57850',hair:'ponytail',spd:3,aim:3,pow:4,agi:3}
+];
+// stat offset from average (3): -2 … +2
+const st=(p,k)=>(p.ch?p.ch[k]:3)-3;
+const aimMul=p=>1-.15*st(p,'aim');
+const powMul=p=>1+.07*st(p,'pow');
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=s=>document.querySelector(s);
 const cv=$('#field'),ctx=cv.getContext('2d');
 
-const G={diff:'normal',mode:'village',score:[0,0],attacking:0,phase:'menu',throwsLeft:3,timer:45,stacked:7,stones:[],players:[],
+const G={diff:'normal',mode:'village',pick:['rana','mitu','bablu','tuni'],score:[0,0],attacking:0,phase:'menu',throwsLeft:3,timer:45,stacked:7,stones:[],players:[],
   ball:{id:0},holdId:0,toast:null,banner:null,roundT:0,sw:false,t:0,shake:0};
 
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -199,16 +242,18 @@ function buzz(ms){try{navigator.vibrate&&navigator.vibrate(ms);}catch(e){}}
 function toast(text,t=2){G.toast={text,t};}
 
 /* ---------- round setup ---------- */
-function mkP(team,x,y,isHuman){return{team,x,y,vx:0,vy:0,hx:x,hy:y,alive:true,human:isHuman,carry:-1,placeT:0,dodgeT:0,dodgeCd:0,ddx:0,ddy:0,
+function mkP(team,x,y,isHuman,ch){return{team,ch,x,y,vx:0,vy:0,hx:x,hy:y,alive:true,human:isHuman,carry:-1,placeT:0,dodgeT:0,dodgeCd:0,ddx:0,ddy:0,
   duckT:0,duckCd:0,holdT:0,wind:null,windTarget:null,didFake:false,goal:null,role:'',slot:0,fx:0,fy:-1,seen:-1,seenWind:null,
   hideId:-1,wantHide:false,decoy:false,gx:x,gy:y,flankT:0};}
 
 function setupRound(){
   const att=G.attacking,def=1-att;
   G.players=[];
-  [210,250,350,390].forEach((x,i)=>G.players.push(mkP(att,x,708,att===0&&i===0)));
+  const chars=t=>t===0?G.pick.map(id=>ROSTER.find(c=>c.id===id)):ROSTER.filter(c=>!G.pick.includes(c.id));
+  const ac=chars(att),dc=chars(def);
+  [210,250,350,390].forEach((x,i)=>G.players.push(mkP(att,x,708,att===0&&i===0,ac[i])));
   [[300,205,'catcher'],[105,300,'wing'],[495,300,'wing'],[300,90,'deep']].forEach(([x,y,r],i)=>{
-    const p=mkP(def,x,y,def===0&&i===0);p.role=r;p.slot=i;G.players.push(p);
+    const p=mkP(def,x,y,def===0&&i===0,dc[i]);p.role=r;p.slot=i;G.players.push(p);
   });
   const A=attackers();
   if(att===1&&SK[G.diff].decoy)A[3].decoy=true;
@@ -249,7 +294,7 @@ function startDodge(p,dx,dy){
   if(n<2){dx=-(b.vy||1);dy=b.vx||0;if(Math.random()<.5){dx=-dx;dy=-dy;}n=Math.hypot(dx,dy)||1;}
   p.ddx=dx/n;p.ddy=dy/n;p.dodgeT=.25;p.dodgeCd=1.6;
 }
-function startDuck(p){p.duckT=.5;p.duckCd=1.4;p.dodgeT=0;}
+function startDuck(p){p.duckT=.5;p.duckCd=1.4*(1-.08*st(p,'agi'));p.dodgeT=0;}
 const canAct=p=>p&&G.phase==='rebuild'&&p.team===G.attacking;
 function humanDodge(){
   const p=human();
@@ -287,7 +332,7 @@ function hitOut(p){
   const wasHuman=p.human;
   if(wasHuman){p.human=false;if(A.length){A.sort((a,c)=>dist(a,p)-dist(c,p));A[0].human=true;A[0].decoy=false;G.stones.forEach(s=>{if(s.claim===A[0]&&s.state==='ground')s.claim=null;});}}
   if(!A.length){endRound(1-G.attacking,true,'All out!');return;}
-  toast(p.team===0?(wasHuman?"You're out. Now playing a teammate.":'Teammate out!'):'Hit! A rival is out.');
+  toast(p.team===0?(wasHuman?`You're out. Now playing ${A[0].ch.en}.`:`${p.ch.en} is out!`):`Hit! ${p.ch.en} is out.`);
 }
 function endRound(winner,sw,text,big=false){
   if(G.phase==='roundover'||G.phase==='over')return;
@@ -296,7 +341,7 @@ function endRound(winner,sw,text,big=false){
 }
 
 /* ---------- movement ---------- */
-function speedFor(p){return(p.team===G.attacking?ATT_SPD:DEF_SPD)*(p.carry>=0?.85:1);}
+function speedFor(p){return(p.team===G.attacking?ATT_SPD:DEF_SPD)*(1+.08*st(p,'spd'))*(p.carry>=0?.85:1);}
 function setVel(p,x,y){p.vx=x;p.vy=y;const n=Math.hypot(x,y);if(n>5){p.fx=x/n;p.fy=y/n;}}
 function steer(p,tx,ty,spd,dt,avoid){
   let dx=tx-p.x,dy=ty-p.y;const d=Math.hypot(dx,dy);
@@ -351,7 +396,7 @@ function aiAttacker(p,dt){
   const b=G.ball,s=sk(p);
   if(G.phase==='throw'){
     setVel(p,0,0);
-    if(b.state==='held'&&b.holder===p){p.holdT+=dt;if(p.holdT>.9){throwBall(p,Math.atan2(TY-p.y,TX-p.x)+gauss()*s.attErr,620);}}
+    if(b.state==='held'&&b.holder===p){p.holdT+=dt;if(p.holdT>.9){throwBall(p,Math.atan2(TY-p.y,TX-p.x)+gauss()*s.attErr*aimMul(p),620*powMul(p));}}
     return;
   }
   if(p.duckT>0)return;
@@ -359,14 +404,14 @@ function aiAttacker(p,dt){
   for(const d of defenders()){
     if(d.wind&&d.windTarget===p&&p.seenWind!==d.wind){
       p.seenWind=d.wind;
-      if(p.dodgeCd<=0&&Math.random()<s.dodge*.55){startDodge(p,-(d.y-p.y),d.x-p.x);return;}
+      if(p.dodgeCd<=0&&Math.random()<(s.dodge+.08*st(p,'agi'))*.55){startDodge(p,-(d.y-p.y),d.x-p.x);return;}
     }
   }
   if(b.state==='flying'&&b.team!==p.team&&p.seen!==b.id){
     const th=threat(p);
     if(th){
       p.seen=b.id;
-      if(Math.random()<s.dodge){
+      if(Math.random()<s.dodge+.08*st(p,'agi')){
         if(p.duckCd<=0&&Math.random()<.35){startDuck(p);setVel(p,0,0);return;}
         if(p.dodgeCd<=0){startDodge(p,-th.cx,-th.cy);return;}
       }
@@ -452,8 +497,8 @@ function releaseDefThrow(p){
   const s=sk(p);let tg=p.windTarget;
   if(!tg||!tg.alive||!canSee(p,tg))tg=visibleTarget(p,RANGE+120);
   if(!tg){p.holdT=s.react*.5;return;}
-  const dd=dist(p,tg),tt=dd/s.throwSpd,px=tg.x+tg.vx*tt*s.lead,py=tg.y+tg.vy*tt*s.lead;
-  throwBall(p,Math.atan2(py-p.y,px-p.x)+gauss()*s.aimErr,s.throwSpd);
+  const spd=s.throwSpd*powMul(p),dd=dist(p,tg),tt=dd/spd,px=tg.x+tg.vx*tt*s.lead,py=tg.y+tg.vy*tt*s.lead;
+  throwBall(p,Math.atan2(py-p.y,px-p.x)+gauss()*s.aimErr*aimMul(p),spd);
 }
 function defHold(p,dt){
   const s=sk(p);
@@ -550,7 +595,9 @@ function release(e){
   if(e.pointerId!==input.id)return;
   if(input.mode==='aim'&&canAim()){
     const dx=input.sx-input.x,dy=input.sy-input.y,len=Math.hypot(dx,dy);
-    if(len>14)throwBall(human(),Math.atan2(dy,dx),280+400*Math.min(len,150)/150);
+    // low-aim characters get a slight wobble on their throws
+    const h=human();
+    if(len>14)throwBall(h,Math.atan2(dy,dx)+gauss()*.025*Math.max(0,-st(h,'aim')),(280+400*Math.min(len,150)/150)*powMul(h));
   }
   input.mode=null;input.id=null;
 }
@@ -634,7 +681,7 @@ function update(dt){
     p.dodgeCd-=dt;p.duckCd-=dt;
     if(p.human)humanUpdate(p,dt);else if(p.team===G.attacking)aiAttacker(p,dt);else aiDefender(p,dt);
     if(p.duckT>0){p.duckT-=dt;p.vx=p.vy=0;}
-    else if(p.dodgeT>0){p.dodgeT-=dt;const s=speedFor(p)*2.4;p.vx=p.ddx*s;p.vy=p.ddy*s;}
+    else if(p.dodgeT>0){p.dodgeT-=dt;const s=speedFor(p)*2.4*(1+.06*st(p,'agi'));p.vx=p.ddx*s;p.vy=p.ddy*s;}
     p.x=clamp(p.x+p.vx*dt,14,W-14);p.y=clamp(p.y+p.vy*dt,14,H-14);
     collide(p,12);
     if(G.phase==='throw'&&p.team!==G.attacking)p.y=clamp(p.y,40,LINE_Y-50);
@@ -690,7 +737,7 @@ function drawObstacle(o){
 }
 function drawPlayer(p){
   if(!p.alive)return;
-  const col=p.team===0?'#3d6fc4':'#c0472e',dark=p.team===0?'#22457f':'#7d2a19';
+  const team=p.team===0?'#3d6fc4':'#c0472e',c=p.ch;
   const b=G.ball;
   ctx.fillStyle='rgba(0,0,0,.28)';ell(p.x+2,p.y+7,12,6);
   if(p.human){
@@ -703,11 +750,25 @@ function drawPlayer(p){
   }
   ctx.save();ctx.translate(p.x,p.y);
   if(p.duckT>0)ctx.scale(1.15,.7);
-  ctx.fillStyle=col;ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle=dark;ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='#c48a58';ctx.beginPath();ctx.arc(p.fx*2,p.fy*2,6.5,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#1d1510';ctx.beginPath();ctx.arc(-p.fx*1.5,-p.fy*1.5,5.5,0,Math.PI*2);ctx.fill();
+  const dot=(x,y,r,f)=>{ctx.fillStyle=f;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();};
+  // outfit, with the team colour as an outline
+  dot(0,0,12,c.body);
+  ctx.save();ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.clip();ctx.rotate(Math.atan2(p.fy,p.fx));
+  ctx.fillStyle=c.trim;ctx.fillRect(-3,-12,5,24);ctx.restore();
+  ctx.strokeStyle=team;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.stroke();
+  // head and hair, seen from above (hair at the back of the head)
+  const fx=p.fx,fy=p.fy,hx=fx*2,hy=fy*2,bx=-fx*1.5,by=-fy*1.5,HAIR='#1d1510';
+  if(c.hair==='hijab'){dot(bx*.3,by*.3,7.5,'#f4f1ea');dot(hx+fx*1.5,hy+fy*1.5,4.2,c.skin);}
+  else{
+    dot(hx,hy,6.5,c.skin);dot(bx,by,5.5,HAIR);
+    if(c.hair==='bun')dot(bx*3.2,by*3.2,3,HAIR);
+    if(c.hair==='braids'){dot(bx-fy*6,by+fx*6,2.6,HAIR);dot(bx+fy*6,by-fx*6,2.6,HAIR);dot(bx-fy*6,by+fx*6,1.2,'#d6453d');dot(bx+fy*6,by-fx*6,1.2,'#d6453d');}
+    if(c.hair==='ponytail')dot(bx*3.6,by*3.6,3.4,HAIR);
+    if(c.hair==='curly')for(let k=0;k<5;k++){const a=k*1.25;dot(bx+Math.cos(a)*3.5,by+Math.sin(a)*3.5,2.6,HAIR);}
+  }
   ctx.restore();
+  ctx.font='600 10px "Hind Siliguri",sans-serif';ctx.textAlign='center';
+  ctx.fillStyle=p.team===0?'#cfe0ff':'#ffd2c6';ctx.fillText(c.bn,p.x,p.y+27);
   if(p.wind){ctx.font='800 20px "Baloo Da 2",sans-serif';ctx.textAlign='center';ctx.fillStyle='#f2a516';ctx.fillText('!',p.x+14,p.y-18);}
   if(p.carry>=0)drawStone(p.x,p.y-16,RADII[p.carry]*.7,p.carry);
   if(p.placeT>0){ctx.strokeStyle='#f3ecdc';ctx.lineWidth=3;ctx.beginPath();ctx.arc(p.x,p.y,15,-Math.PI/2,-Math.PI/2+Math.PI*2*p.placeT/PLACE_T);ctx.stroke();}
@@ -808,16 +869,39 @@ document.querySelectorAll('#diff button').forEach(b=>b.addEventListener('click',
 document.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.m)));
 function startMatch(){
   try{if(!ac)ac=new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();}catch(e){}
-  G.score=[0,0];G.attacking=0;$('#menu').hidden=true;$('#end').hidden=true;setupRound();
+  G.score=[0,0];G.attacking=0;$('#menu').hidden=true;$('#team').hidden=true;$('#end').hidden=true;setupRound();
 }
-function showMenu(){G.phase='menu';G.banner=null;G.toast=null;$('#end').hidden=true;$('#menu').hidden=false;}
+function showMenu(){G.phase='menu';G.banner=null;G.toast=null;$('#end').hidden=true;$('#team').hidden=true;$('#menu').hidden=false;}
+function renderTeam(focusId){
+  const bar=(l,v)=>`<span class="st"><i>${l}</i><b style="--v:${v}"></b></span>`;
+  $('#roster').innerHTML=ROSTER.map(c=>{
+    const i=G.pick.indexOf(c.id);
+    return `<button class="pick" id="pk-${c.id}" data-id="${c.id}" aria-pressed="${i>=0}">`+
+      `<span class="av" style="--b:${c.body};--t:${c.trim};--s:${c.skin}"></span>`+
+      `<span class="nm">${c.bn} <small>${c.en}</small></span><span class="rl">${c.role}</span>`+
+      bar('Spd',c.spd)+bar('Aim',c.aim)+bar('Pow',c.pow)+bar('Agi',c.agi)+
+      (i>=0?`<span class="badge">${i===0?'YOU':i+1}</span>`:'')+`</button>`;
+  }).join('');
+  $('#playBtn').disabled=G.pick.length!==4;
+  $('#pickCount').textContent=`${G.pick.length}/4 picked`;
+  if(focusId){const el=document.getElementById('pk-'+focusId);if(el&&el.focus)el.focus();}
+}
+function showTeam(){$('#menu').hidden=true;$('#team').hidden=false;renderTeam();}
+$('#roster').addEventListener('click',e=>{
+  const b=e.target.closest&&e.target.closest('.pick');if(!b)return;
+  const id=b.dataset.id,i=G.pick.indexOf(id);
+  if(i>=0)G.pick.splice(i,1);else if(G.pick.length<4)G.pick.push(id);
+  renderTeam(id);
+});
 function showEnd(){
-  G.phase='over';const won=G.score[0]>G.score[1];
+  G.phase='over';$('#team').hidden=true;const won=G.score[0]>G.score[1];
   $('#endTitle').textContent=won?'You win!':'Rivals win';
   $('#endText').textContent=`Final score ${G.score[0]}–${G.score[1]} on ${G.diff[0].toUpperCase()+G.diff.slice(1)}, ${G.mode==='village'?'Village':'Classic'} field. `+(won?'Try a harder rival team next.':'Use cover, and duck when you see the "!".');
   $('#end').hidden=false;
 }
-$('#startBtn').addEventListener('click',startMatch);
+$('#startBtn').addEventListener('click',showTeam);
+$('#playBtn').addEventListener('click',()=>{if(G.pick.length===4)startMatch();});
+$('#backBtn').addEventListener('click',showMenu);
 $('#againBtn').addEventListener('click',startMatch);
 $('#menuBtn').addEventListener('click',showMenu);
 $('#menuBtn2').addEventListener('click',showMenu);
@@ -840,12 +924,13 @@ function frame(now){
 function boot(data){
   if(data&&data.diff&&SK[data.diff])setDiff(data.diff);
   if(data&&(data.mode==='village'||data.mode==='classic'))setMode(data.mode);
+  if(data&&Array.isArray(data.pick)&&data.pick.length===4&&data.pick.every(id=>ROSTER.some(c=>c.id===id)))G.pick=data.pick.slice();
   buildBg();
   setupRound();G.phase='menu';G.toast=null;
   new ResizeObserver(resize).observe($('#stage'));resize();
   requestAnimationFrame(t=>{last=t;frame(t);});
 }
-try{window.claude?.hot?.snapshot?.(()=>({diff:G.diff,mode:G.mode}));}catch(e){}
+try{window.claude?.hot?.snapshot?.(()=>({diff:G.diff,mode:G.mode,pick:G.pick}));}catch(e){}
 window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
 </script>
 
