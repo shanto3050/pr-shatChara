@@ -12,6 +12,11 @@ namespace SatChara
     public sealed class GrayboxMatch : MonoBehaviour
     {
         [SerializeField] private Material materialTemplate;
+        [SerializeField] private GameObject villageCharacter;
+        [SerializeField] private Material villageGround;
+        [SerializeField] private Mesh villageStone;
+        private readonly VillageAvatar[] avatars = new VillageAvatar[8];
+        private readonly Transform[] teamMarkers = new Transform[8];
         public bool AutomatedPlayer;
         public MatchState State { get; private set; }
         public int Topples { get; private set; }
@@ -49,6 +54,8 @@ namespace SatChara
         private readonly string[] labels = { "YOU", "B2", "B3", "B4", "R1", "R2", "R3", "R4" };
 
         public void SetMaterial(Material value) => materialTemplate = value;
+        public void SetVillageArt(GameObject character, Material ground, Mesh stone)
+        { villageCharacter = character; villageGround = ground; villageStone = stone; }
         private void Start() => Initialize();
 
         public void Initialize()
@@ -63,20 +70,35 @@ namespace SatChara
             gray = MakeMaterial(new Color(.62f, .6f, .55f));
             gold = MakeMaterial(new Color(1, .73f, .08f));
             ballMat = MakeMaterial(new Color(1, .3f, .04f));
-            var ground = Shape("Courtyard", PrimitiveType.Plane, Vector3.zero, new Vector3(2.4f, 1, 3), MakeMaterial(new Color(.32f, .38f, .23f)));
-            Shape("Tower base", PrimitiveType.Cylinder, new Vector3(0, .025f, 0), new Vector3(1.8f, .025f, 1.8f), gray);
+            if (!villageCharacter) Shape("Courtyard", PrimitiveType.Plane, Vector3.zero, new Vector3(2.4f, 1, 3), MakeMaterial(new Color(.32f, .38f, .23f)));
+            Shape("Tower base", PrimitiveType.Cylinder, new Vector3(0, .01f, 0), new Vector3(villageCharacter ? .9f : 1.8f, .01f, villageCharacter ? .9f : 1.8f), gray);
+            if (villageGround) gray.SetTexture("_BaseMap", villageGround.GetTexture("_BaseMap"));
             for (int i = 0; i < 8; i++)
             {
                 players[i] = Shape(labels[i], PrimitiveType.Capsule, Vector3.zero, new Vector3(.7f, .9f, .7f), i < 4 ? blue : red);
                 bodies[i] = players[i].GetComponent<Renderer>();
+                if (villageCharacter)
+                {
+                    bodies[i].enabled = false; players[i].localScale = Vector3.one;
+                    var model = Instantiate(villageCharacter, players[i]);
+                    model.transform.localPosition = new Vector3(0, -.9f, 0);
+                    avatars[i] = model.GetComponent<VillageAvatar>();
+                    teamMarkers[i] = Shape("Team marker", PrimitiveType.Cylinder, Vector3.zero, new Vector3(.6f, .008f, .6f), i < 4 ? blue : red);
+                }
                 names[i] = WorldLabel(labels[i]);
             }
             for (int i = 0; i < 7; i++)
             {
                 stones[i] = Shape("Stone " + (i + 1), PrimitiveType.Cylinder, Vector3.zero, new Vector3(1.2f - i * .12f, .10f, 1.2f - i * .12f), gray);
+                if (villageStone)
+                {
+                    stones[i].GetComponent<MeshFilter>().sharedMesh = villageStone;
+                    stones[i].localScale = new Vector3(.54f - i * .045f, .045f, .54f - i * .045f);
+                }
                 stoneLabels[i] = WorldLabel((i + 1).ToString());
             }
             ball = Shape("Ball", PrimitiveType.Sphere, Vector3.zero, Vector3.one * .38f, ballMat);
+            if (villageCharacter) ball.localScale = Vector3.one * .18f;
             view = Camera.main;
             aimLine = new GameObject("Throw direction").AddComponent<LineRenderer>();
             aimLine.sharedMaterial = gold; aimLine.startWidth = .07f; aimLine.endWidth = .02f; aimLine.positionCount = 2;
@@ -252,7 +274,7 @@ namespace SatChara
             }
             else
             {
-                stones[carried].position = p + Vector3.up * .5f;
+                stones[carried].position = villageCharacter ? p + Vector3.up * .2f + avatars[State.AttackingTeam * 4 + slot].transform.forward * .35f : p + Vector3.up * .5f;
                 if (Flat(p).magnitude < 1.1f && carried == State.StackedStones && State.PlaceStone(slot))
                 { StackStone(carried); Placements++; Debug.Log($"SAT_CHARA_PLACE: stone={carried}"); }
             }
@@ -264,8 +286,12 @@ namespace SatChara
             if (State.Phase != MatchPhase.TowerAttack && State.Phase != MatchPhase.Rebuild) return;
             if (direction.sqrMagnitude < .01f) return;
             thrower = holder; throwingTeam = holder / 4;
-            ball.position = players[holder].position + Vector3.up * .2f + direction * .7f;
-            ballVelocity = direction * speed + Vector3.up * 1.8f;
+            ball.position = villageCharacter ? avatars[holder].HandPosition + direction * .2f : players[holder].position + Vector3.up * .2f + direction * .7f;
+            float vertical = 1.8f;
+            if (villageCharacter && State.Phase == MatchPhase.TowerAttack)
+            { float travel = Mathf.Max(.1f, Flat(ball.position).magnitude / speed); vertical = (.18f - ball.position.y + 4.9f * travel * travel) / travel; }
+            ballVelocity = direction * speed + Vector3.up * vertical;
+            if (villageCharacter) avatars[holder].Throw();
             windup[holder] = 0; holder = -1; flying = true; flightTime = 0; cooldown = .4f;
             Debug.Log($"SAT_CHARA_THROW: player={thrower}, phase={State.Phase}");
         }
@@ -295,7 +321,7 @@ namespace SatChara
 
         private void StepBall(float dt)
         {
-            if (holder >= 0) { ball.position = players[holder].position + new Vector3(.5f, .2f, 0); return; }
+            if (holder >= 0) { ball.position = villageCharacter ? avatars[holder].HandPosition : players[holder].position + new Vector3(.5f, .2f, 0); return; }
             Vector3 from = ball.position;
             ballVelocity.y -= 9.8f * dt;
             ball.position += ballVelocity * dt; flightTime += dt;
@@ -323,7 +349,7 @@ namespace SatChara
                 { firstContact = hit; closestEnd = endDistance; contactPlayer = i; }
             }
             float towerContact = State.Phase == MatchPhase.TowerAttack && flying
-                ? SweepFraction(from, p, new Vector3(0, .7f, 0), .95f) : float.PositiveInfinity;
+                ? SweepFraction(from, p, new Vector3(0, villageCharacter ? .18f : .7f, 0), villageCharacter ? .35f : .95f) : float.PositiveInfinity;
             if (!float.IsPositiveInfinity(towerContact) && towerContact <= firstContact)
             {
                 ball.position = Vector3.Lerp(from, p, towerContact);
@@ -331,7 +357,7 @@ namespace SatChara
                 for (int s = 0; s < 7; s++)
                 {
                     float angle = s * Mathf.PI * 2 / 7 + State.RoundNumber * .3f;
-                    stones[s].position = new Vector3(Mathf.Cos(angle) * (3.2f + s * .18f), .14f, Mathf.Sin(angle) * (3.2f + s * .18f));
+                    stones[s].position = new Vector3(Mathf.Cos(angle) * (3.2f + s * .18f), villageCharacter ? .035f : .14f, Mathf.Sin(angle) * (3.2f + s * .18f));
                 }
                 ballVelocity *= .5f;
                 Debug.Log("SAT_CHARA_TOPPLE");
@@ -353,7 +379,7 @@ namespace SatChara
                 else
                 {
                     int stone = State.CarriedStone(i % 4);
-                    if (stone >= 0) stones[stone].position = Flat(players[i].position) + Vector3.up * .14f;
+                    if (stone >= 0) stones[stone].position = Flat(players[i].position) + Vector3.up * (villageCharacter ? .035f : .14f);
                     if (State.HitAttacker(i % 4)) { Hits++; Debug.Log($"SAT_CHARA_HIT: slot={i % 4}"); }
                     ballVelocity *= .25f; flying = false;
                 }
@@ -404,7 +430,7 @@ namespace SatChara
             float t = (-projection - Mathf.Sqrt(discriminant)) / length;
             return t >= 0 && t <= 1 ? t : float.PositiveInfinity;
         }
-        private void StackStone(int s) => stones[s].position = new Vector3(0, .15f + s * .2f, 0);
+        private void StackStone(int s) => stones[s].position = new Vector3(0, villageCharacter ? .035f + s * .045f : .15f + s * .2f, 0);
 
         private void UpdatePresentation()
         {
@@ -414,8 +440,16 @@ namespace SatChara
                 players[i].gameObject.SetActive(Alive(i)); names[i].gameObject.SetActive(Alive(i));
                 bodies[i].sharedMaterial = i == h ? selected : i < 4 ? blue : red;
                 var position = players[i].position;
-                players[i].position = new Vector3(position.x, duck[i] > 0 ? .4f : .9f, position.z);
-                players[i].localScale = new Vector3(.7f, duck[i] > 0 ? .4f : .9f, .7f);
+                players[i].position = new Vector3(position.x, !villageCharacter && duck[i] > 0 ? .4f : .9f, position.z);
+                players[i].localScale = villageCharacter ? Vector3.one : new Vector3(.7f, duck[i] > 0 ? .4f : .9f, .7f);
+                if (villageCharacter)
+                {
+                    Vector3 facing = Vector3.forward;
+                    if (holder == i) facing = i == h ? aimDirection : Flat(players[Mathf.Max(0, NearestAttacker(players[i].position))].position - position);
+                    else if (State.Phase == MatchPhase.Rebuild) facing = Flat((i / 4 == State.AttackingTeam && State.CarriedStone(i % 4) >= 0 ? Vector3.zero : ball.position) - position);
+                    avatars[i].Drive(facing, holder == i, i / 4 == State.AttackingTeam && State.CarriedStone(i % 4) >= 0, duck[i] > 0);
+                    teamMarkers[i].gameObject.SetActive(Alive(i)); teamMarkers[i].position = Flat(position) + Vector3.up * .014f;
+                }
                 names[i].text = (i == h ? "YOU" : labels[i]) + (holder == i ? (windup[i] > .7f ? " !" : " *") : "");
                 names[i].transform.position = Flat(players[i].position) + Vector3.up * 2.2f;
                 names[i].transform.rotation = view.transform.rotation;
@@ -431,13 +465,20 @@ namespace SatChara
             view.transform.position = target + (closeCamera ? new Vector3(0, 22, -16) : new Vector3(0, 29, -19));
             view.transform.LookAt(target);
             view.orthographic = true; view.orthographicSize = closeCamera ? 12 : 18.5f;
+            if (villageCharacter)
+            {
+                target = closeCamera ? Vector3.Lerp(new Vector3(0, .7f, 1), Flat(players[h].position) + Vector3.forward * 4, .5f) : new Vector3(0, .7f, 1);
+                view.orthographic = false; view.fieldOfView = closeCamera ? 58 : 63;
+                view.transform.position = target + (closeCamera ? new Vector3(0, 9, -12) : new Vector3(0, 15, -19));
+                view.transform.LookAt(target);
+            }
             aimLine.enabled = holder == h && !paused && State.Phase != MatchPhase.MatchOver;
             aimLine.SetPosition(0, players[h].position); aimLine.SetPosition(1, players[h].position + aimDirection * 6);
             scoreboard.text = $"BLUE {State.Score(0)}    :    {State.Score(1)} RED     |     ROUND {State.RoundNumber}";
             string phase = State.Phase == MatchPhase.TowerAttack ? $"{(State.AttackingTeam == 0 ? "ATTACK" : "DEFEND")}  ·  {State.ThrowsLeft} throws"
                 : State.Phase == MatchPhase.Rebuild ? $"{(State.AttackingTeam == 0 ? "REBUILD" : "DEFEND")}  ·  {Mathf.CeilToInt((float)State.SecondsRemaining)}s  ·  {State.StackedStones}/7 stones"
                 : State.Phase == MatchPhase.MatchOver ? $"{(State.Winner == 0 ? "BLUE WINS" : "RED WINS")} — tap New match" : $"{State.LastResult} — next round";
-            instructions.text = paused ? "PAUSED" : phase + "\nLeft stick: move   ·   Right stick: aim, release to throw   ·   Collect/place nearby automatically";
+            instructions.text = paused ? "PAUSED" : phase + (villageCharacter ? "\nDrag AIM and release to throw · Move with the left stick" : "\nLeft stick: move   ·   Right stick: aim, release to throw   ·   Collect/place nearby automatically");
             dodgeButton.interactable = duckButton.interactable = !paused && State.Phase == MatchPhase.Rebuild && State.AttackingTeam == 0 && dodgeCooldown[h] <= 0;
             passButton.interactable = !paused && holder == h && State.Phase == MatchPhase.Rebuild && State.AttackingTeam == 1;
         }

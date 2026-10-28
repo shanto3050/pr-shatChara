@@ -9,6 +9,7 @@ The next product is a realistic 3D Android game designed to scale down to lower-
 - [Implementation backlog and acceptance checks](docs/backlog.md)
 - [Decisions, assumptions, and open questions](docs/decisions.md)
 - [Asset provenance and license register](docs/asset-register.csv)
+- [Visual-slice checkpoint and continuation notes (incomplete)](docs/visual-slice-status.md)
 
 These documents are an editable v0.1 baseline dated 28 October 2026; performance figures are targets pending physical-device testing.
 

@@ -28,3 +28,5 @@ PerformanceTestRunSettings.json*
 *.jks
 node_modules/
 .verification/
+art-source/vendor/
+*.blend1
