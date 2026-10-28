@@ -1,6 +1,6 @@
 # Sat Chara rules package
 
-Engine-independent C# authority for turns, score, elimination and ordered rebuilding. Unity integration is pending; this package has been compiled and exercised with .NET, not yet imported by Unity.
+Engine-independent C# authority for turns, score, elimination and ordered rebuilding. The package passes the .NET checks and has now compiled/imported successfully in Unity 6000.3.27f1. The foundation scene references it; full gameplay and device behavior remain unverified.
 
 Run from the repository root with .NET 10 SDK:
 
@@ -10,7 +10,7 @@ dotnet run --project tools/rules-check/RulesCheck.csproj
 
 Expected: 54 assertions pass. The harness compiles the exact Runtime/MatchState.cs file, not a separate copy. No third-party test dependencies are required.
 
-After the official Unity project is created at unity/SatChara, add this dependency to its Packages/manifest.json:
+The Unity project at unity/SatChara already includes this dependency in Packages/manifest.json:
 
 ```json
 "com.satchara.rules": "file:../../../packages/com.satchara.rules"

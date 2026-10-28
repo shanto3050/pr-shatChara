@@ -6,7 +6,7 @@ Working baseline · 28 October 2026 · Read with production-plan.md
 
 Keep index.html, tools/, and existing reference documents. Create the future Unity project under unity/SatChara/. Suggested Assets/SatChara subfolders: Scenes, Scripts, Art, Animation, Audio, UI, Data, Tests. Commit ProjectSettings, Packages manifests/lockfiles, source assets, and all .meta files. Ignore Library, Temp, Logs, obj, local IDE files, and generated builds. Do not commit signing keys, passwords, device identifiers, or account credentials.
 
-Pin the editor version only after checking current support, Android requirements, and installed tooling. Pin URP and package dependencies; document exact clean-checkout build steps. This plan does not claim a particular version is currently installed or suitable.
+Current foundation: Unity 6000.3.27f1 and URP 17.3.0, with editor-matched Android SDK/NDK/OpenJDK installed. ProjectVersion.txt, manifest.json and packages-lock.json pin the source baseline. See [build instructions](android-build.md) and [setup evidence](setup-status.md). Physical-device suitability and clean-checkout reproduction still require verification.
 
 ## Systems and boundaries
 

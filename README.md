@@ -14,7 +14,7 @@ These documents are an editable v0.1 baseline dated 28 October 2026; performance
 
 ### C# rules implementation
 
-The [local rules package](packages/com.satchara.rules/README.md) implements and checks the match state independently of Unity rendering. Run `dotnet run --project tools/rules-check/RulesCheck.csproj` with .NET 10 SDK (54 assertions). Unity scene integration and Android verification remain pending editor installation.
+The [local rules package](packages/com.satchara.rules/README.md) implements and checks the match state independently of Unity rendering. Run `dotnet run --project tools/rules-check/RulesCheck.csproj` with .NET 10 SDK (54 assertions). It also compiles in the Unity 6000.3.27f1 project at unity/SatChara. The foundation test scene is generated successfully; [Android build instructions](docs/android-build.md) explain the next checks. Full gameplay and physical-device verification remain pending.
 
 A playable gray-box prototype of **Sat Chara** (সাতচারা, "seven stones"), the traditional Bangladeshi team game. It's used to test the rules, AI and game feel before building the full Android game in Unity.
 

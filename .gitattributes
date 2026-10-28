@@ -1,0 +1,11 @@
+# Unity serializes empty YAML values with a trailing space. Preserve its format.
+*.asset text eol=lf whitespace=-blank-at-eol
+*.meta text eol=lf whitespace=-blank-at-eol
+*.unity text eol=lf whitespace=-blank-at-eol
+*.mat text eol=lf whitespace=-blank-at-eol
+*.wlt text eol=lf whitespace=-blank-at-eol
+*.cs text eol=lf
+*.asmdef text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+unity/SatChara/Assets/TutorialInfo/** whitespace=-blank-at-eol
