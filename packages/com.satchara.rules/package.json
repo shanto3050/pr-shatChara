@@ -1,0 +1,7 @@
+{
+  "name": "com.satchara.rules",
+  "version": "0.1.0",
+  "displayName": "Sat Chara Rules",
+  "description": "Engine-independent match rules for the Sat Chara Android game.",
+  "unity": "6000.3"
+}

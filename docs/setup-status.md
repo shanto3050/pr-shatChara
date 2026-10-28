@@ -14,11 +14,21 @@
 - Simulator smoke check: `node tools/balance-sim.js 3` completed all six field/difficulty combinations (18 simulated matches). This small, unseeded sample proves execution only; it is not a balance study or human playtest.
 - Added Unity build/cache/signing exclusions. No Android binary, Unity scene, or generated Unity project exists yet.
 
+## Continuation: editor installation and first C# implementation
+
+- Installed the official standalone Unity CLI 1.0.0.20014 via winget. Its WindowsApps alias runs correctly; this avoids the Hub's packaged CLI issue.
+- Official release discovery returned 6000.3.27f1 as LTS. Selected it as the editor baseline and set install directory to E:\Unity\Hub\Editor.
+- Started installation with Android Build Support and child SDK/NDK/OpenJDK modules. Dry-run size: 7,171,841,230 bytes. Last observed progress: 2%, editor download phase; installation is NOT complete or verified.
+- License status check: signed out, no active license. Started the official browser authentication flow; it is awaiting user sign-in at the time of this report. The user must handle credentials and license eligibility.
+- Official Universal 3D template resolved to com.unity.template.urp-blank 17.1.0. Project creation is blocked until the editor is installed; the CLI correctly rejected creation because the editor was absent. No handwritten project substitute was created.
+- Created local Unity-compatible rules package at packages/com.satchara.rules. Covers opening attempts/catches, scoring, turns, stone ownership/order, eliminations, timeout and match completion. Compiled the exact C# source using .NET SDK 10.0.202; 54 assertions passed. Unity compilation, physics and device behavior remain unverified.
+- New repeatable check: `dotnet run --project tools/rules-check/RulesCheck.csproj`. Requires .NET 10 SDK. The package README documents the future Unity dependency and scene integration contract.
+
 ## Next actions
 
-1. Open Unity Hub from the Windows Start menu. Complete first-run account/license setup if required; the account owner handles credentials and eligibility declarations.
-2. Select a currently supported Unity 6 LTS editor from official releases, with Android Build Support, SDK/NDK tools, and OpenJDK. Prefer E: for the editor installation. Exact patch is not pinned until editor availability is verified.
-3. Create a URP project at unity/SatChara, then commit its actual ProjectVersion, package lock and source settings. Avoid handwritten template files that pretend the editor has initialized the project.
+1. Complete the Unity browser sign-in already opened, then activate the eligible license. No credentials or license records belong in Git.
+2. Let the editor/module download finish and verify the editor and Android modules. Selected version: 6000.3.27f1. Resume interrupted installation using the Unity CLI if necessary.
+3. Create the official URP project at unity/SatChara, add the local rules package, then commit its actual ProjectVersion, package lock and source settings. Avoid handwritten template files that pretend the editor has initialized the project.
 4. Connect Xiaomi with a data-capable USB cable, enable developer options and USB debugging, authorize the computer, then verify `adb devices -l` reports an authorized device.
 5. Build an empty-scene development APK, install and launch on the phone, and record evidence before marking F03/F04 done.
 

@@ -1,0 +1,6 @@
+{
+  "name": "SatChara.Rules",
+  "rootNamespace": "SatChara.Rules",
+  "noEngineReferences": true,
+  "autoReferenced": true
+}

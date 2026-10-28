@@ -12,6 +12,10 @@ The next product is a realistic 3D Android game designed to scale down to lower-
 
 These documents are an editable v0.1 baseline dated 28 October 2026; performance figures are targets pending physical-device testing.
 
+### C# rules implementation
+
+The [local rules package](packages/com.satchara.rules/README.md) implements and checks the match state independently of Unity rendering. Run `dotnet run --project tools/rules-check/RulesCheck.csproj` with .NET 10 SDK (54 assertions). Unity scene integration and Android verification remain pending editor installation.
+
 A playable gray-box prototype of **Sat Chara** (সাতচারা, "seven stones"), the traditional Bangladeshi team game. It's used to test the rules, AI and game feel before building the full Android game in Unity.
 
 ## Play

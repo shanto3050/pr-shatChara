@@ -12,7 +12,7 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 | F04 | M0 | Build and install empty Android scene | APK and launch on Xiaomi; exact build instructions | TODO |
 | G01 | M1 | Audit prototype rules and resolve edge cases | Source rules table in rules-audit.md; edge-case decisions pending | IN PROGRESS |
 | G02 | M1 | Compare touch and camera schemes | Phone recordings and selected scheme rationale | TODO |
-| G03 | M1 | Implement match state machine and scoring | State/score tests, reset and full-match evidence | TODO |
+| G03 | M1 | Implement match state machine and scoring | C# package passes 54 assertions; scene integration and full-match evidence still pending | IN PROGRESS |
 | G04 | M1 | Implement movement, ball and seven stones | Full attack/rebuild/defend loop in graybox | TODO |
 | G05 | M1 | Add team coordination and baseline AI | Complete 4 vs 4 match without manual intervention | TODO |
 | V01 | M2 | Establish realistic art references and source register | Consistent character/environment direction and licenses | TODO |

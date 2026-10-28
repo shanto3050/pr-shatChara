@@ -10,6 +10,9 @@
 | D04 | 2026-10-28 | Proposed Unity + URP, offline 4 vs 4, one field first | Working technical/scope baseline; revisit after M0/M1 |
 | D05 | 2026-10-28 | Replace exaggerated low-poly character proportions with believable proportions | Align older art brief with D02; retain roster identities |
 | D06 | 2026-10-28 | Store editable production documents in this repository | User request; plans may change |
+| D07 | 2026-10-28 | Select Unity 6000.3.27f1 LTS, Universal 3D template, matching Android modules | Live official CLI release/template discovery; installation in progress, not verified |
+| D08 | 2026-10-28 | Keep match authority in an engine-independent local C# rules package | Enables automated rule checks while editor setup proceeds; physics and presentation remain separate |
+| D09 | 2026-10-28 | Preserve prototype turn/scoring behavior initially; timeout wins at the deadline | Successful attackers retain attack; opening catch/misses switch without points; revisit after human playtests |
 
 ## Open questions
 

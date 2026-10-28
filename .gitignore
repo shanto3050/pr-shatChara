@@ -11,6 +11,8 @@ Recordings/
 .vs/
 .idea/
 *.csproj
+!tools/rules-check/RulesCheck.csproj
+[Bb]in/
 *.sln
 *.slnx
 *.user
