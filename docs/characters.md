@@ -6,7 +6,7 @@ This sheet is the brief for the 3D characters in the Unity game. The browser pro
 
 ## Art direction
 
-- **Style:** stylized low-poly (about 3–5k triangles per character), a slightly big head (about 1:5 head-to-body), flat colors with soft gradients. It has to read clearly on a small phone screen.
+- **Style (updated 28 October 2026):** believable human proportions, realistic clothing and materials, and natural movement, optimized for lower-spec Android phones. The former exaggerated low-poly direction is superseded by the [Android production plan](production-plan.md). Validate one finished character on-device before producing the full roster; use LODs and measured budgets from the [technical plan](technical-plan.md).
 - **Setting:** afternoon in a village field. Characters wear everyday clothes, not sports kits (except Sajib's jersey). Most are barefoot or in rubber sandals.
 - **Variety:** different skin tones, heights and body types. Nobody is a recolor of someone else.
 - **Rig:** standard humanoid (Mixamo-compatible), so free animations work on every character.
@@ -66,7 +66,7 @@ Every character has 13 points across four stats (1–5 each), so no one is stric
 - **Who:** 9, the youngest and everyone's little sister. Impossible to hit.
 - **Look:** red frock (#D6453D) with a yellow hem (#F6D34A), two braids with red ribbons, barefoot. Skin #C9915F.
 - **Body:** small, which makes her the smallest target in the game.
-- **Signature animation:** a cartwheel dodge.
+- **Signature animation:** a quick sidestep with a low body lean; validate responsiveness and believable motion before adding more elaborate moves.
 - **Voice line:** "পারলি না!" (Missed me!)
 
 ### 5. সজীব · Sajib · *Captain*

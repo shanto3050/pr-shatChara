@@ -1,5 +1,17 @@
 # সাতচারা · Sat Chara prototype
 
+## Android production planning
+
+The next product is a realistic 3D Android game designed to scale down to lower-spec phones. The browser prototype remains the gameplay reference. Android implementation has not started.
+
+- [Detailed production plan and milestones](docs/production-plan.md)
+- [Technical architecture, budgets, and verification](docs/technical-plan.md)
+- [Implementation backlog and acceptance checks](docs/backlog.md)
+- [Decisions, assumptions, and open questions](docs/decisions.md)
+- [Asset provenance and license register](docs/asset-register.csv)
+
+These documents are an editable v0.1 baseline dated 28 October 2026; performance figures are targets pending physical-device testing.
+
 A playable gray-box prototype of **Sat Chara** (সাতচারা, "seven stones"), the traditional Bangladeshi team game. It's used to test the rules, AI and game feel before building the full Android game in Unity.
 
 ## Play
@@ -39,4 +51,4 @@ Current results with the default team (150 matches per setting): about 80% wins 
 
 1. ✅ Browser prototype: rules, AI, hiding and tactics, balance tuning
 2. ✅ Character roster: design sheet, 8 playable characters with stats, team picker
-3. Unity (C#) Android game: 3D low-poly village, characters, animations, Bangla/English UI
+3. Unity (C#) Android game: realistic optimized 3D village, characters, animations, Bangla/English UI; see the production plan above.
