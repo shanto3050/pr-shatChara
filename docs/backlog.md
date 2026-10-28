@@ -8,8 +8,8 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 |---|---|---|---|---|
 | F01 | M0 | Audit editor, Android tools, storage and device connection | Tool/version inventory and actual blockers in setup-status.md | DONE |
 | F02 | M0 | Choose minimum phone and OS baseline | Device/chipset/OS recorded; test access identified | TODO |
-| F03 | M0 | Initialize pinned Unity/URP project and Git ignores | Ignores added and Hub installed; Editor/project still required | IN PROGRESS |
-| F04 | M0 | Build and install empty Android scene | APK and launch on Xiaomi; exact build instructions | TODO |
+| F03 | M0 | Initialize pinned Unity/URP project and Git ignores | Unity/URP source pinned and imported; foundation generation exit 0; clean-checkout reproduction pending | IN PROGRESS |
+| F04 | M0 | Build and install foundation Android scene | APK verified; install/launch/buttons/resume passed on connected Samsung SC-03K, Android 10; see reports/2026-10-28-foundation.md | DONE |
 | G01 | M1 | Audit prototype rules and resolve edge cases | Source rules table in rules-audit.md; edge-case decisions pending | IN PROGRESS |
 | G02 | M1 | Compare touch and camera schemes | Phone recordings and selected scheme rationale | TODO |
 | G03 | M1 | Implement match state machine and scoring | C# package passes 54 assertions; scene integration and full-match evidence still pending | IN PROGRESS |
@@ -31,4 +31,4 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 | R01 | M6 | Store compliance and listing preparation | Current requirement review and reviewable listing | TODO |
 | R02 | M6 | Approve and publish candidate | Explicit user publication approval; release verification | TODO |
 
-Next: complete Editor/URP setup for F03, connect a test phone for F04, and resolve G01 decisions. Do not begin mass character production before V04 establishes affordable quality.
+Next: clean-checkout reproduction for F03; choose minimum hardware for F02; finish G01 decisions and start graybox camera/touch/full-match integration. F04 passed on the actually connected Samsung, not the earlier-mentioned Xiaomi. Do not begin mass character production before V04 establishes affordable quality.

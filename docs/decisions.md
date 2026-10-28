@@ -13,6 +13,7 @@
 | D07 | 2026-10-28 | Select Unity 6000.3.27f1 LTS, Universal 3D template, matching Android modules | Live official CLI release/template discovery; installation in progress, not verified |
 | D08 | 2026-10-28 | Keep match authority in an engine-independent local C# rules package | Enables automated rule checks while editor setup proceeds; physics and presentation remain separate |
 | D09 | 2026-10-28 | Preserve prototype turn/scoring behavior initially; timeout wins at the deadline | Successful attackers retain attack; opening catch/misses switch without points; revisit after human playtests |
+| D10 | 2026-10-28 | Record first device checks as Samsung SC-03K / Android 10 | Actual connected/authorized hardware; does not replace the unselected 4 GB minimum tier or claim Xiaomi testing |
 
 ## Open questions
 

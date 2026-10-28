@@ -9,6 +9,10 @@
 MemoryCaptures/
 Recordings/
 .vs/
+.vscode/
+.utmp/
+PerformanceTestRunInfo.json*
+PerformanceTestRunSettings.json*
 .idea/
 *.csproj
 !tools/rules-check/RulesCheck.csproj

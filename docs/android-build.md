@@ -35,12 +35,12 @@ Development defaults: package identifier com.shanto3050.satchara.dev, ARM64/IL2C
 ```powershell
 adb devices -l
 adb install -r unity/SatChara/Builds/Android/SatChara-Foundation.apk
-adb shell am start -n com.shanto3050.satchara.dev/com.unity3d.player.UnityPlayerActivity
+adb shell am start -W -n com.shanto3050.satchara.dev/com.unity3d.player.UnityPlayerGameActivity
 ```
 
-The generated APK's actual launch activity should be inspected before using the example above, since Unity's configured application entry point may use GameActivity instead. Do not guess a successful launch from install success alone.
+The launch activity above was confirmed from the actual foundation APK using aapt. Reinspect it if application entry-point settings change. Do not guess a successful launch from install success alone.
 
-Check the title and tower render, landscape orientation, the rebuild button changes score from 0–0 to 1–0, Reset works, and background/resume works. Capture the screen and inspect logcat for exceptions. Record phone model/OS and build ID. No phone was connected during the initial tooling audit; installation/launch evidence must be recorded when available.
+Check the title and tower render, landscape orientation, the rebuild button changes score from 0–0 to 1–0, Reset works, and background/resume works. Capture the screen and inspect logcat for exceptions. Record phone model/OS and build ID. [The first device report](reports/2026-10-28-foundation.md) records successful installation and these checks on the connected Samsung SC-03K (Android 10).
 
 ## Recovery
 
