@@ -4,6 +4,8 @@
 
 ## Current summary (supersedes earlier setup blockers below)
 
+- M1 continuation: playable 4 vs 4 Android graybox is installed and touch-tested. Source archive 12eeada imports/compiles without original project caches and completes the scene simulation. See [graybox report, limitations and phone recording](reports/2026-10-28-graybox.md).
+
 - Unity sign-in confirmed and Unity Personal license activated successfully after retrying an expired browser callback. No paid subscription purchased.
 - Unity 6000.3.27f1 and all requested Android modules installed successfully, including OpenJDK, NDK r27c and SDK tools.
 - Official Universal 3D template extracted at unity/SatChara; project version/revision pinned to the installed editor. The original license-failed creation left no version marker; it was repaired using the actual editor build/revision before import retry.

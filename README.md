@@ -2,7 +2,7 @@
 
 ## Android production planning
 
-The next product is a realistic 3D Android game designed to scale down to lower-spec phones. The browser prototype remains the gameplay reference. The first Android foundation APK now builds and runs on a physical phone; it is an installation/rules test, not a playable match. See the [verified device report](docs/reports/2026-10-28-foundation.md), [development setup status](docs/setup-status.md) and [prototype rules audit](docs/rules-audit.md).
+The next product is a realistic 3D Android game designed to scale down to lower-spec phones. A **playable 4 vs 4 Android graybox** now runs on the test phone with touch aiming/movement, AI, stone rebuilding and scoring. This uses development shapes; realistic art and final balance are still ahead. See [controls and build instructions](docs/playable-graybox.md), the [verified phone report and gameplay clip](docs/reports/2026-10-28-graybox.md), and [development setup status](docs/setup-status.md). The browser prototype remains the original gameplay reference.
 
 - [Detailed production plan and milestones](docs/production-plan.md)
 - [Technical architecture, budgets, and verification](docs/technical-plan.md)

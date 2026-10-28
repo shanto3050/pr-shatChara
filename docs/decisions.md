@@ -16,6 +16,8 @@
 | D10 | 2026-10-28 | Record first device checks as Samsung SC-03K / Android 10 | Actual connected/authorized hardware; does not replace the unselected 4 GB minimum tier or claim Xiaomi testing |
 | D11 | 2026-10-28 | M1 prototypes dual touch sticks, automatic nearby stone interaction and two camera options | Working controls for real phone comparison; preserve foundation diagnostic scene |
 | D12 | 2026-10-28 | M1 tick order: timeout, movement/placement, ball contacts; earliest swept contact wins | Removes player-array collision priority; final placement precedes a later same-tick hit; exact tower/contact ties favor tower; revisit in rules review |
+| D13 | 2026-10-28 | Retain wide tactical view as current default; keep closer view experimental | Physical camera comparison found closer framing overlaps top instructions; neither is final |
+| D14 | 2026-10-28 | Advance independent M1 prototyping while minimum-device selection remains open | Use available authorized Samsung for real builds; do not claim all foundation/device gates complete or start full realistic asset production |
 
 ## Open questions
 
