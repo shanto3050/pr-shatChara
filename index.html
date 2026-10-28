@@ -18,6 +18,7 @@
   --body:"Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:dark;
 }
+[hidden]{display:none!important}
 html{height:100%;box-sizing:border-box}
 body{height:100%;margin:0;background:var(--soil);color:var(--chalk);font-family:var(--body);overflow:hidden}
 .app{height:100%;box-sizing:border-box;max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:8px;
@@ -38,6 +39,7 @@ body{height:100%;margin:0;background:var(--soil);color:var(--chalk);font-family:
 canvas{display:block;touch-action:none;border-radius:14px;box-shadow:0 0 0 2px var(--soil-3),0 18px 40px rgba(0,0,0,.45);cursor:crosshair}
 .bar{display:flex;align-items:center;gap:8px;min-height:50px}
 .hint{flex:1;min-width:0;font-size:13px;line-height:1.35;color:var(--chalk-dim)}
+@media (max-width:520px){.bar{flex-wrap:wrap;justify-content:flex-end;row-gap:6px}.hint{flex-basis:100%}}
 button{font:inherit;cursor:pointer}
 .btn{font-family:var(--display);font-weight:700;font-size:16px;border:0;border-radius:999px;padding:10px 18px;background:var(--marigold);color:var(--ink);white-space:nowrap}
 .btn.alt{background:var(--chalk);color:var(--soil)}
@@ -60,18 +62,21 @@ button{font:inherit;cursor:pointer}
 .card ul b{color:var(--chalk)}
 .row{display:flex;gap:8px;flex-wrap:wrap}
 .opt{display:flex;flex-direction:column;gap:6px}
-.card.wide{max-width:430px}
+.card.wide{max-width:430px;overflow:hidden;padding-bottom:16px}
+.roster-wrap{flex:1;min-height:0;overflow:auto;margin-inline:-6px;padding:2px 6px}
 .roster{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card.wide .row{align-items:center;border-top:1px solid var(--soil-3);padding-top:12px}
 .pick{position:relative;text-align:left;border:0;border-radius:12px;padding:10px;background:var(--soil);color:var(--chalk);
   display:flex;flex-direction:column;gap:4px;min-width:0;box-shadow:inset 0 0 0 2px transparent}
 .pick[aria-pressed="true"]{background:var(--pick-bg);box-shadow:inset 0 0 0 2px var(--you-l)}
 .pick:focus-visible{outline:3px solid var(--chalk);outline-offset:2px}
-.av{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,var(--s) 0 33%,transparent 34%),var(--b);box-shadow:inset 0 0 0 3px var(--t)}
+.av{width:52px;height:52px;border-radius:12px;background:var(--soil-3);display:block}
 .nm{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.1}
 .nm small{font-family:var(--body);font-weight:600;font-size:12px;color:var(--chalk-dim)}
 .rl{font-size:12px;color:var(--chalk-dim)}
-.st{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:6px;font-size:10px;color:var(--chalk-dim)}
-.st i{font-style:normal;letter-spacing:.04em}
+.st{display:grid;grid-template-columns:26px 1fr 10px;align-items:center;gap:6px;font-size:11px;color:var(--chalk-dim)}
+.st i,.st em{font-style:normal;letter-spacing:.04em}
+.st em{color:var(--chalk);font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
 .st b{height:5px;border-radius:3px;background:linear-gradient(90deg,var(--marigold) calc(var(--v) * 20%),var(--soil-3) 0)}
 .badge{position:absolute;top:8px;right:8px;font-family:var(--display);font-weight:800;font-size:12px;line-height:1.4;background:var(--you);color:var(--chalk);border-radius:999px;padding:1px 8px}
 </style>
@@ -88,7 +93,7 @@ button{font:inherit;cursor:pointer}
 
     <div class="overlay" id="menu">
       <div class="card">
-        <span class="tag">Gray-box prototype · v2 hiding &amp; tactics</span>
+        <span class="tag">Prototype · v4.1 village roster</span>
         <h1>সাতচারা<small>Sat Chara · knock down the seven stones, then build them back</small></h1>
         <ul>
           <li><b>Attack:</b> drag back and release to throw at the tower. You get 3 throws.</li>
@@ -121,8 +126,8 @@ button{font:inherit;cursor:pointer}
         <span class="tag">Choose your team</span>
         <h2>Pick 4 players</h2>
         <p>Your first pick is you. The other four play for the rivals.</p>
-        <div class="roster" id="roster"></div>
-        <div class="row" style="align-items:center">
+        <div class="roster-wrap"><div class="roster" id="roster"></div></div>
+        <div class="row">
           <button class="btn" id="playBtn">Play</button>
           <button class="btn ghost" id="backBtn">Back</button>
           <span class="tag" id="pickCount"></span>
@@ -709,6 +714,14 @@ function buildBg(){
   g.beginPath();g.moveTo(110,LINE_Y);g.lineTo(490,LINE_Y);g.stroke();g.setLineDash([]);
   g.lineWidth=2.5;g.beginPath();g.arc(TX,TY,28,0,Math.PI*2);g.stroke();
 }
+// On small screens the field is scaled down, so people and labels are drawn larger
+// (drawing only: hit areas don't change). px(n) gives a logical size that shows at least n CSS px.
+const VIS={sc:1,body:1,px:n=>n/Math.min(1,VIS.sc)};
+function label(t,x,y,size,color,weight=600,fam='"Hind Siliguri"'){
+  ctx.font=`${weight} ${size}px ${fam},sans-serif`;ctx.textAlign='center';ctx.lineJoin='round';
+  ctx.lineWidth=Math.max(2.5,size*.28);ctx.strokeStyle='rgba(30,22,15,.85)';ctx.strokeText(t,x,y);
+  ctx.fillStyle=color;ctx.fillText(t,x,y);
+}
 function ell(x,y,rx,ry){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();}
 function drawStone(x,y,r,i){
   ctx.fillStyle='rgba(0,0,0,.25)';ell(x+2,y+3,r,r*.62);
@@ -742,13 +755,12 @@ function drawPlayer(p){
   ctx.fillStyle='rgba(0,0,0,.28)';ell(p.x+2,p.y+7,12,6);
   if(p.human){
     const holder=b.state==='held'&&b.holder&&b.holder.team!==p.team?b.holder:null;
-    const seen=holder&&canSee(holder,p)&&dist(holder,p)<RANGE+40;
-    ctx.save();ctx.strokeStyle=seen?'#ff6b4a':'#f2a516';ctx.lineWidth=2.5;ctx.setLineDash([6,5]);ctx.lineDashOffset=-G.t*20;
-    ctx.beginPath();ctx.arc(p.x,p.y,18,0,Math.PI*2);ctx.stroke();ctx.restore();
-    ctx.font='700 12px "Baloo Da 2",sans-serif';ctx.textAlign='center';ctx.fillStyle=seen?'#ff6b4a':'#f2a516';
-    ctx.fillText(seen?'SEEN':(holder&&obs().length?'HIDDEN':'YOU'),p.x,p.y-24);
+    const inRange=holder&&dist(holder,p)<RANGE+40,seen=inRange&&canSee(holder,p),hidden=inRange&&!seen&&obs().length;
+    ctx.save();ctx.strokeStyle=seen?'#ff6b4a':'#f2a516';ctx.lineWidth=2.5*VIS.body;ctx.setLineDash([6,5]);ctx.lineDashOffset=-G.t*20;
+    ctx.beginPath();ctx.arc(p.x,p.y,18*VIS.body,0,Math.PI*2);ctx.stroke();ctx.restore();
+    label(seen?'SEEN':hidden?'HIDDEN':'YOU',p.x,p.y-20*VIS.body-VIS.px(4),VIS.px(12),seen?'#ff6b4a':'#f2a516',800,'"Baloo Da 2"');
   }
-  ctx.save();ctx.translate(p.x,p.y);
+  ctx.save();ctx.translate(p.x,p.y);ctx.scale(VIS.body,VIS.body);
   if(p.duckT>0)ctx.scale(1.15,.7);
   const dot=(x,y,r,f)=>{ctx.fillStyle=f;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();};
   // outfit, with the team colour as an outline
@@ -767,19 +779,18 @@ function drawPlayer(p){
     if(c.hair==='curly')for(let k=0;k<5;k++){const a=k*1.25;dot(bx+Math.cos(a)*3.5,by+Math.sin(a)*3.5,2.6,HAIR);}
   }
   ctx.restore();
-  ctx.font='600 10px "Hind Siliguri",sans-serif';ctx.textAlign='center';
-  ctx.fillStyle=p.team===0?'#cfe0ff':'#ffd2c6';ctx.fillText(c.bn,p.x,p.y+27);
-  if(p.wind){ctx.font='800 20px "Baloo Da 2",sans-serif';ctx.textAlign='center';ctx.fillStyle='#f2a516';ctx.fillText('!',p.x+14,p.y-18);}
-  if(p.carry>=0)drawStone(p.x,p.y-16,RADII[p.carry]*.7,p.carry);
-  if(p.placeT>0){ctx.strokeStyle='#f3ecdc';ctx.lineWidth=3;ctx.beginPath();ctx.arc(p.x,p.y,15,-Math.PI/2,-Math.PI/2+Math.PI*2*p.placeT/PLACE_T);ctx.stroke();}
+  label(c.bn,p.x,p.y+14*VIS.body+VIS.px(11),VIS.px(11),p.team===0?'#cfe0ff':'#ffd2c6',600);
+  if(p.wind)label('!',p.x+14*VIS.body,p.y-18*VIS.body,VIS.px(18),'#f2a516',800,'"Baloo Da 2"');
+  if(p.carry>=0)drawStone(p.x,p.y-16*VIS.body,RADII[p.carry]*.7*VIS.body,p.carry);
+  if(p.placeT>0){ctx.strokeStyle='#f3ecdc';ctx.lineWidth=3;ctx.beginPath();ctx.arc(p.x,p.y,15*VIS.body,-Math.PI/2,-Math.PI/2+Math.PI*2*p.placeT/PLACE_T);ctx.stroke();}
 }
 function draw(){
   ctx.save();
   ctx.clearRect(0,0,W,H);
   if(G.shake>0&&!RM)ctx.translate((Math.random()-.5)*G.shake,(Math.random()-.5)*G.shake);
   ctx.drawImage(bg,0,0,W,H);
-  ctx.font='600 11px "Hind Siliguri",sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(243,236,220,.7)';
-  ctx.fillText('THROW LINE',TX,LINE_Y+16);
+  ctx.font=`600 ${VIS.px(10)}px "Hind Siliguri",sans-serif`;ctx.textAlign='left';ctx.fillStyle='rgba(243,236,220,.75)';
+  ctx.fillText('THROW LINE',112,LINE_Y-8);
   const rebuildingView=G.phase==='rebuild'||(G.phase==='roundover'&&G.stacked<7);
   for(const s of G.stones){
     if(s.state!=='ground')continue;
@@ -787,7 +798,7 @@ function draw(){
       const pr=1+Math.sin(G.t*6)*.15;ctx.strokeStyle='#f2a516';ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(s.x,s.y,(s.r+7)*pr,0,Math.PI*2);ctx.stroke();
     }
     drawStone(s.x,s.y,s.r,s.i);
-    ctx.font='700 11px "Baloo Da 2",sans-serif';ctx.fillStyle='#f3ecdc';ctx.fillText(String(s.i+1),s.x,s.y-s.r*.62-4);
+    label(String(s.i+1),s.x,s.y-s.r*.62-4,VIS.px(12),'#f3ecdc',800,'"Baloo Da 2"');
   }
   for(let k=0;k<G.stacked;k++)drawStone(TX,TY-k*5,RADII[k],k);
   obs().forEach(drawObstacle);
@@ -813,10 +824,11 @@ function draw(){
     }
   }
   if(G.toast){
-    ctx.font='600 17px "Hind Siliguri",sans-serif';ctx.textAlign='center';const w=ctx.measureText(G.toast.text).width+32;
-    ctx.globalAlpha=Math.min(1,G.toast.t*3);ctx.fillStyle='rgba(36,27,20,.85)';
-    ctx.beginPath();ctx.roundRect(TX-w/2,22,w,36,18);ctx.fill();
-    ctx.fillStyle='#f3ecdc';ctx.fillText(G.toast.text,TX,46);ctx.globalAlpha=1;
+    const fs=Math.min(VIS.px(13),30);
+    ctx.font=`600 ${fs}px "Hind Siliguri",sans-serif`;ctx.textAlign='center';const w=Math.min(W-16,ctx.measureText(G.toast.text).width+fs*1.8);
+    ctx.globalAlpha=Math.min(1,G.toast.t*3);ctx.fillStyle='rgba(36,27,20,.88)';
+    ctx.beginPath();ctx.roundRect(TX-w/2,16,w,fs*2.1,fs);ctx.fill();
+    ctx.fillStyle='#f3ecdc';ctx.fillText(G.toast.text,TX,16+fs*1.42,W-24);ctx.globalAlpha=1;
   }
   if(G.banner){
     const t=G.banner.t,s=RM?1:Math.min(1,.4+t*4)+(t<.4?Math.sin(t*8)*.08:0);
@@ -873,18 +885,48 @@ function startMatch(){
 }
 function showMenu(){G.phase='menu';G.banner=null;G.toast=null;$('#end').hidden=true;$('#team').hidden=true;$('#menu').hidden=false;}
 function renderTeam(focusId){
-  const bar=(l,v)=>`<span class="st"><i>${l}</i><b style="--v:${v}"></b></span>`;
+  const bar=(l,v)=>`<span class="st"><i>${l}</i><b style="--v:${v}"></b><em>${v}</em></span>`;
   $('#roster').innerHTML=ROSTER.map(c=>{
     const i=G.pick.indexOf(c.id);
     return `<button class="pick" id="pk-${c.id}" data-id="${c.id}" aria-pressed="${i>=0}">`+
-      `<span class="av" style="--b:${c.body};--t:${c.trim};--s:${c.skin}"></span>`+
+      `<canvas class="av" data-id="${c.id}" width="104" height="104" aria-hidden="true"></canvas>`+
       `<span class="nm">${c.bn} <small>${c.en}</small></span><span class="rl">${c.role}</span>`+
       bar('Spd',c.spd)+bar('Aim',c.aim)+bar('Pow',c.pow)+bar('Agi',c.agi)+
       (i>=0?`<span class="badge">${i===0?'YOU':i+1}</span>`:'')+`</button>`;
   }).join('');
+  document.querySelectorAll('canvas.av').forEach(cv2=>drawPortrait(cv2,ROSTER.find(c=>c.id===cv2.dataset.id)));
   $('#playBtn').disabled=G.pick.length!==4;
   $('#pickCount').textContent=`${G.pick.length}/4 picked`;
   if(focusId){const el=document.getElementById('pk-'+focusId);if(el&&el.focus)el.focus();}
+}
+// Front-view head-and-shoulders portrait for the team picker (canvas is 104px, shown at 52px)
+function drawPortrait(el,c){
+  const g=el.getContext&&el.getContext('2d');if(!g||!c)return;
+  const HAIR='#1d1510',C=(x,y,r,f)=>{g.fillStyle=f;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill();};
+  g.clearRect(0,0,104,104);
+  g.fillStyle='#4a3a2c';g.fillRect(0,0,104,104);
+  // shoulders and outfit
+  g.fillStyle=c.body;g.beginPath();g.ellipse(52,108,40,30,0,Math.PI,0);g.fill();
+  g.save();g.beginPath();g.ellipse(52,108,40,30,0,Math.PI,0);g.clip();
+  g.fillStyle=c.trim;g.beginPath();g.moveTo(22,80);g.lineTo(34,78);g.lineTo(78,108);g.lineTo(62,108);g.closePath();g.fill();g.restore();
+  if(c.hair==='hijab'){
+    g.fillStyle='#f4f1ea';g.beginPath();g.ellipse(52,58,27,32,0,0,Math.PI*2);g.fill();
+    g.beginPath();g.moveTo(26,62);g.quadraticCurveTo(52,98,78,62);g.lineTo(80,86);g.quadraticCurveTo(52,96,24,86);g.closePath();g.fill();
+    C(52,56,17,c.skin);
+  }else{
+    g.fillStyle=c.skin;g.fillRect(46,66,12,14);
+    if(c.hair==='braids'){g.fillStyle=HAIR;g.fillRect(28,48,8,30);g.fillRect(68,48,8,30);C(32,80,4,'#d6453d');C(72,80,4,'#d6453d');}
+    if(c.hair==='ponytail'){g.fillStyle=HAIR;g.beginPath();g.ellipse(76,58,7,16,.4,0,Math.PI*2);g.fill();}
+    C(52,50,20,c.skin);
+    g.fillStyle=HAIR;
+    if(c.hair==='curly'){for(let k=0;k<9;k++){const a=Math.PI+k*Math.PI/8;C(52+Math.cos(a)*19,47+Math.sin(a)*15,6.5,HAIR);}}
+    else{g.beginPath();g.ellipse(52,42,21,14,0,Math.PI,0);g.fill();g.beginPath();g.ellipse(52,40,20,9,0,0,Math.PI);g.fill();}
+    if(c.hair==='short'){g.beginPath();g.ellipse(44,36,10,5,-.4,0,Math.PI*2);g.fill();}
+    if(c.hair==='bun')C(52,24,8,HAIR);
+  }
+  // face
+  C(45,52,2.2,HAIR);C(59,52,2.2,HAIR);
+  g.strokeStyle='#5a2e1c';g.lineWidth=2;g.beginPath();g.arc(52,57,6,.3,Math.PI-.3);g.stroke();
 }
 function showTeam(){$('#menu').hidden=true;$('#team').hidden=false;renderTeam();}
 $('#roster').addEventListener('click',e=>{
@@ -915,6 +957,7 @@ function resize(){
   cv.style.width=Math.floor(W*sc)+'px';cv.style.height=Math.floor(H*sc)+'px';
   cv.width=Math.round(W*sc*dpr);cv.height=Math.round(H*sc*dpr);
   ctx.setTransform(sc*dpr,0,0,sc*dpr,0,0);
+  VIS.sc=sc;VIS.body=clamp(.75/sc,1,1.45);
 }
 let last=performance.now();
 function frame(now){
