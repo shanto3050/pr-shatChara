@@ -2,7 +2,7 @@
 
 ## Android production planning
 
-The next product is a realistic 3D Android game designed to scale down to lower-spec phones. The browser prototype remains the gameplay reference. Android implementation has not started.
+The next product is a realistic 3D Android game designed to scale down to lower-spec phones. The browser prototype remains the gameplay reference. Foundation work has started; no Android build is available yet. See [development setup status](docs/setup-status.md) and the [prototype rules audit](docs/rules-audit.md).
 
 - [Detailed production plan and milestones](docs/production-plan.md)
 - [Technical architecture, budgets, and verification](docs/technical-plan.md)

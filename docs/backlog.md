@@ -2,15 +2,15 @@
 
 Working baseline · 28 October 2026
 
-Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. Implementation has not started; documentation completion is separate from Android completion.
+Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. Foundation work has started; no Android build exists yet. See [setup status](setup-status.md).
 
 | ID | Gate | Task | Acceptance evidence | Status |
 |---|---|---|---|---|
-| F01 | M0 | Audit editor, Android tools, storage and device connection | Tool/version inventory and actual blockers | TODO |
+| F01 | M0 | Audit editor, Android tools, storage and device connection | Tool/version inventory and actual blockers in setup-status.md | DONE |
 | F02 | M0 | Choose minimum phone and OS baseline | Device/chipset/OS recorded; test access identified | TODO |
-| F03 | M0 | Initialize pinned Unity/URP project and Git ignores | Clean checkout opens using documented editor | TODO |
+| F03 | M0 | Initialize pinned Unity/URP project and Git ignores | Ignores added and Hub installed; Editor/project still required | IN PROGRESS |
 | F04 | M0 | Build and install empty Android scene | APK and launch on Xiaomi; exact build instructions | TODO |
-| G01 | M1 | Audit prototype rules and resolve edge cases | Rules table plus recorded decisions | TODO |
+| G01 | M1 | Audit prototype rules and resolve edge cases | Source rules table in rules-audit.md; edge-case decisions pending | IN PROGRESS |
 | G02 | M1 | Compare touch and camera schemes | Phone recordings and selected scheme rationale | TODO |
 | G03 | M1 | Implement match state machine and scoring | State/score tests, reset and full-match evidence | TODO |
 | G04 | M1 | Implement movement, ball and seven stones | Full attack/rebuild/defend loop in graybox | TODO |
@@ -31,4 +31,4 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 | R01 | M6 | Store compliance and listing preparation | Current requirement review and reviewable listing | TODO |
 | R02 | M6 | Approve and publish candidate | Explicit user publication approval; release verification | TODO |
 
-Next task after plan review: F01. Do not begin mass character production before V04 establishes affordable quality.
+Next: complete Editor/URP setup for F03, connect a test phone for F04, and resolve G01 decisions. Do not begin mass character production before V04 establishes affordable quality.

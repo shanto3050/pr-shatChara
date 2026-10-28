@@ -1,0 +1,23 @@
+# Unity generated state (source assets and .meta files remain tracked)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Bb]uild/
+[Bb]uilds/
+MemoryCaptures/
+Recordings/
+.vs/
+.idea/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.pidb
+*.pdb
+*.apk
+*.aab
+*.keystore
+*.jks
+node_modules/
