@@ -2,7 +2,7 @@
 
 Working baseline · 28 October 2026
 
-Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. Foundation work has started; no Android build exists yet. See [setup status](setup-status.md).
+Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. Foundation APK is physically verified; the M1 playable graybox is in development. See [setup status](setup-status.md).
 
 | ID | Gate | Task | Acceptance evidence | Status |
 |---|---|---|---|---|
@@ -11,10 +11,10 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 | F03 | M0 | Initialize pinned Unity/URP project and Git ignores | Unity/URP source pinned and imported; foundation generation exit 0; clean-checkout reproduction pending | IN PROGRESS |
 | F04 | M0 | Build and install foundation Android scene | APK verified; install/launch/buttons/resume passed on connected Samsung SC-03K, Android 10; see reports/2026-10-28-foundation.md | DONE |
 | G01 | M1 | Audit prototype rules and resolve edge cases | Source rules table in rules-audit.md; edge-case decisions pending | IN PROGRESS |
-| G02 | M1 | Compare touch and camera schemes | Phone recordings and selected scheme rationale | TODO |
+| G02 | M1 | Compare touch and camera schemes | Dual touch sticks, safe-area UI and wide/closer camera implemented; phone comparison pending | IN PROGRESS |
 | G03 | M1 | Implement match state machine and scoring | C# package passes 54 assertions; scene integration and full-match evidence still pending | IN PROGRESS |
-| G04 | M1 | Implement movement, ball and seven stones | Full attack/rebuild/defend loop in graybox | TODO |
-| G05 | M1 | Add team coordination and baseline AI | Complete 4 vs 4 match without manual intervention | TODO |
+| G04 | M1 | Implement movement, ball and seven stones | Scene simulation completes a match including topples, ordered rebuilding and hits; touch/device validation pending | IN PROGRESS |
+| G05 | M1 | Add team coordination and baseline AI | Actual scene automated 4 vs 4 match passes; human playtests and tactical/balance review pending | IN PROGRESS |
 | V01 | M2 | Establish realistic art references and source register | Consistent character/environment direction and licenses | TODO |
 | V02 | M2 | Integrate one rigged character and core motion | Android capture; feet, contacts and release timing checked | TODO |
 | V03 | M2 | Build finished courtyard section and lighting | Approved visual proof rendered in game | TODO |

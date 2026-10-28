@@ -27,3 +27,4 @@ PerformanceTestRunSettings.json*
 *.keystore
 *.jks
 node_modules/
+.verification/

@@ -70,11 +70,16 @@ namespace SatChara.Editor
             PrepareFoundation();
             string output = Environment.GetEnvironmentVariable("SAT_CHARA_APK");
             if (string.IsNullOrEmpty(output)) output = "Builds/Android/SatChara-Foundation.apk";
+            BuildScene(ScenePath, output);
+        }
+
+        public static void BuildScene(string scenePath, string output)
+        {
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)));
             EditorUserBuildSettings.buildAppBundle = false;
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
-                scenes = new[] { ScenePath },
+                scenes = new[] { scenePath },
                 locationPathName = output,
                 target = BuildTarget.Android,
                 options = BuildOptions.Development

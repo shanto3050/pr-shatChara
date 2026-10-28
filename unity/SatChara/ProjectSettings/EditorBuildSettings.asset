@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SatChara/Scenes/Foundation.unity
-    guid: f89d70319d922f64192090385c0df6a5
+    path: Assets/SatChara/Scenes/GrayboxMatch.unity
+    guid: 2691b75d96dfdca47ac3222eb99f5f21
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
