@@ -9,3 +9,11 @@
 *.json text eol=lf
 *.md text eol=lf
 unity/SatChara/Assets/TutorialInfo/** whitespace=-blank-at-eol
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.prefab text eol=lf whitespace=-blank-at-eol
+*.mp4 filter=lfs diff=lfs merge=lfs -text

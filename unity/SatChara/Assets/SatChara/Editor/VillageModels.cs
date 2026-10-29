@@ -1,5 +1,3 @@
-#if SAT_CHARA_VISUAL_SLICE_WIP
-// Incomplete editor authoring tool. See docs/visual-slice-status.md before enabling.
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -9,9 +7,11 @@ namespace SatChara.Editor
 {
     public static partial class VillageBuild
     {
+        [System.Serializable] private class BabluMaterials { public BabluMaterial[] materials; }
+        [System.Serializable] private class BabluMaterial { public string name,texture,normal; public float[] color; public float smoothness; public bool cutout; }
         private static GameObject CharacterPrefab()
         {
-            string source=Art+"Characters/VillagePlayer.fbx";
+            string source=Art+"Characters/Bablu/Bablu.fbx";
             var importer=(ModelImporter)AssetImporter.GetAtPath(source);
             importer.importAnimation=false; importer.animationType=ModelImporterAnimationType.Generic;
             importer.optimizeGameObjects=false; importer.SaveAndReimport();
@@ -24,22 +24,22 @@ namespace SatChara.Editor
             if(forward.sqrMagnitude>.001f) model.transform.rotation=Quaternion.FromToRotation(forward.normalized,Vector3.forward)*model.transform.rotation;
             Fit(model,1.7f);
             foreach(var animator in model.GetComponentsInChildren<Animator>()) animator.enabled=false;
+            var manifest=JsonUtility.FromJson<BabluMaterials>(System.IO.File.ReadAllText(Art+"Characters/Bablu/materials.json"));
             foreach(var renderer in model.GetComponentsInChildren<Renderer>())
             {
                 var materials=renderer.sharedMaterials;
                 for(int i=0;i<materials.Length;i++)
                 {
                     string name=materials[i] ? materials[i].name.ToLowerInvariant() : "body";
-                    if(name.Contains("male_casual"))
+                    var entry = System.Array.Find(manifest.materials, m => m.name.ToLowerInvariant() == name);
+                    if (entry == null) throw new System.InvalidOperationException("Unmapped Bablu material: " + name);
+                    var tint = new Color(entry.color[0],entry.color[1],entry.color[2],entry.color[3]);
+                    materials[i] = Surface("Bablu " + entry.name, string.IsNullOrEmpty(entry.texture) ? null : "Characters/Bablu/"+entry.texture,tint,0,entry.smoothness,entry.cutout);
+                    if (!string.IsNullOrEmpty(entry.normal))
                     {
-                        materials[i]=Surface("Striped Cotton", "Characters/Textures/male_casualsuit03_diffuse.png",Color.white,0,.12f);
-                        materials[i].SetTexture("_BumpMap",AssetDatabase.LoadAssetAtPath<Texture2D>(Art+"Characters/Textures/male_casualsuit03_normal.png"));
-                        materials[i].SetFloat("_BumpScale",.4f);materials[i].EnableKeyword("_NORMALMAP");
+                        materials[i].SetTexture("_BumpMap",AssetDatabase.LoadAssetAtPath<Texture2D>(Art+"Characters/Bablu/"+entry.normal));
+                        materials[i].SetFloat("_BumpScale",.22f); materials[i].EnableKeyword("_NORMALMAP");
                     }
-                    else if(name.Contains("eyebrow")) materials[i]=Surface("Eyebrows","Characters/Textures/eyebrow001.png",Color.white,0,.1f,true);
-                    else if(name.Contains("short01")) materials[i]=Surface("Black Hair","Characters/Textures/short01_diffuse.png",new Color(.5f,.45f,.4f),0,.16f,true);
-                    else if(name.Contains("low-poly")) materials[i]=Surface("Brown Eyes","Characters/Textures/brown_eye.png",Color.white,0,.45f);
-                    else materials[i]=Surface("Warm Brown Skin","Characters/Textures/young_lightskinned_male_diffuse3.png",new Color(.86f,.72f,.6f),0,.2f);
                 }
                 renderer.sharedMaterials=materials;renderer.shadowCastingMode=ShadowCastingMode.On;
                 if(renderer is SkinnedMeshRenderer skin) skin.updateWhenOffscreen=false;
@@ -87,4 +87,3 @@ namespace SatChara.Editor
         }
     }
 }
-#endif

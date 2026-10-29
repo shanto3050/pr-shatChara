@@ -8,6 +8,7 @@ namespace SatChara
     {
         private readonly Dictionary<string, Transform> bones = new Dictionary<string, Transform>();
         private readonly Dictionary<Transform, Quaternion> rest = new Dictionary<Transform, Quaternion>();
+        private static readonly string[] SupportBones = { "foot_l", "ball_l", "foot_r", "ball_r" };
         private Vector3 previousPosition;
         private float phase, throwTime = -10;
         private bool ready;
@@ -39,6 +40,12 @@ namespace SatChara
             Leg("l", left, gait, ducking); Leg("r", right, gait, ducking);
             Arm("l", -left, gait, holdingBall, carryingStone);
             Arm("r", -right, gait, holdingBall, carryingStone);
+            // Keep the support foot on the flat gameplay ground while this temporary
+            // pose controller is used. Production animation will use foot IK.
+            float sole = float.PositiveInfinity;
+            foreach (string key in SupportBones)
+                if (bones.TryGetValue(key, out var support)) sole = Mathf.Min(sole, support.position.y - .04f);
+            if (!float.IsPositiveInfinity(sole)) transform.position += Vector3.up * (.015f - sole);
         }
         private void Leg(string side, float wave, float gait, bool ducking)
         {

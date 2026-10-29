@@ -19,7 +19,7 @@
 | D13 | 2026-10-28 | Retain wide tactical view as current default; keep closer view experimental | Graybox only. **Superseded by D18** for the realistic game |
 | D14 | 2026-10-28 | Advance independent M1 prototyping while minimum-device selection remains open | Use available authorized Samsung for real builds; do not claim all foundation/device gates complete or start full realistic asset production |
 | D15 | 2026-10-29 | Realistic graphics are the primary goal on mid/high phones; lower-spec phones get a simpler Low preset | User decision after realism review. Realistic minimum: Samsung SC-03K (Snapdragon 845, ~6 GB). Supersedes D02 |
-| D16 | 2026-10-29 | **Open:** source of realistic characters: paid character tool (e.g. Character Creator 4) or commissioned 3D artist | Script-built and free base meshes can't reach the benchmark for faces, skin, hair and clothing. Needs a user budget decision at the start of M2; MakeHuman stays a placeholder |
+| D16 | 2026-10-29 | **Open:** source of final realistic characters: evaluate the free Bablu pipeline first, then compare paid character tools or an artist if needed | Bablu v2 is an offline free-tool experiment, not an approved in-game character. Decide after a Unity/device comparison; any purchase still requires user authorization |
 | D17 | 2026-10-29 | Visual benchmark: Real Cricket 24; M2 gated on a side-by-side comparison with a target frame and user sign-off | User decision. Lighting, environment, camera and motion expected to come close; characters depend on D16 |
 | D18 | 2026-10-29 | Broadcast-style sports camera by default; wide tactical view as an option; presentation cameras for key moments | User: "as good as it can be developed". Supersedes D13 for the realistic game |
 | D19 | 2026-10-29 | Reference photography of a real village field, houses, objects and clothing; photogrammetry for props | User confirmed it's possible. Needed before environment production |
@@ -31,7 +31,7 @@ These do not block writing the plan. Resolve them at the specified gate and reco
 | Question | When needed | Working assumption |
 |---|---|---|
 | Which low-end phone/chipset and oldest Android version are supported by the Low preset? | Before Low-preset certification | 4 GB candidate, exact device/OS unselected; realistic minimum is SC-03K (D15) |
-| Character source and art budget (D16) | Start of M2 | Paid tool or freelance artist; no purchase without authorization |
+| Character source and art budget (D16) | Start of M2 | Evaluate free Bablu on-device first; paid tools or artist remain options, with explicit purchase authorization |
 | Which local rule variants should be authoritative? | M1 | Browser behavior until reviewed |
 | Landscape or portrait? | M1 input test | Landscape; camera direction set by D18 |
 | Can low-end physical hardware be borrowed or obtained? | M0 | Access must be arranged; no purchase authorized |

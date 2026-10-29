@@ -1,35 +1,30 @@
-# Visual slice checkpoint — 29 October 2026
+# Visual slice status — 29 October 2026
 
-This checkpoint preserves the graphical work so it can be continued on another machine. It is **not a completed village build**. The last phone-verified APK remains the graybox described in the earlier reports.
+The earlier disabled authoring checkpoint has been advanced into a compiling Unity scene. See [the current report](reports/2026-10-29-village-visual-proof.md) for verified build/device evidence and remaining limitations.
 
-## Saved work
+## Implemented
 
-- Textured, clothed, skinned human exported to Assets/SatChara/Art/Characters/VillagePlayer.fbx; editable Blender source and generation scripts under art-source/. Character preview was rendered and inspected in Blender.
-- Mobile-reduced tree and barrel FBX assets under Art/Environment, plus photographed plaster, wood and corrugated-tin textures.
-- Native image-generation ground texture at Art/Textures/village-earth.png.
-- First-pass skeletal pose controller VillageAvatar.cs and optional visual-asset hooks in GrayboxMatch.cs.
-- Partial editor import/material/prefab/pipeline code in VillageBuild.cs and VillageModels.cs.
+- Bablu v2 exported as a skinned FBX with lungi, vest, gamcha, hair cards and explicit URP material metadata. Source scripts: `art-source/create_mockup_bablu.py` and `art-source/export_bablu_unity.py`.
+- Completed `VillageScenery.cs`: textured earth, simple houses with pitched tin roofs, fences, trees, drums and a flattened stone mesh. `VillageBuild` and `VillageModels` now compile normally; the temporary WIP guard is removed.
+- Fixed legacy texture import shape (2D rather than cubemap) and Blender material import loop. URP materials are assigned explicitly.
+- Perspective follow camera defaults on the visual scene; tactical option remains. Temporary skeletal posing includes ground-height correction.
+- Local Git LFS rules cover art binaries without rewriting history. Removed duplicate FBX companion textures only after hash-checking all images against preserved canonical copies.
+- Plan/backlog now evaluate the free Bablu proof before deciding whether paid character tools or an artist are needed. No purchase is authorized or made.
 
-## Important unfinished work
+## Still open
 
-The courtyard geometry authoring patch was **not applied**: automatic approval review failed because its usage limit was reached. The error explicitly said this was a review failure, not a determination that the action was unsafe. Consequently BuildCourtyard() and StoneMesh() are missing. The partial editor tools are guarded by SAT_CHARA_VISUAL_SLICE_WIP so these unresolved authoring calls do not enter normal editor compilation. Do not enable that define until the missing code exists.
+This is an early proof, not the approved M2 visual target. All eight players share one model; motion remains procedural, with no completed mocap/animation pipeline. The courtyard is a scripted approximation, not a reconstruction of supplied reference photos. Lighting, skin, hair, silhouettes, terrain edges, vegetation, HUD and camera need further work. No sustained 30 FPS, 4 GB compatibility or final benchmark match is established.
 
-No Unity compilation, Unity visual inspection, Android build or phone test has verified this visual slice. Blender's character preview does not prove Unity appearance or animation quality. The skeleton controller is an unverified first pass, not motion capture or finished natural animation. Full roster identity, final skin/material tuning and character differentiation remain open.
+The earlier graybox reports remain historical evidence for that build. Use the new report for the graphical build; a Blender still or editor render is never a device capture.
 
-## Continue elsewhere
+## Reproduce
 
-1. Clone the full repository; open unity/SatChara in Unity 6000.3.27f1 with its matching Android modules and an eligible active license.
-2. Keep the existing graybox scene available while finishing the visual slice.
-3. Implement and inspect the village geometry/stone mesh, then enable the editor authoring code deliberately.
-4. Verify FBX scale, material remapping, skeleton pose and camera in an actual Unity render before building Android.
-5. Build/install and inspect on the actual connected device, recording frame-time and memory evidence before claiming lower-end compatibility.
+Open `unity/SatChara` in Unity 6000.3.27f1 with matching Android modules. Run `SatChara.Editor.VillageBuild.Capture` for URP camera images, `Validate` for the visual scene's match simulation, or `Build` for the development APK. Builds go under `unity/SatChara/Builds/Android/` and are ignored.
 
-The vendor downloads are intentionally ignored. To regenerate assets, download the official MPFB v2.0.18 source into art-source/vendor/mpfb/, run fetch_character_assets.py, then run create_character.py using Blender. The script uses workspace-local transient add-on data. Poly Haven model preparation also needs the original vendor FBX downloads referenced in environment-downloads.json. Existing exported FBX/textures and Blender source are included in this checkpoint, so regeneration is not required just to inspect them.
+To regenerate Bablu, fetch the documented free dependencies and HDRI, run the mockup generator with `--no-render`, then load its vendor Blend file in Blender and run `export_bablu_unity.py`. The exported FBX, textures, metadata and prefab are included, so regeneration is not required for building the game.
 
-## Asset provenance
+## Provenance
 
-MakeHuman/MPFB meshes, skin, hair, eyes and male_casualsuit03 clothing are CC0 assets; the generator itself is GPLv3 and is not shipped as part of the Android runtime. See art-source/licenses/ and the [official system-asset listing](https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html).
+MakeHuman meshes, skin, eyes, brows, lashes, hair and old casual outfit use CC0 system assets; MPFB generator code is GPLv3 and is not shipped in the Android runtime. Poly Haven environment assets are CC0. See `asset-register.csv`, `art-source/licenses/`, and recorded download manifests.
 
-The island_tree_01, barrel_03, clay_plaster, worn_corrugated_iron and wooden_rough_planks source assets are from Poly Haven under [CC0](https://polyhaven.com/license). Download references and hashes are saved in art-source/. Some source-resolution character images are duplicated in the FBX companion folder and canonical Textures folder to preserve the current FBX dependencies; optimization can follow after a verified import.
-
-The ground texture was generated with the built-in image_gen tool and copied into the Unity project. Prompt: "Perfectly overhead close photograph of dry compacted warm brown alluvial earth in a rural Bangladeshi village courtyard, subtle worn footpaths, fine sand grains and occasional tiny pale stones embedded flush with the earth, very sparse flattened straw fragments. Flat diffuse overcast illumination, no directional shadows, no perspective, no horizon, no objects, no lettering, no plants, no large rocks. Natural irregular fine detail and modest color variation. Seamless repeating edges, no obvious central feature or borders." It has not yet been inspected tiled inside Unity.
+Ground albedo uses built-in image generation. Original prompt: "Perfectly overhead close photograph of dry compacted warm brown alluvial earth in a rural Bangladeshi village courtyard, subtle worn footpaths, fine sand grains and occasional tiny pale stones embedded flush with the earth, very sparse flattened straw fragments. Flat diffuse overcast illumination, no directional shadows, no perspective, no horizon, no objects, no lettering, no plants, no large rocks. Natural irregular fine detail and modest color variation. Seamless repeating edges, no obvious central feature or borders."

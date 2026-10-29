@@ -105,7 +105,7 @@ Create consistent reference sheets, human-proportion models, shared compatible h
 | Ground, wall, roof and cloth textures | Reference photos made tileable; CC0 libraries (Poly Haven, ambientCG) where they fit |
 | Vegetation (banana, areca and coconut palms, bamboo, grass) | CC0 or licensed assets, adapted; scanned leaves where useful |
 | Lighting, materials, shaders (including a mobile skin shader), post-processing, LODs, import tooling | Code and configuration |
-| **Realistic characters** (faces, skin, hair, clothing) | **Open decision (D16):** a paid character tool (e.g. Reallusion Character Creator 4) or a commissioned 3D character artist. MakeHuman/MPFB output is a placeholder only: its current model is an adult in Western clothing and doesn't match the roster |
+| **Realistic characters** (faces, skin, hair, clothing) | **Open decision (D16):** evaluate free Bablu v2 in Unity and Android first; compare paid tools or an artist if it falls short. The earlier Western-clothed model is a placeholder; Bablu is an unapproved visual experiment |
 | Clothing folds (lungi, dupatta, kameez, frock) | Simulated offline (e.g. Marvelous Designer or Blender cloth) and baked into the mesh; no real-time cloth |
 | Animation | Mixamo for basic movement; **phone-based motion capture** (e.g. Move.ai, Rokoko Video) for the game's own actions (overarm throw, crouch-and-stack, duck, sidestep); Unity Animation Rigging for foot locking and hand reach. Adjust adult motion for children's proportions. Procedural posing (VillageAvatar.cs) is a stopgap, not the final animation |
 

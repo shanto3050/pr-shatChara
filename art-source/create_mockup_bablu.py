@@ -14,6 +14,9 @@ from mathutils import Vector, Matrix, Quaternion
 ROOT = pathlib.Path(__file__).resolve().parent
 PROJECT = ROOT.parent
 VENDOR = ROOT / 'vendor'
+import tempfile
+(VENDOR / 'tmp').mkdir(parents=True, exist_ok=True)
+tempfile.tempdir = str(VENDOR / 'tmp')
 ASSETS = VENDOR / 'selected-assets'
 ARGS = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 SAMPLES = int(ARGS[ARGS.index('--samples') + 1]) if '--samples' in ARGS else 128
@@ -26,6 +29,8 @@ sys.path.insert(0, str(MPFB))
 extension_path = bpy.utils.extension_path_user
 bpy.utils.extension_path_user = lambda package, *a, **kw: str(VENDOR / 'mpfb-user') if package == 'mpfb' else extension_path(package, *a, **kw)
 (VENDOR / 'mpfb-user').mkdir(parents=True, exist_ok=True)
+resource_path = bpy.utils.resource_path
+bpy.utils.resource_path = lambda kind: str(VENDOR / "blender-user") if kind == "USER" else resource_path(kind)
 import mpfb
 mpfb.bl_info = mpfb.fake_bl_info
 bpy.context.preferences.addons.new().module = 'mpfb'

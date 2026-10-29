@@ -1,0 +1,147 @@
+{
+  "materials": [
+    {
+      "name": "Bablu.body",
+      "texture": "young_lightskinned_male_diffuse3_png.png",
+      "normal": "skin_pores.png",
+      "color": [
+        0.62,
+        0.39,
+        0.25,
+        1
+      ],
+      "smoothness": 0.44999998807907104,
+      "cutout": true
+    },
+    {
+      "name": "Bablu.eyebrow001",
+      "texture": "eyebrow001_png.png",
+      "normal": "",
+      "color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothness": 0.5,
+      "cutout": true
+    },
+    {
+      "name": "Bablu.eyelashes01",
+      "texture": "eyelashes01_png.png",
+      "normal": "",
+      "color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothness": 0.5,
+      "cutout": true
+    },
+    {
+      "name": "Bablu.low-poly",
+      "texture": "brown_eye_png.png",
+      "normal": "",
+      "color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothness": 0.30000001192092896,
+      "cutout": true
+    },
+    {
+      "name": "Bablu.short02",
+      "texture": "short02_diffuse_png.png",
+      "normal": "",
+      "color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothness": 0.30000001192092896,
+      "cutout": true
+    },
+    {
+      "name": "Earth",
+      "texture": "village-earth_png.png",
+      "normal": "village-earth_png.png",
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "smoothness": 0.050000011920928955,
+      "cutout": false
+    },
+    {
+      "name": "Gamcha",
+      "texture": "gamcha_check.png",
+      "normal": "",
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "smoothness": 0.10000002384185791,
+      "cutout": false
+    },
+    {
+      "name": "HairCards",
+      "texture": "hair_strands.png",
+      "normal": "",
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "smoothness": 0.550000011920929,
+      "cutout": true
+    },
+    {
+      "name": "Lungi",
+      "texture": "lungi_check.png",
+      "normal": "",
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "smoothness": 0.1499999761581421,
+      "cutout": false
+    },
+    {
+      "name": "Material",
+      "texture": "",
+      "normal": "",
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "smoothness": 0.5,
+      "cutout": false
+    },
+    {
+      "name": "Vest",
+      "texture": "vest_cotton.png",
+      "normal": "",
+      "color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "smoothness": 0.10000002384185791,
+      "cutout": false
+    }
+  ]
+}

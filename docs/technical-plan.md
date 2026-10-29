@@ -31,7 +31,7 @@ Starting ceilings to profile and revise at M2, not guarantees: eight active char
 
 Content beyond about 150 MB ships through Google Play Asset Delivery (install-time asset packs). Large source binaries (FBX, textures, .blend, scans) go in Git LFS.
 
-Measure CPU main thread, render thread, GPU time, allocation spikes, draw calls, overdraw, texture memory, skinning cost, and load time. Triangle count alone is not a performance verdict. Choose texture compression and rendering features through on-device compatibility tests. Include texture streaming or asset delivery systems only if measurements justify their complexity.
+Measure CPU main thread, render thread, GPU time, allocation spikes, draw calls, overdraw, texture memory, skinning cost, and load time. Triangle count alone is not a performance verdict. Choose texture compression and rendering features through on-device compatibility tests. Add texture streaming only if measurements justify it. Asset Delivery is the planned release route if content exceeds the base-app budget; direct APKs remain the development route.
 
 ## Quality presets
 

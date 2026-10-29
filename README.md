@@ -2,16 +2,18 @@
 
 ## Android production planning
 
-The next product is a realistic 3D Android game designed to scale down to lower-spec phones. A **playable 4 vs 4 Android graybox** now runs on the test phone with touch aiming/movement, AI, stone rebuilding and scoring. This uses development shapes; realistic art and final balance are still ahead. See [controls and build instructions](docs/playable-graybox.md), the [verified phone report and gameplay clip](docs/reports/2026-10-28-graybox.md), and [development setup status](docs/setup-status.md). The browser prototype remains the original gameplay reference.
+The next product is a realistic 3D Android game designed to scale down to lower-spec phones. A **playable 4 vs 4 Android graybox** now runs on the test phone with touch aiming/movement, AI, stone rebuilding and scoring. An early textured village proof now integrates Bablu, houses and environment art; final animation, art quality and balance remain open. See the [village phone capture and report](docs/reports/2026-10-29-village-visual-proof.md). See [controls and build instructions](docs/playable-graybox.md), the [verified phone report and gameplay clip](docs/reports/2026-10-28-graybox.md), and [development setup status](docs/setup-status.md). The browser prototype remains the original gameplay reference.
 
 - [Detailed production plan and milestones](docs/production-plan.md)
 - [Technical architecture, budgets, and verification](docs/technical-plan.md)
 - [Implementation backlog and acceptance checks](docs/backlog.md)
 - [Decisions, assumptions, and open questions](docs/decisions.md)
 - [Asset provenance and license register](docs/asset-register.csv)
-- [Visual-slice checkpoint and continuation notes (incomplete)](docs/visual-slice-status.md)
+- [Visual-slice status and continuation notes](docs/visual-slice-status.md)
 
-These documents are an editable v0.1 baseline dated 28 October 2026; performance figures are targets pending physical-device testing.
+These documents are an editable v0.2 baseline dated 29 October 2026. Realism on mid/high devices is the primary goal; Low scales down. Sustained performance figures remain unverified targets.
+
+Large art files use Git LFS. Install Git LFS, run `git lfs install` and `git lfs pull` after cloning, then open `unity/SatChara` in Unity 6000.3.27f1. FBX/textures are included; regenerating Blender assets is optional.
 
 ### C# rules implementation
 

@@ -1,5 +1,3 @@
-#if SAT_CHARA_VISUAL_SLICE_WIP
-// Incomplete editor authoring tool. See docs/visual-slice-status.md before enabling.
 using System;
 using System.IO;
 using System.Linq;
@@ -71,7 +69,7 @@ namespace SatChara.Editor
             Camera.main.clearFlags = CameraClearFlags.Skybox; Camera.main.allowHDR = false;
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), ScenePath);
             EditorBuildSettings.scenes = new[] {new EditorBuildSettingsScene(ScenePath,true)};
-            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.0"; PlayerSettings.Android.bundleVersionCode = 3;
+            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.1"; PlayerSettings.Android.bundleVersionCode = 4;
             AssetDatabase.SaveAssets();
             Debug.Log("SAT_CHARA_VILLAGE_READY: real skinned character, textured environment and perspective camera");
         }
@@ -82,16 +80,63 @@ namespace SatChara.Editor
             AndroidBuild.BuildScene(ScenePath, "Builds/Android/SatChara-Village.apk");
         }
 
+        public static void Validate()
+        {
+            Prepare();
+            var game = UnityEngine.Object.FindFirstObjectByType<GrayboxMatch>();
+            game.AutomatedPlayer = true; game.Initialize();
+            for (int tick = 0; tick < 60000 && game.State.Phase != SatChara.Rules.MatchPhase.MatchOver; tick++) game.Simulate(.02f);
+            string summary = $"rounds={game.CompletedRounds}, topples={game.Topples}, placements={game.Placements}, hits={game.Hits}, score={game.State.Score(0)}-{game.State.Score(1)}, phase={game.State.Phase}";
+            if (game.Topples < 2 || game.Placements < 7 || game.Hits < 1 || game.State.Phase != SatChara.Rules.MatchPhase.MatchOver)
+                throw new Exception("Village simulation failed: " + summary);
+            Debug.Log("SAT_CHARA_VILLAGE_SIMULATION_PASS: " + summary);
+        }
+
+        public static void VerifyAndBuild()
+        {
+            Validate();
+            Capture();
+            Build();
+        }
+
+        // A real URP camera render for look development; it is not a device capture.
+        public static void Capture()
+        {
+            Prepare();
+            var game = UnityEngine.Object.FindFirstObjectByType<GrayboxMatch>();
+            game.Initialize(); game.Simulate(.02f); game.SendMessage("UpdatePresentation");
+            foreach(var label in UnityEngine.Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None)) label.gameObject.SetActive(false);
+            var camera = Camera.main;
+            camera.transform.position = new Vector3(8, 5, -12);
+            camera.transform.LookAt(new Vector3(0, 1, 1)); camera.orthographic = false; camera.fieldOfView = 55;
+            CaptureCamera(camera, "village-courtyard-editor.png");
+            camera.transform.position = new Vector3(2, 2.1f, -13.8f);
+            camera.transform.LookAt(new Vector3(0, .95f, -10)); camera.fieldOfView = 40;
+            CaptureCamera(camera, "village-character-editor.png");
+        }
+        private static void CaptureCamera(Camera camera, string filename)
+        {
+            string folder = Path.GetFullPath("../../.verification/village"); Directory.CreateDirectory(folder);
+            var target = new RenderTexture(1600, 900, 24);
+            camera.targetTexture = target; camera.Render(); camera.Render(); RenderTexture.active = target;
+            var image = new Texture2D(1600,900,TextureFormat.RGB24,false);
+            image.ReadPixels(new Rect(0,0,1600,900),0,0); image.Apply();
+            File.WriteAllBytes(Path.Combine(folder,filename),image.EncodeToPNG());
+            camera.targetTexture = null; RenderTexture.active = null;
+            UnityEngine.Object.DestroyImmediate(image); UnityEngine.Object.DestroyImmediate(target);
+            Debug.Log("SAT_CHARA_EDITOR_CAPTURE: " + Path.Combine(folder,filename));
+        }
+
         private static void ConfigureTextures()
         {
             foreach (string file in Directory.GetFiles(Art,"*.*",SearchOption.AllDirectories).Where(p => p.EndsWith(".png") || p.EndsWith(".jpg")))
             {
                 var importer = AssetImporter.GetAtPath(file.Replace('\\','/')) as TextureImporter;
                 if (!importer) continue;
-                bool normal = file.Contains("normal") || file.Contains("nor_gl");
+                bool normal = file.Contains("normal") || file.Contains("nor_gl") || file.Contains("skin_pores");
                 var type = normal ? TextureImporterType.NormalMap : TextureImporterType.Default;
-                if (importer.maxTextureSize == 1024 && importer.textureType == type) continue;
-                importer.maxTextureSize = 1024; importer.textureType = type;
+                if (importer.maxTextureSize == 1024 && importer.textureType == type && importer.textureShape == TextureImporterShape.Texture2D) continue;
+                importer.maxTextureSize = 1024; importer.textureType = type; importer.textureShape = TextureImporterShape.Texture2D;
                 importer.textureCompression = TextureImporterCompression.Compressed;
                 importer.alphaIsTransparency = !normal; importer.SaveAndReimport();
             }
@@ -110,4 +155,3 @@ namespace SatChara.Editor
         }
     }
 }
-#endif

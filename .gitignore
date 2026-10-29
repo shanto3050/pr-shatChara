@@ -30,3 +30,4 @@ node_modules/
 .verification/
 art-source/vendor/
 *.blend1
+__pycache__/

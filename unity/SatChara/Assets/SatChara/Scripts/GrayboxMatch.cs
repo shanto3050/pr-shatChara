@@ -62,6 +62,7 @@ namespace SatChara
         {
             if (initialized) return;
             initialized = true;
+            if (villageCharacter) closeCamera = true;
             Application.targetFrameRate = 30;
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             blue = MakeMaterial(new Color(.12f, .38f, .78f));
@@ -467,9 +468,9 @@ namespace SatChara
             view.orthographic = true; view.orthographicSize = closeCamera ? 12 : 18.5f;
             if (villageCharacter)
             {
-                target = closeCamera ? Vector3.Lerp(new Vector3(0, .7f, 1), Flat(players[h].position) + Vector3.forward * 4, .5f) : new Vector3(0, .7f, 1);
+                target = closeCamera ? Vector3.Lerp(new Vector3(0, .7f, 0), Flat(players[h].position) + Vector3.up * .7f, .65f) : new Vector3(0, .7f, 1);
                 view.orthographic = false; view.fieldOfView = closeCamera ? 58 : 63;
-                view.transform.position = target + (closeCamera ? new Vector3(0, 9, -12) : new Vector3(0, 15, -19));
+                view.transform.position = target + (closeCamera ? new Vector3(4, 6.5f, -12) : new Vector3(0, 15, -19));
                 view.transform.LookAt(target);
             }
             aimLine.enabled = holder == h && !paused && State.Phase != MatchPhase.MatchOver;
@@ -555,7 +556,7 @@ namespace SatChara
         }
         private TextMesh WorldLabel(string label)
         {
-            var text = new GameObject(label + " label").AddComponent<TextMesh>(); text.font = font; text.fontSize = 48; text.characterSize = .12f;
+            var text = new GameObject(label + " label").AddComponent<TextMesh>(); text.font = font; text.fontSize = 48; text.characterSize = villageCharacter ? .035f : .12f;
             text.anchor = TextAnchor.MiddleCenter; text.text = label; text.GetComponent<MeshRenderer>().sharedMaterial = font.material; return text;
         }
         private void OnApplicationPause(bool value)

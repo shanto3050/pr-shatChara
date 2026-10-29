@@ -15,11 +15,11 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 | G03 | M1 | Implement match state machine and scoring | 54 rule assertions, full scene match, real-device Rebuilt/AllOut scoring and New match reset verified; see graybox report | DONE |
 | G04 | M1 | Implement movement, ball and seven stones | Playable APK and scene tests pass; touch aim/movement/rounds verified; dedicated pass/dodge/duck and rule review pending | IN PROGRESS |
 | G05 | M1 | Add team coordination and baseline AI | Carrier/retriever/thrower coordination and complete automated match pass; physical rounds observed; human playtests/tactical/balance review pending | IN PROGRESS |
-| V00 | M2 | Set up Git LFS for large art binaries; remove duplicated textures; fill asset-register.csv for all assets already added | LFS tracking committed; register lists every current asset with source and license | TODO |
+| V00 | M2 | Set up Git LFS for large art binaries; remove duplicated textures; fill asset-register.csv for all assets already added | LFS tracking committed; register lists every current asset with source and license | IN PROGRESS |
 | V01 | M2 | Reference photo shoot (village field, houses, objects, children's clothing); mood board with Real Cricket 24 captures; target frame | Photos in repo (LFS) or linked; mood board and target frame approved by user | TODO |
-| V01b | M2 | Decide character source (D16): paid tool or 3D artist | Decision recorded with cost; purchase authorized by user | TODO |
-| V02 | M2 | Integrate one realistic rigged character with motion-captured throw, carry/place, duck and sidestep | Android capture; feet, contacts and release timing checked; side-by-side with target frame | TODO |
-| V03 | M2 | Build finished courtyard section (photogrammetry/photo textures) and golden-hour lighting; broadcast camera | On-device capture matches target frame; user sign-off | TODO |
+| V01b | M2 | Decide character source (D16): free Bablu proof, paid tool or 3D artist | Unity/device comparison and decision recorded; any purchase authorized by user | TODO |
+| V02 | M2 | Integrate one realistic rigged character with motion-captured throw, carry/place, duck and sidestep | Android capture; feet, contacts and release timing checked; side-by-side with target frame | IN PROGRESS |
+| V03 | M2 | Build finished courtyard section (photogrammetry/photo textures) and golden-hour lighting; broadcast camera | On-device capture matches target frame; user sign-off | IN PROGRESS |
 | V04 | M2 | Implement quality presets and profile devices | Dated physical-device performance report | TODO |
 | S01 | M3 | Finish courtyard and all core interactions | Complete playable match in real scene | TODO |
 | S02 | M3 | Add tutorial, pause, settings and initial languages | Uncoached player completes basics; UI inspection | TODO |
@@ -35,4 +35,4 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 
 Plan v0.2 (29 October 2026) makes realistic graphics the primary goal; see D15–D19. Start V00 and V01 now, since they don't depend on M1.
 
-Next: dedicated pass/dodge/duck/multitouch checks, human feedback, camera/HUD iteration and AI balance; finish G01 rules review and select minimum hardware for F02. Full realistic content production stays gated by V04. See reports/2026-10-28-graybox.md.
+Next: V00 asset organization and V01 visual reference work, followed by one character/courtyard Unity proof and Android comparison (V02/V03). Dedicated pass/dodge/duck/multitouch checks, rules review and AI balance remain open M1 work. Full roster production stays gated by V04. See reports/2026-10-28-graybox.md.
