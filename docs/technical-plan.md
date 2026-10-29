@@ -27,13 +27,15 @@ Use data assets for character stats, difficulty, rules, and quality settings. Se
 
 ## Initial content budgets
 
-Starting ceilings to profile and revise at M2, not guarantees: eight active characters; low-tier character LOD around 5–10k triangles and medium around 15–25k; shared/atlased materials where practical; low-tier character textures primarily 512–1024 px; 2K textures reserved for visible hero surfaces on higher settings. Prefer simple opaque hair, static clothing, pooled effects, baked environment lighting, and limited shadow-casting objects. Avoid per-character real-time cloth and expensive full-screen effects in the baseline.
+Starting ceilings to profile and revise at M2, not guarantees: eight active characters; Low character LOD around 5–10k triangles, realistic tier around 20–35k for the near LOD; shared/atlased materials where practical; Low character textures 512–1024 px, realistic tier 1–2K for faces and hero surfaces. Hair cards (alpha-tested or dithered) on the realistic tier, opaque hair on Low. A mobile skin shader that approximates subsurface scattering (URP has none built in). Clothing folds baked into meshes; no real-time cloth. Pooled effects, baked environment lighting, a single real-time shadow for characters, limited other shadow casters. Facial rig limited to blinks, a few expressions and eye look-at.
+
+Content beyond about 150 MB ships through Google Play Asset Delivery (install-time asset packs). Large source binaries (FBX, textures, .blend, scans) go in Git LFS.
 
 Measure CPU main thread, render thread, GPU time, allocation spikes, draw calls, overdraw, texture memory, skinning cost, and load time. Triangle count alone is not a performance verdict. Choose texture compression and rendering features through on-device compatibility tests. Include texture streaming or asset delivery systems only if measurements justify their complexity.
 
 ## Quality presets
 
-Low: reduced internal resolution, short shadow distance or blob shadows, sparse decorative vegetation, lower LODs/textures, minimal post-processing. Medium: improved resolution, selected real-time shadows, denser surroundings. High: highest validated resolution/detail/shadows and optional 60 FPS. Preserve gameplay geometry, collision, telegraphs, and team readability across presets. Offer manual override; do not infer quality solely from RAM.
+Low (simpler look, 4 GB phones): reduced internal resolution, blob shadows, sparse decorative vegetation, lower LODs/textures, opaque hair, tonemapping and color grading only. Realistic (default from SC-03K up): character shadows, hair cards, skin shader, baked GI with light/reflection probes, haze, bloom. High: higher resolution, SSAO, longer shadow distance, denser vegetation, optional 60 FPS. Preserve gameplay geometry, collision, telegraphs, and team readability across presets. Offer manual override; do not infer quality solely from RAM.
 
 ## Test strategy
 

@@ -5,7 +5,7 @@
 | ID | Date | Decision | Basis / revisit trigger |
 |---|---|---|---|
 | D01 | 2026-10-28 | Android is the target product | User direction |
-| D02 | 2026-10-28 | Pursue realistic presentation within low-end constraints | User direction; validate at M2 |
+| D02 | 2026-10-28 | Pursue realistic presentation within low-end constraints | **Superseded by D15** |
 | D03 | 2026-10-28 | Xiaomi 17 Ultra is an available test phone | User report; does not establish low-end support |
 | D04 | 2026-10-28 | Proposed Unity + URP, offline 4 vs 4, one field first | Working technical/scope baseline; revisit after M0/M1 |
 | D05 | 2026-10-28 | Replace exaggerated low-poly character proportions with believable proportions | Align older art brief with D02; retain roster identities |
@@ -16,8 +16,13 @@
 | D10 | 2026-10-28 | Record first device checks as Samsung SC-03K / Android 10 | Actual connected/authorized hardware; does not replace the unselected 4 GB minimum tier or claim Xiaomi testing |
 | D11 | 2026-10-28 | M1 prototypes dual touch sticks, automatic nearby stone interaction and two camera options | Working controls for real phone comparison; preserve foundation diagnostic scene |
 | D12 | 2026-10-28 | M1 tick order: timeout, movement/placement, ball contacts; earliest swept contact wins | Removes player-array collision priority; final placement precedes a later same-tick hit; exact tower/contact ties favor tower; revisit in rules review |
-| D13 | 2026-10-28 | Retain wide tactical view as current default; keep closer view experimental | Physical camera comparison found closer framing overlaps top instructions; neither is final |
+| D13 | 2026-10-28 | Retain wide tactical view as current default; keep closer view experimental | Graybox only. **Superseded by D18** for the realistic game |
 | D14 | 2026-10-28 | Advance independent M1 prototyping while minimum-device selection remains open | Use available authorized Samsung for real builds; do not claim all foundation/device gates complete or start full realistic asset production |
+| D15 | 2026-10-29 | Realistic graphics are the primary goal on mid/high phones; lower-spec phones get a simpler Low preset | User decision after realism review. Realistic minimum: Samsung SC-03K (Snapdragon 845, ~6 GB). Supersedes D02 |
+| D16 | 2026-10-29 | **Open:** source of realistic characters: paid character tool (e.g. Character Creator 4) or commissioned 3D artist | Script-built and free base meshes can't reach the benchmark for faces, skin, hair and clothing. Needs a user budget decision at the start of M2; MakeHuman stays a placeholder |
+| D17 | 2026-10-29 | Visual benchmark: Real Cricket 24; M2 gated on a side-by-side comparison with a target frame and user sign-off | User decision. Lighting, environment, camera and motion expected to come close; characters depend on D16 |
+| D18 | 2026-10-29 | Broadcast-style sports camera by default; wide tactical view as an option; presentation cameras for key moments | User: "as good as it can be developed". Supersedes D13 for the realistic game |
+| D19 | 2026-10-29 | Reference photography of a real village field, houses, objects and clothing; photogrammetry for props | User confirmed it's possible. Needed before environment production |
 
 ## Open questions
 
@@ -25,9 +30,10 @@ These do not block writing the plan. Resolve them at the specified gate and reco
 
 | Question | When needed | Working assumption |
 |---|---|---|
-| Which low-end phone/chipset and oldest Android version are supported? | M0, before performance certification | 4 GB candidate, exact device/OS unselected |
+| Which low-end phone/chipset and oldest Android version are supported by the Low preset? | Before Low-preset certification | 4 GB candidate, exact device/OS unselected; realistic minimum is SC-03K (D15) |
+| Character source and art budget (D16) | Start of M2 | Paid tool or freelance artist; no purchase without authorization |
 | Which local rule variants should be authoritative? | M1 | Browser behavior until reviewed |
-| Landscape or portrait; camera choice? | M1 input test | Landscape, compare elevated follow and tactical cameras |
+| Landscape or portrait? | M1 input test | Landscape; camera direction set by D18 |
 | Can low-end physical hardware be borrowed or obtained? | M0 | Access must be arranged; no purchase authorized |
 | Budget for models, animation, audio and other assets? | Before any paid sourcing | Prefer available tools; request authorization for purchases |
 | Is Play Store the intended distribution route? | Before beta/release preparation | Direct APK testing first; Play Store proposed for release |
