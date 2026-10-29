@@ -51,6 +51,12 @@ Width follows device aspect ratio. The top-left quality button cycles presets an
 
 MobileVisualQuality logs delivered-frame intervals in 20-second windows after 5 seconds of warm-up, resetting on focus/pause/preset changes. These are wall-clock frame intervals, not CPU/GPU profiler breakdowns or video-derived FPS. Sustained active-match thermal and device-matrix certification remains separate.
 
+### Captured locomotion prototype (0.2.4)
+
+`CapturedLocomotion.json` contains two small CMU-derived direction cycles (34 walk frames, 24 jog frames), shared across avatars. `VillageAvatar` retargets those directions to the current rig, preserves torso bind offsets, blends by measured speed and advances stride phase from actual gameplay travel. It never applies animation root motion to the simulation.
+
+Support contacts inferred from source toe height/velocity drive two-bone leg IK on the flat field. The pose clock freezes when the match or app pauses. Hands, fingers, full axial twist, varied terrain and game-specific action capture remain incomplete. Holding, carrying, ducking and throw follow-through currently use authored overlays. The animation validation tool checks contacts, turning, pause and root ownership; its offline editor captures do not replace actual-device playback review.
+
 ## Test strategy
 
 Automated tests should target consequential logic: invalid state transitions, score applied once, hit/placement ordering, ownership arbitration, stack order, eliminated player actions, and reset/recovery. Add scenario tests for interrupted rounds and impossible AI tasks. Do not spend early effort testing cosmetic constants.

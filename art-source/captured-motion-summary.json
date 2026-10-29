@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Walk",
+    "source": "02_01.amc",
+    "source_fps": 120,
+    "source_frames": 343,
+    "cycle_start_frame": 134,
+    "cycle_end_frame": 266,
+    "peaks": [
+      133,
+      265
+    ],
+    "frames": 34,
+    "stride_leg_lengths": 1.573715,
+    "duration": 1.1,
+    "contact_samples": [
+      20,
+      20
+    ],
+    "heading": [
+      0.013942582172770996,
+      0.0,
+      0.9999027974770125
+    ],
+    "sha256": "1503c481f4726e640c77888f0c841dd3be0694684bcd32296cf53685c6fc1492"
+  },
+  {
+    "name": "Jog",
+    "source": "02_03.amc",
+    "source_fps": 120,
+    "source_frames": 173,
+    "cycle_start_frame": 49,
+    "cycle_end_frame": 141,
+    "peaks": [
+      48,
+      140
+    ],
+    "frames": 24,
+    "stride_leg_lengths": 2.448574,
+    "duration": 0.766667,
+    "contact_samples": [
+      8,
+      8
+    ],
+    "heading": [
+      -0.004343279608787671,
+      0.0,
+      0.9999905679166379
+    ],
+    "sha256": "07df256876f0941ea464083162503790a05ffa021fd6d6d5b2c22ac98127762a"
+  }
+]

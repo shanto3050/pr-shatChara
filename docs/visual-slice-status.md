@@ -1,6 +1,6 @@
 # Visual slice status — 29 October 2026
 
-The earlier disabled authoring checkpoint has been advanced into a compiling Unity scene. See [the latest polish/performance report](reports/2026-10-29-village-polish.md) and [the earlier integration report](reports/2026-10-29-village-visual-proof.md) for verified build/device evidence and remaining limitations.
+The earlier disabled authoring checkpoint has been advanced into a compiling Unity scene. See [the captured-locomotion checkpoint](reports/2026-10-29-captured-locomotion.md), [the polish/performance report](reports/2026-10-29-village-polish.md) and [the earlier integration report](reports/2026-10-29-village-visual-proof.md) for verified build/device evidence and remaining limitations.
 
 ## Implemented
 
@@ -14,6 +14,10 @@ The earlier disabled authoring checkpoint has been advanced into a compiling Uni
 ## Latest continuation (0.2.3)
 
 Added neutral sky, verandas, gables, banana plants, a tube well, clay vessel shapes and cheaper distant trees. Added a score backdrop and provisional manual quality presets with actual-device frame samples. Bablu gameplay geometry is reduced from 65,324 to 31,410 triangles; the full source remains available. See the latest report for measurements, tradeoffs and the installed build fingerprint.
+
+## Captured locomotion continuation (0.2.4)
+
+Recorded CMU walk/jog now drives basic movement, with flat-ground foot locking and authored action overlays. Torso clothing weights and retargeted neck offsets were corrected. Editor contact/turn/pause and full match checks pass; the APK installs and shows near-30-FPS idle samples. Active phone tests are pending an unlock. The report includes a clearly labelled offline editor preview and source/licensing evidence.
 
 ## Still open
 

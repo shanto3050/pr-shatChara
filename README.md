@@ -9,7 +9,8 @@ The next product is a realistic 3D Android game designed to scale down to lower-
 - [Implementation backlog and acceptance checks](docs/backlog.md)
 - [Decisions, assumptions, and open questions](docs/decisions.md)
 - [Asset provenance and license register](docs/asset-register.csv)
-- [Latest visual polish and phone performance report](docs/reports/2026-10-29-village-polish.md)
+- [Captured locomotion checkpoint and editor preview](docs/reports/2026-10-29-captured-locomotion.md)
+- [Visual polish and phone performance report](docs/reports/2026-10-29-village-polish.md)
 - [Visual-slice status and continuation notes](docs/visual-slice-status.md)
 
 These documents are an editable v0.2 baseline dated 29 October 2026. Realism on mid/high devices is the primary goal; Low scales down. Sustained performance figures remain unverified targets.

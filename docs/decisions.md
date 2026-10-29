@@ -24,6 +24,8 @@
 | D18 | 2026-10-29 | Broadcast-style sports camera by default; wide tactical view as an option; presentation cameras for key moments | User: "as good as it can be developed". Supersedes D13 for the realistic game |
 | D19 | 2026-10-29 | Reference photography of a real village field, houses, objects and clothing; photogrammetry for props | User confirmed it's possible. Needed before environment production |
 | D20 | 2026-10-29 | Provisional manual Low/Realistic/High presets; resolution height 540/720/900; target 30 FPS | Realistic 720p initially measured 18.3 FPS on SC-03K. Mobile geometry and shadow costs were reduced, reaching near 30 FPS in short samples; these are smoke-test settings, not certification. Low has no real-time shadows; realistic uses 1024 hard shadows; High uses 2048 soft shadows. Final Low hair/LODs/blob-shadow work remains open |
+| D21 | 2026-10-29 | Use official CMU subject 02 walking/jogging recordings for provisional locomotion, with source data, hashes and reuse terms included | Free recorded motion replaces the sine-wave gait. Direction-space retargeting, stride-by-distance, flat-ground foot locking and authored action overlays remain a prototype. Throws, stacking, duck and sidestep still need game-specific animation; M2 is not approved |
+
 
 ## Open questions
 

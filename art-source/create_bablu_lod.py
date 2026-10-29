@@ -28,6 +28,10 @@ for ob in [o for o in bpy.data.objects if o.type=='MESH']:
         ratio=.6 if ob.name=='Bablu' or ob.name.startswith('Vest') else .35 if 'Lungi' in ob.name else .5
         mod=ob.modifiers.new('Mobile reduction','DECIMATE');mod.ratio=ratio
         bpy.ops.object.modifier_apply(modifier=mod.name)
+    if ob.name=='Gamcha':
+        # The towel hangs from the torso; arm weights pulled its front end upward.
+        for group in list(ob.vertex_groups):ob.vertex_groups.remove(group)
+        ob.vertex_groups.new(name='spine_03').add(list(range(len(ob.data.vertices))),1.,'REPLACE')
     summary.append({'mesh':ob.name,'source_triangles':before,'mobile_triangles':triangles(ob)})
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.export_scene.fbx(filepath=str(OUT/'BabluMobile.fbx'),use_selection=True,object_types={'MESH','ARMATURE'},

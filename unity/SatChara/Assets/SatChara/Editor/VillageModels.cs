@@ -44,7 +44,7 @@ namespace SatChara.Editor
                 renderer.sharedMaterials=materials;renderer.shadowCastingMode=ShadowCastingMode.On;
                 if(renderer is SkinnedMeshRenderer skin) skin.updateWhenOffscreen=false;
             }
-            root.AddComponent<VillageAvatar>();
+            root.AddComponent<VillageAvatar>().SetMotion(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/SatChara/Animation/CapturedLocomotion.json"));
             var prefab=PrefabUtility.SaveAsPrefabAsset(root,Art+"Characters/VillageCharacter.prefab");
             Debug.Log("VILLAGE_CHARACTER_BOUNDS: "+BoundsOf(model));
             UnityEngine.Object.DestroyImmediate(root);return prefab;

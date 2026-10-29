@@ -75,7 +75,7 @@ namespace SatChara.Editor
             Camera.main.clearFlags = CameraClearFlags.Skybox; Camera.main.allowHDR = false;
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), ScenePath);
             EditorBuildSettings.scenes = new[] {new EditorBuildSettingsScene(ScenePath,true)};
-            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.3"; PlayerSettings.Android.bundleVersionCode = 6;
+            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.4"; PlayerSettings.Android.bundleVersionCode = 7;
             AssetDatabase.SaveAssets();
             Debug.Log("SAT_CHARA_VILLAGE_READY: real skinned character, textured environment and perspective camera");
         }

@@ -448,7 +448,7 @@ namespace SatChara
                     Vector3 facing = Vector3.forward;
                     if (holder == i) facing = i == h ? aimDirection : Flat(players[Mathf.Max(0, NearestAttacker(players[i].position))].position - position);
                     else if (State.Phase == MatchPhase.Rebuild) facing = Flat((i / 4 == State.AttackingTeam && State.CarriedStone(i % 4) >= 0 ? Vector3.zero : ball.position) - position);
-                    avatars[i].Drive(facing, holder == i, i / 4 == State.AttackingTeam && State.CarriedStone(i % 4) >= 0, duck[i] > 0);
+                    avatars[i].Drive(facing, holder == i, i / 4 == State.AttackingTeam && State.CarriedStone(i % 4) >= 0, duck[i] > 0, i == h && aiming.Held ? aiming.Value.magnitude : windup[i], paused || suspended);
                     teamMarkers[i].gameObject.SetActive(Alive(i)); teamMarkers[i].position = Flat(position) + Vector3.up * .014f;
                 }
                 names[i].text = (i == h ? "YOU" : labels[i]) + (holder == i ? (windup[i] > .7f ? " !" : " *") : "");

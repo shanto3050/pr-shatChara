@@ -1,0 +1,23 @@
+{
+  "source": "CMU Graphics Lab Motion Capture Database",
+  "terms": "http://mocap.cs.cmu.edu/faqs.php",
+  "retrieved": "2026-10-29",
+  "sample_rate": 120,
+  "files": [
+    {
+      "name": "02.asf",
+      "url": "http://mocap.cs.cmu.edu/subjects/02/02.asf",
+      "sha256": "c9f5ff45b4437b279f58b95dacf017afd3135373096274df69436a9354d796cf"
+    },
+    {
+      "name": "02_01.amc",
+      "url": "http://mocap.cs.cmu.edu/subjects/02/02_01.amc",
+      "sha256": "1503c481f4726e640c77888f0c841dd3be0694684bcd32296cf53685c6fc1492"
+    },
+    {
+      "name": "02_03.amc",
+      "url": "http://mocap.cs.cmu.edu/subjects/02/02_03.amc",
+      "sha256": "07df256876f0941ea464083162503790a05ffa021fd6d6d5b2c22ac98127762a"
+    }
+  ]
+}

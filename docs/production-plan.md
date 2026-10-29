@@ -107,7 +107,7 @@ Create consistent reference sheets, human-proportion models, shared compatible h
 | Lighting, materials, shaders (including a mobile skin shader), post-processing, LODs, import tooling | Code and configuration |
 | **Realistic characters** (faces, skin, hair, clothing) | **Open decision (D16):** evaluate free Bablu v2 in Unity and Android first; compare paid tools or an artist if it falls short. The earlier Western-clothed model is a placeholder; Bablu is an unapproved visual experiment |
 | Clothing folds (lungi, dupatta, kameez, frock) | Simulated offline (e.g. Marvelous Designer or Blender cloth) and baked into the mesh; no real-time cloth |
-| Animation | Mixamo for basic movement; **phone-based motion capture** (e.g. Move.ai, Rokoko Video) for the game's own actions (overarm throw, crouch-and-stack, duck, sidestep); Unity Animation Rigging for foot locking and hand reach. Adjust adult motion for children's proportions. Procedural posing (VillageAvatar.cs) is a stopgap, not the final animation |
+| Animation | CMU captured walk/jog is integrated in prototype 0.2.4 (D21); Mixamo remains an alternative for basic movement; **phone-based motion capture** (e.g. Move.ai, Rokoko Video) for the game's own actions (overarm throw, crouch-and-stack, duck, sidestep); Unity Animation Rigging for foot locking and hand reach. Adjust adult motion for children's proportions. Procedural posing (VillageAvatar.cs) is a stopgap, not the final animation |
 
 Animation priority: idle, locomotion with turns/stops, aim/wind-up/release, pass/catch, carry/place, dodge/duck, hit/out, celebration. Align release and contact events to gameplay. Fix sliding feet, floating hands, snapping turns, and stone clipping. Use shared rigs and retargeting but check clothing and limb proportions per character. Keep signature animations optional until core actions are polished. Faces: blinking, a few expressions, and eyes that track the ball; no facial capture.
 
@@ -172,6 +172,8 @@ Update backlog.md as work changes. Update decisions.md when direction changes. K
 5. Complete M0 with a real empty-scene Android build, then begin M1.
 
 ## Change log
+
+- 2026-10-29: prototype 0.2.4 retargets official CMU walking/jogging data, adds flat-ground foot locking, pause-safe motion timing and torso clothing weights. Game-specific action mocap, artist review and device verification remain separate gates.
 
 - 2026-10-29: prototype 0.2.3 adds manual resolution/shadow presets and a 31,410-triangle gameplay character after measured GPU/frame-rate problems. Short phone samples approach 30 FPS; visual approval, 20-minute active thermal testing and Low-tier certification stay open. See reports/2026-10-29-village-polish.md.
 
