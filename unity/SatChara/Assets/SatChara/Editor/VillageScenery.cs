@@ -18,10 +18,11 @@ namespace SatChara.Editor
         private static void BuildCourtyard(GameObject tree, GameObject barrel)
         {
             scenery = new GameObject("Village surroundings").transform;
-            Block("Packed earth", new Vector3(0,-.12f,0), new Vector3(90,.2f,100), earth, Quaternion.identity);
+            Block("Packed earth", new Vector3(0,-.12f,0), new Vector3(180,.2f,200), earth, Quaternion.identity);
             House(new Vector3(-20,0,13), 10, 7, 12);
             House(new Vector3(17,0,20), 11, 6, -12);
             House(new Vector3(2,0,29), 9, 6, 3);
+            DecorateCourtyard(tree);
             // Decoration stays outside the playable bounds (x +/- 11, z +/- 14).
             for(int side=-1;side<=1;side+=2)
                 for(int i=0;i<15;i++)
@@ -46,6 +47,7 @@ namespace SatChara.Editor
         private static void House(Vector3 center,float width,float depth,float yaw)
         {
             Quaternion rotation=Quaternion.Euler(0,yaw,0);
+            DecorateHouse(center,width,depth,rotation);
             Block("Plastered house",center+Vector3.up*1.5f,new Vector3(width,3,depth),plaster,rotation);
             for(int side=-1;side<=1;side+=2)
             {

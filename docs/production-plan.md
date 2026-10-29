@@ -173,5 +173,7 @@ Update backlog.md as work changes. Update decisions.md when direction changes. K
 
 ## Change log
 
+- 2026-10-29: prototype 0.2.3 adds manual resolution/shadow presets and a 31,410-triangle gameplay character after measured GPU/frame-rate problems. Short phone samples approach 30 FPS; visual approval, 20-minute active thermal testing and Low-tier certification stay open. See reports/2026-10-29-village-polish.md.
+
 - 2026-10-29: v0.2, realism review. Realistic graphics become the primary goal on mid/high phones with a simpler Low preset; Real Cricket 24 as visual benchmark; look-dev target frame and user sign-off gate M2; broadcast camera default; reference photography and photogrammetry; character source as an open budget decision; motion capture for game actions; lighting look defined; download budget moved to Play Asset Delivery; Git LFS before more art (D15–D19).
 - 2026-10-28: v0.1, initial Android production baseline. Realistic art replaces the original exaggerated low-poly direction; all performance values remain unverified targets.

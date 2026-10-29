@@ -37,6 +37,20 @@ Measure CPU main thread, render thread, GPU time, allocation spikes, draw calls,
 
 Low (simpler look, 4 GB phones): reduced internal resolution, blob shadows, sparse decorative vegetation, lower LODs/textures, opaque hair, tonemapping and color grading only. Realistic (default from SC-03K up): character shadows, hair cards, skin shader, baked GI with light/reflection probes, haze, bloom. High: higher resolution, SSAO, longer shadow distance, denser vegetation, optional 60 FPS. Preserve gameplay geometry, collision, telegraphs, and team readability across presets. Offer manual override; do not infer quality solely from RAM.
 
+### Implemented prototype presets (0.2.3)
+
+All presets currently use the same 31,410-triangle mobile Bablu mesh. Original 65,324-triangle source is preserved. Preset names do not imply completed skin/hair/LOD features from the target specification above.
+
+| Preset | Landscape render height | Main-light shadows | MSAA | Target |
+|---|---|---|---|---|
+| Low | 540 px, capped to display | Off; blob/contact presentation still open | Off | 30 FPS |
+| Realistic (default) | 720 px, capped to display | 1024 hard shadows, 35 m range | Off | 30 FPS |
+| High | 900 px, capped to display | 2048 soft shadows, 55 m range | 2x | 30 FPS |
+
+Width follows device aspect ratio. The top-left quality button cycles presets and remembers the choice; do not infer a preset solely from RAM. Resolution and shadow tradeoffs are explicit. The serialized editor pipeline is cloned at runtime so profile changes do not mutate project assets.
+
+MobileVisualQuality logs delivered-frame intervals in 20-second windows after 5 seconds of warm-up, resetting on focus/pause/preset changes. These are wall-clock frame intervals, not CPU/GPU profiler breakdowns or video-derived FPS. Sustained active-match thermal and device-matrix certification remains separate.
+
 ## Test strategy
 
 Automated tests should target consequential logic: invalid state transitions, score applied once, hit/placement ordering, ownership arbitration, stack order, eliminated player actions, and reset/recovery. Add scenario tests for interrupted rounds and impossible AI tasks. Do not spend early effort testing cosmetic constants.

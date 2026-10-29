@@ -1,0 +1,76 @@
+{
+  "meshes": [
+    {
+      "mesh": "Bablu",
+      "source_triangles": 26756,
+      "mobile_triangles": 16052
+    },
+    {
+      "mesh": "Bablu.eyebrow001",
+      "source_triangles": 192,
+      "mobile_triangles": 192
+    },
+    {
+      "mesh": "Bablu.eyelashes01",
+      "source_triangles": 368,
+      "mobile_triangles": 368
+    },
+    {
+      "mesh": "Bablu.low-poly",
+      "source_triangles": 172,
+      "mobile_triangles": 172
+    },
+    {
+      "mesh": "Bablu.short02",
+      "source_triangles": 3344,
+      "mobile_triangles": 1672
+    },
+    {
+      "mesh": "Gamcha",
+      "source_triangles": 3056,
+      "mobile_triangles": 1528
+    },
+    {
+      "mesh": "HairCards",
+      "source_triangles": 9600,
+      "mobile_triangles": 2142
+    },
+    {
+      "mesh": "Lungi",
+      "source_triangles": 13440,
+      "mobile_triangles": 4704
+    },
+    {
+      "mesh": "Lungi_hem",
+      "source_triangles": 1920,
+      "mobile_triangles": 672
+    },
+    {
+      "mesh": "Lungi_knot",
+      "source_triangles": 288,
+      "mobile_triangles": 288
+    },
+    {
+      "mesh": "Lungi_waist",
+      "source_triangles": 1920,
+      "mobile_triangles": 672
+    },
+    {
+      "mesh": "Vest",
+      "source_triangles": 3292,
+      "mobile_triangles": 1972
+    },
+    {
+      "mesh": "Vest_strap_l",
+      "source_triangles": 488,
+      "mobile_triangles": 488
+    },
+    {
+      "mesh": "Vest_strap_r",
+      "source_triangles": 488,
+      "mobile_triangles": 488
+    }
+  ],
+  "source_triangles": 65324,
+  "mobile_triangles": 31410
+}

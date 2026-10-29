@@ -494,6 +494,11 @@ namespace SatChara
             ApplySafeArea();
             var events = new GameObject("Event System", typeof(EventSystem), typeof(InputSystemUIInputModule));
             events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
+            if (villageCharacter)
+            {
+                var header = UIBox("Score backdrop", safeArea, new Vector2(.5f,1), new Vector2(0,-59), new Vector2(1000,112), new Color(.035f,.055f,.07f,.88f));
+                header.GetComponent<Image>().raycastTarget = false;
+            }
             scoreboard = UIText("Score", safeArea, new Vector2(.5f, 1), new Vector2(0, -26), new Vector2(720, 42), 26);
             instructions = UIText("Phase", safeArea, new Vector2(.5f, 1), new Vector2(0, -78), new Vector2(1000, 72), 20);
             movement = Stick("MOVE", new Vector2(0, 0), new Vector2(135, 125));
@@ -502,6 +507,13 @@ namespace SatChara
             dodgeButton = UIButton("Dodge", new Vector2(1, 0), new Vector2(-360, 82), DodgeHuman);
             duckButton = UIButton("Duck", new Vector2(1, 0), new Vector2(-360, 145), DuckHuman);
             passButton = UIButton("Pass", new Vector2(1, 0), new Vector2(-360, 208), PassHuman);
+            var quality = GetComponent<MobileVisualQuality>();
+            if (quality)
+            {
+                Button qualityButton = null;
+                qualityButton = UIButton(quality.Label, new Vector2(0,1),new Vector2(88,-95),()=>
+                { quality.Next(); qualityButton.GetComponentInChildren<Text>().text=quality.Label; });
+            }
             UIButton("Camera", new Vector2(0, 1), new Vector2(88, -32), () => closeCamera = !closeCamera);
             UIButton("Pause", new Vector2(1, 1), new Vector2(-85, -32), () =>
             {
@@ -531,6 +543,7 @@ namespace SatChara
             var go = new GameObject(label, typeof(RectTransform), typeof(Text)); var rect = go.GetComponent<RectTransform>(); rect.SetParent(parent, false);
             rect.anchorMin = rect.anchorMax = anchor; rect.anchoredPosition = position; rect.sizeDelta = size;
             var text = go.GetComponent<Text>(); text.font = font; text.fontSize = fontSize; text.color = Color.white; text.alignment = TextAnchor.MiddleCenter; text.raycastTarget = false; text.text = label;
+            if (villageCharacter) { var shadow = go.AddComponent<Shadow>(); shadow.effectColor = new Color(0,0,0,.65f); shadow.effectDistance = new Vector2(1,-1); }
             return text;
         }
         private static RectTransform UIBox(string name, Transform parent, Vector2 anchor, Vector2 position, Vector2 size, Color color)

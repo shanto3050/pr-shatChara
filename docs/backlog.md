@@ -15,12 +15,12 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 | G03 | M1 | Implement match state machine and scoring | 54 rule assertions, full scene match, real-device Rebuilt/AllOut scoring and New match reset verified; see graybox report | DONE |
 | G04 | M1 | Implement movement, ball and seven stones | Playable APK and scene tests pass; touch aim/movement/rounds verified; dedicated pass/dodge/duck and rule review pending | IN PROGRESS |
 | G05 | M1 | Add team coordination and baseline AI | Carrier/retriever/thrower coordination and complete automated match pass; physical rounds observed; human playtests/tactical/balance review pending | IN PROGRESS |
-| V00 | M2 | Set up Git LFS for large art binaries; remove duplicated textures; fill asset-register.csv for all assets already added | LFS tracking committed; register lists every current asset with source and license | IN PROGRESS |
+| V00 | M2 | Set up Git LFS for large art binaries; remove duplicated textures; fill asset-register.csv for all assets already added | LFS tracking committed; register lists every current asset with source and license | DONE |
 | V01 | M2 | Reference photo shoot (village field, houses, objects, children's clothing); mood board with Real Cricket 24 captures; target frame | Photos in repo (LFS) or linked; mood board and target frame approved by user | TODO |
 | V01b | M2 | Decide character source (D16): free Bablu proof, paid tool or 3D artist | Unity/device comparison and decision recorded; any purchase authorized by user | TODO |
 | V02 | M2 | Integrate one realistic rigged character with motion-captured throw, carry/place, duck and sidestep | Android capture; feet, contacts and release timing checked; side-by-side with target frame | IN PROGRESS |
 | V03 | M2 | Build finished courtyard section (photogrammetry/photo textures) and golden-hour lighting; broadcast camera | On-device capture matches target frame; user sign-off | IN PROGRESS |
-| V04 | M2 | Implement quality presets and profile devices | Dated physical-device performance report | TODO |
+| V04 | M2 | Implement quality presets and profile devices | Provisional resolution/shadow/MSAA presets and short-window frame diagnostics implemented; device/thermal certification remains open | IN PROGRESS |
 | S01 | M3 | Finish courtyard and all core interactions | Complete playable match in real scene | TODO |
 | S02 | M3 | Add tutorial, pause, settings and initial languages | Uncoached player completes basics; UI inspection | TODO |
 | S03 | M3 | Tune AI and gameplay feedback | Seeded scenarios and human playtest findings | TODO |

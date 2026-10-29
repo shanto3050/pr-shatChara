@@ -11,7 +11,7 @@ namespace SatChara.Editor
         [System.Serializable] private class BabluMaterial { public string name,texture,normal; public float[] color; public float smoothness; public bool cutout; }
         private static GameObject CharacterPrefab()
         {
-            string source=Art+"Characters/Bablu/Bablu.fbx";
+            string source=Art+"Characters/Bablu/BabluMobile.fbx";
             var importer=(ModelImporter)AssetImporter.GetAtPath(source);
             importer.importAnimation=false; importer.animationType=ModelImporterAnimationType.Generic;
             importer.optimizeGameObjects=false; importer.SaveAndReimport();

@@ -1,6 +1,6 @@
 # Visual slice status — 29 October 2026
 
-The earlier disabled authoring checkpoint has been advanced into a compiling Unity scene. See [the current report](reports/2026-10-29-village-visual-proof.md) for verified build/device evidence and remaining limitations.
+The earlier disabled authoring checkpoint has been advanced into a compiling Unity scene. See [the latest polish/performance report](reports/2026-10-29-village-polish.md) and [the earlier integration report](reports/2026-10-29-village-visual-proof.md) for verified build/device evidence and remaining limitations.
 
 ## Implemented
 
@@ -10,6 +10,10 @@ The earlier disabled authoring checkpoint has been advanced into a compiling Uni
 - Perspective follow camera defaults on the visual scene; tactical option remains. Temporary skeletal posing includes ground-height correction.
 - Local Git LFS rules cover art binaries without rewriting history. Removed duplicate FBX companion textures only after hash-checking all images against preserved canonical copies.
 - Plan/backlog now evaluate the free Bablu proof before deciding whether paid character tools or an artist are needed. No purchase is authorized or made.
+
+## Latest continuation (0.2.3)
+
+Added neutral sky, verandas, gables, banana plants, a tube well, clay vessel shapes and cheaper distant trees. Added a score backdrop and provisional manual quality presets with actual-device frame samples. Bablu gameplay geometry is reduced from 65,324 to 31,410 triangles; the full source remains available. See the latest report for measurements, tradeoffs and the installed build fingerprint.
 
 ## Still open
 
@@ -21,7 +25,7 @@ The earlier graybox reports remain historical evidence for that build. Use the n
 
 Open `unity/SatChara` in Unity 6000.3.27f1 with matching Android modules. Run `SatChara.Editor.VillageBuild.Capture` for URP camera images, `Validate` for the visual scene's match simulation, or `Build` for the development APK. Builds go under `unity/SatChara/Builds/Android/` and are ignored.
 
-To regenerate Bablu, fetch the documented free dependencies and HDRI, run the mockup generator with `--no-render`, then load its vendor Blend file in Blender and run `export_bablu_unity.py`. The exported FBX, textures, metadata and prefab are included, so regeneration is not required for building the game.
+To regenerate Bablu, fetch the documented free dependencies and HDRI, run the mockup generator with `--no-render`, then load its vendor Blend file in Blender and run `export_bablu_unity.py`. Run `create_bablu_lod.py` after `export_bablu_unity.py` to regenerate the current mobile gameplay mesh; run `create_tree_lod.py` after the base environment conversion to regenerate the distant tree. The exported FBX, textures, metadata and prefab are included, so regeneration is not required for building the game.
 
 ## Provenance
 

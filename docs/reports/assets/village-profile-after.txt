@@ -1,0 +1,38 @@
+10-29 21:20:38.707  5281  5507 I Unity   : SAT_CHARA_QUALITY: preset=Low, requested=1110x540, renderScale=1, shadows=12, msaa=1
+10-29 21:21:01.547  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=598, seconds=20.01, fps=29.9, p50ms=33.43, p95ms=33.43, p99ms=33.49, over100ms=0
+10-29 21:21:21.567  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=34.07, over100ms=0
+10-29 21:21:41.590  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.43, p99ms=34.11, over100ms=0
+10-29 21:22:01.614  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.45, p99ms=34.17, over100ms=0
+10-29 21:22:21.637  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.46, p99ms=34.14, over100ms=0
+10-29 21:22:41.660  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.44, p99ms=34.17, over100ms=0
+10-29 21:23:01.682  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.45, p99ms=34.16, over100ms=0
+10-29 21:23:21.707  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Low, resolution=1110x540, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.46, p99ms=34.17, over100ms=0
+10-29 21:23:30.734  5281  5507 I Unity   : SAT_CHARA_QUALITY: preset=Realistic, requested=1480x720, renderScale=1, shadows=35, msaa=1
+10-29 21:23:55.754  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=34.00, over100ms=0
+10-29 21:24:15.780  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.03, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=33.46, over100ms=0
+10-29 21:24:35.803  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=34.30, over100ms=0
+10-29 21:24:55.827  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.45, p99ms=34.13, over100ms=0
+10-29 21:25:15.851  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.46, p99ms=34.40, over100ms=0
+10-29 21:25:35.875  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.44, p99ms=34.47, over100ms=0
+10-29 21:25:55.899  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.45, p99ms=33.53, over100ms=0
+10-29 21:26:15.920  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.46, p99ms=34.25, over100ms=0
+10-29 21:26:35.942  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=33.52, over100ms=0
+10-29 21:26:39.114  5281  5507 I Unity   : SAT_CHARA_QUALITY: preset=High, requested=1850x900, renderScale=1, shadows=55, msaa=2
+10-29 21:27:04.138  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.43, p99ms=34.02, over100ms=0
+10-29 21:27:24.162  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=34.03, over100ms=0
+10-29 21:27:44.186  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.43, p99ms=34.06, over100ms=0
+10-29 21:28:04.210  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=34.01, over100ms=0
+10-29 21:28:24.235  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=33.94, over100ms=0
+10-29 21:28:44.262  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.03, fps=29.9, p50ms=33.42, p95ms=33.46, p99ms=34.04, over100ms=0
+10-29 21:29:04.285  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.45, p99ms=33.95, over100ms=0
+10-29 21:29:24.311  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.43, p95ms=33.44, p99ms=33.96, over100ms=0
+10-29 21:29:44.335  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.46, p99ms=34.05, over100ms=0
+10-29 21:30:04.360  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.45, p99ms=34.19, over100ms=0
+10-29 21:30:24.385  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.44, p99ms=34.06, over100ms=0
+10-29 21:30:44.408  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=High, resolution=1850x900, frames=599, seconds=20.02, fps=29.9, p50ms=33.42, p95ms=33.43, p99ms=33.95, over100ms=0
+10-29 21:30:46.444  5281  5507 I Unity   : SAT_CHARA_QUALITY: preset=Low, requested=1110x540, renderScale=1, shadows=12, msaa=1
+10-29 21:30:48.082  5281  5507 I Unity   : SAT_CHARA_QUALITY: preset=Realistic, requested=1480x720, renderScale=1, shadows=35, msaa=1
+10-29 21:30:58.347  5281  5507 I Unity   : SAT_CHARA_TOPPLE
+10-29 21:31:00.791  5281  5507 I Unity   : SAT_CHARA_MOVE_INPUT: position=(2.33, 0.90, -8.52)
+10-29 21:31:11.717  5281  5507 I Unity   : SAT_CHARA_ROUND_END: round=1, result=Rebuilt, score=1-0
+10-29 21:31:13.071  5281  5507 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=587, seconds=20.01, fps=29.3, p50ms=33.42, p95ms=33.44, p99ms=34.10, over100ms=1

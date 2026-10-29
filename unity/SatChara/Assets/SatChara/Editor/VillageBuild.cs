@@ -41,7 +41,7 @@ namespace SatChara.Editor
             QualitySettings.SetQualityLevel(0);
             QualitySettings.vSyncCount = 0;
             earth = Surface("Village Earth", "Textures/village-earth.png", new Color(.82f,.76f,.64f), 0, .08f);
-            earth.mainTextureScale = new Vector2(18,18);
+            earth.mainTextureScale = new Vector2(36,36);
             plaster = Surface("Lime Plaster", "Environment/Textures/clay_plaster_diff_1k.jpg", new Color(.92f,.85f,.67f), 0, .08f);
             tin = Surface("Weathered Tin", "Environment/Textures/worn_corrugated_iron_diff_1k.jpg", Color.white, .65f, .24f);
             wood = Surface("Old Timber", "Environment/Textures/wooden_rough_planks_diff_1k.jpg", new Color(.7f,.64f,.53f), 0, .1f);
@@ -53,8 +53,9 @@ namespace SatChara.Editor
             BuildCourtyard(tree, barrel);
             var game = UnityEngine.Object.FindFirstObjectByType<GrayboxMatch>();
             game.SetVillageArt(character, earth, StoneMesh());
+            game.gameObject.AddComponent<MobileVisualQuality>();
             var light = UnityEngine.Object.FindFirstObjectByType<Light>();
-            light.color = new Color(1,.88f,.71f); light.intensity = 1.65f;
+            light.color = new Color(1,.88f,.71f); light.intensity = 1.2f;
             light.transform.rotation = Quaternion.Euler(35,-40,0); light.shadows = LightShadows.Soft;
             light.shadowBias = .025f; light.shadowNormalBias = .2f;
             RenderSettings.ambientMode = AmbientMode.Trilight;
@@ -62,14 +63,19 @@ namespace SatChara.Editor
             RenderSettings.ambientEquatorColor = new Color(.49f,.47f,.4f);
             RenderSettings.ambientGroundColor = new Color(.25f,.24f,.18f);
             RenderSettings.fog = true; RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(.72f,.76f,.7f); RenderSettings.fogStartDistance = 32; RenderSettings.fogEndDistance = 95;
-            var sky = new Material(Shader.Find("Skybox/Procedural"));
-            sky.SetColor("_SkyTint",new Color(.55f,.62f,.7f)); sky.SetFloat("_AtmosphereThickness",1.1f);
+            RenderSettings.fogColor = new Color(.65f,.69f,.72f); RenderSettings.fogStartDistance = 60; RenderSettings.fogEndDistance = 150;
+            var sky = AssetDatabase.LoadAssetAtPath<Material>(Art+"VillageMaterials/Evening Sky.mat");
+            if (!sky) { sky = new Material(Shader.Find("Skybox/Procedural")); AssetDatabase.CreateAsset(sky,Art+"VillageMaterials/Evening Sky.mat"); }
+            sky.shader = Shader.Find("Skybox/Procedural");
+            sky.SetColor("_SkyTint",new Color(.5f,.5f,.5f));
+            sky.SetColor("_GroundColor",new Color(.4f,.39f,.36f));
+            sky.SetFloat("_AtmosphereThickness",1);sky.SetFloat("_Exposure",1);
+            sky.SetFloat("_SunSize",.025f); EditorUtility.SetDirty(sky);
             RenderSettings.skybox = sky; RenderSettings.sun = light;
             Camera.main.clearFlags = CameraClearFlags.Skybox; Camera.main.allowHDR = false;
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), ScenePath);
             EditorBuildSettings.scenes = new[] {new EditorBuildSettingsScene(ScenePath,true)};
-            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.1"; PlayerSettings.Android.bundleVersionCode = 4;
+            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.3"; PlayerSettings.Android.bundleVersionCode = 6;
             AssetDatabase.SaveAssets();
             Debug.Log("SAT_CHARA_VILLAGE_READY: real skinned character, textured environment and perspective camera");
         }
