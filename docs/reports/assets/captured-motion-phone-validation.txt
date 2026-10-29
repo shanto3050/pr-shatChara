@@ -1,0 +1,27 @@
+10-29 23:59:11.335  3734  4041 I Unity   : SAT_CHARA_ROUND_START: round=1, attacking=0
+10-29 23:59:14.713  3734  4041 I Unity   : SAT_CHARA_THROW: player=0, phase=TowerAttack
+10-29 23:59:15.310  3734  4041 I Unity   : SAT_CHARA_TOPPLE
+10-29 23:59:16.944  3734  4041 I Unity   : SAT_CHARA_PICKUP: slot=1, stone=5
+10-29 23:59:17.615  3734  4041 I Unity   : SAT_CHARA_THROW: player=6, phase=Rebuild
+10-29 23:59:17.917  3734  4041 I Unity   : SAT_CHARA_HIT: slot=2
+10-29 23:59:18.426  3734  4041 I Unity   : SAT_CHARA_MOVE_INPUT: position=(1.69, 0.90, -6.92)
+10-29 23:59:18.717  3734  4041 I Unity   : SAT_CHARA_PICKUP: slot=3, stone=0
+10-29 23:59:19.186  3734  4041 I Unity   : SAT_CHARA_PLACE: stone=0
+10-29 23:59:19.820  3734  4041 I Unity   : SAT_CHARA_PICKUP: slot=3, stone=1
+10-29 23:59:20.324  3734  4041 I Unity   : SAT_CHARA_PLACE: stone=1
+10-29 23:59:20.991  3734  4041 I Unity   : SAT_CHARA_PICKUP: slot=3, stone=2
+10-29 23:59:21.026  3734  4041 I Unity   : SAT_CHARA_THROW: player=6, phase=Rebuild
+10-29 23:59:21.593  3734  4041 I Unity   : SAT_CHARA_PLACE: stone=2
+10-29 23:59:22.295  3734  4041 I Unity   : SAT_CHARA_PICKUP: slot=3, stone=3
+10-29 23:59:22.930  3734  4041 I Unity   : SAT_CHARA_PLACE: stone=3
+10-29 23:59:23.667  3734  4041 I Unity   : SAT_CHARA_PICKUP: slot=3, stone=4
+10-29 23:59:24.369  3734  4041 I Unity   : SAT_CHARA_PLACE: stone=4
+10-29 23:59:24.537  3734  4041 I Unity   : SAT_CHARA_PLACE: stone=5
+10-29 23:59:24.670  3734  4041 I Unity   : SAT_CHARA_THROW: player=6, phase=Rebuild
+10-29 23:59:25.807  3734  4041 I Unity   : SAT_CHARA_PICKUP: slot=1, stone=6
+10-29 23:59:26.643  3734  4041 I Unity   : SAT_CHARA_PLACE: stone=6
+10-29 23:59:26.644  3734  4041 I Unity   : SAT_CHARA_ROUND_END: round=1, result=Rebuilt, score=1-0
+10-29 23:59:29.135  3734  4041 I Unity   : SAT_CHARA_ROUND_START: round=2, attacking=0
+10-29 23:59:35.660  3734  4041 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=594, seconds=20.02, fps=29.7, p50ms=33.44, p95ms=33.45, p99ms=33.45, over100ms=1
+10-29 23:59:42.913  3734  4041 I Unity   : SAT_CHARA_PAUSE: paused=True, remaining=45.00
+10-29 23:59:45.354  3734  4041 I Unity   : SAT_CHARA_PAUSE: paused=False, remaining=45.00

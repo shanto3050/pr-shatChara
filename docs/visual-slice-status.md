@@ -17,7 +17,7 @@ Added neutral sky, verandas, gables, banana plants, a tube well, clay vessel sha
 
 ## Captured locomotion continuation (0.2.4)
 
-Recorded CMU walk/jog now drives basic movement, with flat-ground foot locking and authored action overlays. Torso clothing weights and retargeted neck offsets were corrected. Editor contact/turn/pause and full match checks pass; the APK installs and shows near-30-FPS idle samples. Active phone tests are pending an unlock. The report includes a clearly labelled offline editor preview and source/licensing evidence.
+Recorded CMU walk/jog now drives basic movement, with flat-ground foot locking and authored action overlays. Torso clothing weights and retargeted neck offsets were corrected. Editor contact/turn/pause and full match checks pass; the APK passes phone touch aiming/toppling, movement, rebuilding and pause/resume. A short gameplay-capture window measured 29.7 FPS at 1480×720 with one frame above 100 ms. The report includes phone footage, a clearly labelled offline editor preview and source/licensing evidence. Sustained performance and final visual approval remain open.
 
 ## Still open
 

@@ -1,6 +1,6 @@
 # Captured locomotion checkpoint — 29 October 2026
 
-Build **0.2.4, version code 7**, installs and renders on Samsung SC-03K. Editor animation/match checks passed. **Active phone movement, changed throwing pose and pause/resume verification remain pending because the phone locked before the input/recording test.** The failed 5304-byte phone recording is excluded from delivery. The previous 0.2.3 report remains the last completed touch-gameplay verification.
+Build **0.2.4, version code 7**, installs and renders on Samsung SC-03K. Editor animation/match checks and the active phone touch test passed: aiming/toppling, movement, rebuilding and pause/resume. The gameplay-capture sample measured **29.7 FPS at 1480×720**, with one frame above 100 ms. Sustained performance and final visual approval remain open.
 
 ## Implemented
 
@@ -28,7 +28,14 @@ The original ASF/AMC files are included, hashed and preserved byte-for-byte thro
 - Logged anchor error and horizontal slip stayed below the **2.5 cm test tolerance** (rounded log values 0.00000 m). Foot-joint floor proxies stayed above ground. These are ideal flat-ground checks, not a guarantee of perfect mesh contacts or artistic quality.
 - Gameplay roots stayed unchanged by animation; a paused step held the foot pose; no non-finite foot positions occurred.
 - Full visual-scene match: **7 rounds, 7 topples, 42 placements, 14 hits, score 2–5, MatchOver**.
-- Unity compilation and Android build succeeded. The phone confirmed version 0.2.4, and pre-lock idle Realistic windows remained around **29.9 FPS at 1480×720**, p95 about 33.45 ms. This does not establish active-motion performance or the 20-minute thermal gate.
+- Unity compilation and Android build succeeded. The phone confirmed version 0.2.4.
+- Physical touch input produced a player throw, tower topple and movement event. The round completed with all seven stones rebuilt, score 1–0. Pause/resume preserved the remaining timer at 45.00 seconds.
+- A 20.02-second gameplay-capture window measured **29.7 FPS at 1480×720**, p50 33.44 ms, p95/p99 33.45 ms, with **one frame above 100 ms**. This short mixed gameplay/post-round sample does not establish the 20-minute thermal gate.
+
+## Phone recording
+
+[30-second Android gameplay recording](assets/captured-motion-phone-demo.mp4), captured on Samsung SC-03K and normalized to 30 FPS H.264 for playback. The delivered video fully decodes; an extracted gameplay frame was inspected. Encoding rate is separate from measured game performance. [Phone validation log](assets/captured-motion-phone-validation.txt) includes touch, round, timing and pause events.
+
 
 ## Editor preview — not a phone recording
 
@@ -44,4 +51,4 @@ APK: `unity/SatChara/Builds/Android/SatChara-Village.apk`, **55,297,825 bytes**.
 
 ## Open work
 
-Unlock the phone and verify actual movement, touch aiming/toppling with the changed hand pose, pause/resume and frame intervals. Game-specific throw/place/duck/sidestep recordings, directional starts/stops/turning cleanup, child-specific movement, clothing contacts, full axial twist, hand/finger poses and varied-terrain foot placement remain open. Contact labels here are inferred from source toe height/velocity, not manually annotated ground truth. All eight players share the same prototype body and locomotion bank. M2 visual approval, natural-animation approval and sustained device testing are not complete.
+Game-specific throw/place/duck/sidestep recordings, directional starts/stops/turning cleanup, child-specific movement, clothing contacts, full axial twist, hand/finger poses and varied-terrain foot placement remain open. Contact labels here are inferred from source toe height/velocity, not manually annotated ground truth. All eight players share the same prototype body and locomotion bank. M2 visual approval, natural-animation approval and sustained device testing are not complete.
