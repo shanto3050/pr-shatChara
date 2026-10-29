@@ -80,6 +80,7 @@ def tail_w(b): return rig.matrix_world @ b.tail_local
 dg = bpy.context.evaluated_depsgraph_get()
 body_eval = body.evaluated_get(dg); me_eval = body_eval.to_mesh()
 V = np.array([body_eval.matrix_world @ v.co for v in me_eval.vertices])
+Nrm = np.array([(body_eval.matrix_world.to_3x3() @ v.normal).normalized() for v in me_eval.vertices])
 body_eval.to_mesh_clear()
 gidx = {g.name.lower(): g.index for g in body.vertex_groups}
 # MakeHuman keeps hidden helper geometry (skirt/tights cages, hair helper, joint cubes) in the
@@ -203,9 +204,12 @@ def mesh_object(name, verts, faces, uvs=None, mat=None):
     return ob
 
 # ---------- lungi: a tube that wraps both legs (support function of the body section) ----------
-NA, NR = 72, 30
+# Built for cloth simulation (run after posing): the top rows are pinned tight at the waist, the rest
+# starts wider than the legs so gravity and body collision form real folds. The seam is welded.
+NA, NR = 96, 34
 z_top, z_bot = z_navel - .05, z_knee + .035
 legs = (w_arm < .05)
+rng_l = np.random.default_rng(7)
 rings, uvs = [], []
 prev = None
 for j in range(NR + 1):
@@ -216,17 +220,21 @@ for j in range(NR + 1):
     ring = (np.roll(ring, 1) + 2 * ring + np.roll(ring, -1)) / 4            # smooth around
     if prev is not None: ring = np.maximum(ring, prev * .97)               # no pinching between the legs
     prev = ring
-    for i in range(NA + 1):                                                # last column repeats the first: clean UV seam
+    for i in range(NA):
         a = 2 * math.pi * i / NA
-        folds = (.003 + .007 * t) * math.sin(a * 7 + 1.7 * math.sin(a * 3)) + .0015 * math.sin(a * 17)
-        r = ring[i % NA] + .032 + .012 * t * t + folds
+        slack = .009 if j <= 1 else .02 + .045 * t ** .7 + rng_l.normal(0, .002)   # spare fabric lower down
+        r = ring[i] + slack
         rings.append((cx + r * math.cos(a), cy + r * math.sin(a), z))
         uvs.append((i / NA * 3, (z_top - z) * 3))
-C = NA + 1
-faces = [(j * C + i, j * C + i + 1, (j + 1) * C + i + 1, (j + 1) * C + i) for j in range(NR) for i in range(NA)]
+faces = [(j * NA + i, j * NA + (i + 1) % NA, (j + 1) * NA + (i + 1) % NA, (j + 1) * NA + i) for j in range(NR) for i in range(NA)]
 lungi = mesh_object('Lungi', rings, faces, uvs, cloth_material('Lungi', lungi_img))
-sol = lungi.modifiers.new('thick', 'SOLIDIFY'); sol.thickness = .004
-bpy.context.view_layer.objects.active = lungi; bpy.ops.object.modifier_apply(modifier='thick')
+uvl = lungi.data.uv_layers.active                                         # wrap faces: continue the texture past u=3
+for poly in lungi.data.polygons:
+    ids = [vi % NA for vi in poly.vertices]
+    if 0 in ids and NA - 1 in ids:
+        for li, vi in zip(poly.loop_indices, poly.vertices):
+            if vi % NA == 0: uvl.data[li].uv = (3.0, uvl.data[li].uv[1])
+pin = lungi.vertex_groups.new(name='pin'); pin.add(list(range(2 * NA)), 1.0, 'REPLACE')
 
 def roll(name, ring_pts, radius, mat, uv_scale=6):
     """A rolled fabric tube following a closed ring of points (waist knot roll, folded hem)."""
@@ -243,15 +251,16 @@ def roll(name, ring_pts, radius, mat, uv_scale=6):
     return mesh_object(name, verts, f, uv, mat)
 
 top_ring = [rings[i] for i in range(NA)]
-bottom_ring = [rings[NR * C + i] for i in range(NA)]
 waist = roll('Lungi_waist', top_ring, .011, lungi.data.materials[0])
-hem = roll('Lungi_hem', bottom_ring, .009, lungi.data.materials[0])
 # the tuck knot at the front of the waist
 knot_c = Vector(top_ring[NA * 3 // 4]) + Vector((0, -.012, -.01))
 bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=10, radius=.02, location=knot_c)
 knot = bpy.context.active_object; knot.name = 'Lungi_knot'; knot.scale = (1.6, .5, .7)
 knot.data.materials.append(lungi.data.materials[0])
-for o in (lungi, waist, hem, knot): skin_to_body(o)
+for o in (lungi, waist, knot): skin_to_body(o)
+lungi.vertex_groups.remove(lungi.vertex_groups['pin'])                  # weight normalising touched it; re-add
+lungi.vertex_groups.new(name='pin').add(list(range(2 * NA)), 1.0, 'REPLACE')
+# the folded hem is added after the simulation, along the settled bottom edge
 
 # ---------- vest: offset copy of the torso surface, scooped neck and arm holes ----------
 bpy.ops.object.select_all(action='DESELECT')
@@ -308,31 +317,36 @@ def catmull(pts, n):
             t = k / n; p0, p1, p2, p3 = P[i - 1], P[i], P[i + 1], P[i + 2]
             out.append(.5 * ((2 * p1) + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t + (-p0 + 3 * p1 - 3 * p2 + p3) * t ** 3))
     out.append(pts[-1]); return out
-def strip(name, path, width, top_z, mat, ripple=.004, uv_len=5):
-    """A cloth strip of the given width following a path over the shoulder."""
-    spine = catmull(path, 10); verts, uv = [], []
+def strip(name, path, width, top_z, mat, ripple=.004, uv_len=5, across=3, steps=10, solid=True):
+    """A cloth strip of the given width following a path over the shoulder.
+    solid=False leaves a single layer for cloth simulation (thickness is added afterwards)."""
+    spine = catmull(path, steps); verts, uv = [], []
     for i, p in enumerate(spine):
         tng = (spine[min(i + 1, len(spine) - 1)] - spine[max(i - 1, 0)]).normalized()
         outward = Vector((p.x - cx, p.y - cy, 0)); outward = outward.normalized() if outward.length > 1e-4 else Vector((0, 0, 1))
         if abs(p.z - top_z) < .05: outward = Vector((0, 0, 1))
         wdir = tng.cross(outward).normalized()
-        for s in (-1, 0, 1):
-            verts.append(p + wdir * (width / 2) * s + outward * ripple * math.sin(i * .9) * (s != 0))
-            uv.append((i / len(spine) * uv_len, (s + 1) / 2))
-    f = [(i * 3 + k, i * 3 + k + 1, (i + 1) * 3 + k + 1, (i + 1) * 3 + k) for i in range(len(spine) - 1) for k in range(2)]
+        for k in range(across):
+            s = 2 * k / (across - 1) - 1
+            verts.append(p + wdir * (width / 2) * s + outward * ripple * math.sin(i * .9) * (k not in (0, across - 1)))
+            uv.append((i / len(spine) * uv_len, k / (across - 1)))
+    f = [(i * across + k, i * across + k + 1, (i + 1) * across + k + 1, (i + 1) * across + k)
+         for i in range(len(spine) - 1) for k in range(across - 1)]
     ob = mesh_object(name, verts, f, uv, mat)
-    sol = ob.modifiers.new('thick', 'SOLIDIFY'); sol.thickness = .003
-    bpy.context.view_layer.objects.active = ob; bpy.ops.object.modifier_apply(modifier='thick')
+    if solid:
+        sol = ob.modifiers.new('thick', 'SOLIDIFY'); sol.thickness = .003
+        bpy.context.view_layer.objects.active = ob; bpy.ops.object.modifier_apply(modifier='thick')
     skin_to_body(ob)
     return ob
 
 # gamcha over the left shoulder, hanging to the waist in front and behind
 top = shoulder_top(.62); xs = top[0]
 print('GAMCHA_TOP', top, flush=True)
-gamcha = strip('Gamcha', [surface(xs - side * .05, top[2] - .42, True), surface(xs - side * .02, top[2] - .22, True),
-                          surface(xs, top[2] - .06, True), Vector((xs, top[1], top[2] + .022)),
-                          surface(xs, top[2] - .06, False), surface(xs - side * .03, top[2] - .25, False),
-                          surface(xs - side * .06, top[2] - .45, False)], .13, top[2], cloth_material('Gamcha', gamcha_img, .9, .5))
+gamcha = strip('Gamcha', [surface(xs - side * .05, top[2] - .42, True, .032), surface(xs - side * .02, top[2] - .22, True, .03),
+                          surface(xs, top[2] - .06, True, .024), Vector((xs, top[1], top[2] + .022)),
+                          surface(xs, top[2] - .06, False, .024), surface(xs - side * .03, top[2] - .25, False, .03),
+                          surface(xs - side * .06, top[2] - .45, False, .032)], .14, top[2], cloth_material('Gamcha', gamcha_img, .9, .5),
+                ripple=.004, across=9, steps=14, solid=True)    # shaped, not simulated: a thick towel keeps its drape
 
 # vest straps on both shoulders, from the front of the vest to the back
 for s_name, frac in (('Vest_strap_l', .5), ('Vest_strap_r', -.5)):
@@ -391,6 +405,122 @@ try:
     pb = rig.pose.bones[bone('head').name]; pb.rotation_mode = 'XYZ'; pb.rotation_euler.rotate_axis('Z', math.radians(-6))
 except KeyError: pass
 bpy.ops.object.mode_set(mode='OBJECT')
+
+# ---------- cloth simulation: lungi and gamcha settle on the posed body (Blender's built-in solver) ----------
+scene = bpy.context.scene
+for o, th in ((body, .006), (vest, .003)):
+    col = o.modifiers.new('collision', 'COLLISION')
+    o.collision.thickness_outer = th; o.collision.cloth_friction = 8
+def simulate(obj, frames, mass, bend, shrink=0.):
+    mod = obj.modifiers.new('cloth', 'CLOTH'); s = mod.settings
+    s.quality = 8; s.mass = mass; s.air_damping = 2
+    s.tension_stiffness = s.compression_stiffness = 18; s.shear_stiffness = 6; s.bending_stiffness = bend
+    s.vertex_group_mass = 'pin'; s.pin_stiffness = 1; s.shrink_min = shrink
+    cs = mod.collision_settings; cs.distance_min = .004; cs.collision_quality = 4; cs.use_self_collision = False
+    mod.point_cache.frame_start = 1; mod.point_cache.frame_end = frames
+    scene.frame_start, scene.frame_end = 1, frames
+    for f in range(1, frames + 1): scene.frame_set(f)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.modifier_apply(modifier='cloth')
+    scene.frame_set(1)
+    print('SIMULATED', obj.name, frames, 'frames', flush=True)
+simulate(lungi, 50, .25, .6)
+for o in (body, vest): o.modifiers.remove(o.modifiers['collision'])
+
+# folded hem along the settled bottom edge, then cloth thickness
+lw = lungi.matrix_world
+hem_ring = [lw @ lungi.data.vertices[NR * NA + i].co for i in range(NA)]
+hem = roll('Lungi_hem', hem_ring, .008, lungi.data.materials[0]); skin_to_body(hem)
+for o, th in ((lungi, .003),):
+    sol = o.modifiers.new('thick', 'SOLIDIFY'); sol.thickness = th; sol.offset = 1
+    sub = o.modifiers.new('smooth', 'SUBSURF'); sub.levels = 0; sub.render_levels = 1
+
+# ---------- hair cards: short strands grown from the scalp, combed forward and down ----------
+rng_h = np.random.default_rng(11)
+def strand_texture(n=512, count=260):
+    img = np.zeros((n, n, 4))
+    for _ in range(count):
+        x = rng_h.uniform(0, n); w = rng_h.uniform(.6, 1.8); a = rng_h.uniform(.55, 1)
+        tone = np.array([.045, .035, .03]) * rng_h.uniform(.7, 1.5) + rng_h.uniform(0, .02)
+        xs_ = np.arange(n)
+        prof = np.clip(1 - np.abs(xs_ - x) / w, 0, 1) * a
+        v_ = np.linspace(0, 1, n)
+        taper = np.clip(1 - v_ ** 3 * rng_h.uniform(.8, 1.2), 0, 1) * np.clip(v_ / .12, 0, 1)   # soft root, thin tips
+        alpha = taper[:, None] * prof[None, :]
+        img[..., :3] = img[..., :3] * (1 - alpha[..., None]) + tone * alpha[..., None]
+        img[..., 3] = np.maximum(img[..., 3], alpha)
+    im = bpy.data.images.new('hair_strands', n, n, alpha=True)
+    im.pixels.foreach_set(img.astype(np.float32).ravel()); im.pack()
+    return im
+hair_img = strand_texture()
+hm = bpy.data.materials.new('HairCards'); hm.use_nodes = True
+nt = hm.node_tree; hb = nt.nodes['Principled BSDF']
+ht = nt.nodes.new('ShaderNodeTexImage'); ht.image = hair_img
+nt.links.new(ht.outputs['Color'], hb.inputs['Base Color']); nt.links.new(ht.outputs['Alpha'], hb.inputs['Alpha'])
+hb.inputs['Roughness'].default_value = .45
+if 'Coat Weight' in hb.inputs: hb.inputs['Coat Weight'].default_value = .2
+try: hm.surface_render_method = 'DITHERED'
+except AttributeError: hm.blend_method = 'HASHED'
+# Roots sit on the MakeHuman hair cap (read in the rest pose, since the cards are skinned to the head bone).
+rig.data.pose_position = 'REST'; bpy.context.view_layer.update()
+dg = bpy.context.evaluated_depsgraph_get(); cap_e = hair.evaluated_get(dg); cap_m = cap_e.to_mesh()
+CP = np.array([cap_e.matrix_world @ v.co for v in cap_m.vertices])
+CN = np.array([(cap_e.matrix_world.to_3x3() @ v.normal).normalized() for v in cap_m.vertices])
+cap_e.to_mesh_clear(); rig.data.pose_position = 'POSE'; bpy.context.view_layer.update()
+eyes = next(o for o in bpy.data.objects if 'low-poly' in o.name)
+eye_top = max((eyes.matrix_world @ v.co).z for v in eyes.data.vertices)
+head_c = Vector(CP.mean(axis=0))
+outer = CN[:, 2] > -.35                                                                   # skip the cap's inner/underside
+outer &= ~((CP[:, 1] < head_c.y - .02) & (CP[:, 2] < eye_top + .045))                     # keep the forehead and eyes clear
+CP, CN = CP[outer], CN[outer]
+crown = Vector(CP[np.argmax(CP[:, 2] + .6 * CP[:, 1])])                                  # top-back whorl
+verts, faces_h, uv_h = [], [], []
+for c in range(1600):
+    vi = rng_h.integers(len(CP))
+    p = Vector(CP[vi]); n = Vector(CN[vi])
+    d = p - crown; d -= n * d.dot(n)
+    d = d.normalized() if d.length > 1e-4 else n.orthogonal().normalized()
+    front = p.y < head_c.y - .03
+    if front: d = (d + Vector((math.copysign(.6, p.x - head_c.x), 0, .15))).normalized()   # fringe swept to the side
+    else: d = (d + Vector((0, 0, -.35))).normalized()                                    # hair falls a little
+    L = rng_h.uniform(.02, .032) if front else rng_h.uniform(.02, .038)
+    side = d.cross(n).normalized(); W = .009
+    u0 = rng_h.uniform(0, .8); base = len(verts)
+    for k in range(4):
+        t = k / 3
+        q = p + n * (-.001 + .004 * t) + d * L * t + Vector((0, 0, -.006 * t * t))
+        verts += [q - side * W / 2, q + side * W / 2]
+        uv_h += [(u0, t), (u0 + .2, t)]
+    for k in range(3):
+        faces_h.append((base + 2 * k, base + 2 * k + 1, base + 2 * k + 3, base + 2 * k + 2))
+hairc = mesh_object('HairCards', verts, faces_h, uv_h, hm)
+hairc.vertex_groups.new(name='head').add(list(range(len(verts))), 1.0, 'REPLACE')
+hairc.modifiers.new('rig', 'ARMATURE').object = rig; hairc.parent = rig
+print('HAIR_CARDS', len(faces_h), flush=True)
+
+# ---------- skin micro-detail: tiling pore normal map (also exported to the GLB) ----------
+def pore_normal(n=512, seed=5):
+    r = np.random.default_rng(seed)
+    f = np.fft.fft2(r.normal(size=(n, n)))
+    k = np.fft.fftfreq(n)[:, None] ** 2 + np.fft.fftfreq(n)[None, :] ** 2
+    h = np.real(np.fft.ifft2(f * np.exp(-k * 2200) * (k > 1e-6)))                       # small soft bumps (tileable)
+    h = (h - h.mean()) / h.std()
+    dx = (np.roll(h, -1, 1) - np.roll(h, 1, 1)) * .5; dy = (np.roll(h, -1, 0) - np.roll(h, 1, 0)) * .5
+    nrm = np.dstack([-dx * .35, -dy * .35, np.ones_like(h)]); nrm /= np.linalg.norm(nrm, axis=2, keepdims=True)
+    return (nrm * .5 + .5)
+pore_img = make_image('skin_pores', pore_normal()); pore_img.colorspace_settings.name = 'Non-Color'
+for mat in body.data.materials:
+    if not mat.use_nodes: continue
+    nt = mat.node_tree; bsdf = next((n for n in nt.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+    if not bsdf or bsdf.inputs['Normal'].is_linked: continue
+    tex = nt.nodes.new('ShaderNodeTexImage'); tex.image = pore_img
+    mp = nt.nodes.new('ShaderNodeMapping'); mp.inputs['Scale'].default_value = (55, 55, 1)
+    uvn = nt.nodes.new('ShaderNodeUVMap')
+    nm = nt.nodes.new('ShaderNodeNormalMap'); nm.inputs['Strength'].default_value = .35
+    nt.links.new(uvn.outputs['UV'], mp.inputs['Vector']); nt.links.new(mp.outputs['Vector'], tex.inputs['Vector'])
+    nt.links.new(tex.outputs['Color'], nm.inputs['Color']); nt.links.new(nm.outputs['Normal'], bsdf.inputs['Normal'])
+    if 'Subsurface Weight' in bsdf.inputs: bsdf.inputs['Subsurface Weight'].default_value = .2
+    if 'Specular IOR Level' in bsdf.inputs: bsdf.inputs['Specular IOR Level'].default_value = .45
 
 # ---------- stage: packed earth ground, evening sky, warm low sun ----------
 scene = bpy.context.scene
