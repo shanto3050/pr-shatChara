@@ -144,10 +144,17 @@ def ph(set_, kind): return TEX / set_ / f'{set_}_{kind}_1k.jpg'
 def acg(set_, kind): return TEX / set_ / f'{set_}_1K-JPG_{kind}.jpg'
 
 # ---------------------------------------------------------------- generated textures
-def leaf_texture(n=512):
+def blotch(n, scales=((8, .5), (24, .3), (64, .2))):
+    """Tileable-ish value noise in [0, 1] from a few blocky octaves."""
+    nz = np.zeros((n, n))
+    for s, a in scales:
+        g = rng.random((s, s)); k = -(-n // s); nz += a * np.kron(g, np.ones((k, k)))[:n, :n]
+    return nz / sum(a for _, a in scales)
+
+def leaf_texture(n=512, green=(.16, .34, .08)):
     """Banana / palm leaf: green blade, lighter midrib down the middle (v), parallel veins, brown dry edges."""
     u = np.linspace(-1, 1, n)[None, :]; v = np.linspace(0, 1, n)[:, None]
-    base = np.array([.16, .34, .08]) * (1 + .12 * np.sin(v * 9 + u * 2))[..., None]
+    base = np.array(green) * (1 + .12 * np.sin(v * 9 + u * 2))[..., None]
     veins = (np.abs(np.sin((v * 1.0 + np.abs(u) * .9) * 130)) > .92) * .06
     rib = np.exp(-(u / .035) ** 2)
     col = base + veins[..., None] * np.array([.25, .3, .1]) + rib[..., None] * np.array([.18, .22, .08])
@@ -157,39 +164,70 @@ def leaf_texture(n=512):
     return col
 
 def trunk_texture(n=512):
-    """Coconut trunk: grey-brown with horizontal leaf-scar rings."""
-    v = np.linspace(0, 1, n)[:, None]; u = np.linspace(0, 1, n)[None, :]
-    ring = (np.abs(np.sin(v * math.pi * 12 + np.sin(u * 6.28) * .3)) < .18) * .25
-    col = np.array([.38, .33, .27]) * (1 - ring[..., None]) * (1 + rng.normal(0, .06, (n, n, 1)))
-    col *= (1 + .08 * np.sin(u * 60 + v * 3))[..., None]
-    return col
+    """Coconut trunk (1 m per tile): grey-brown bark, irregular leaf-scar rings every 6-10 cm, fine fibres."""
+    v = np.linspace(0, 1, n, endpoint=False)[:, None]; u = np.linspace(0, 1, n, endpoint=False)[None, :]
+    ring = np.zeros((n, n)); z = 0.0
+    while z < 1:
+        width = rng.uniform(.006, .012); wav = rng.uniform(.003, .01)
+        ring = np.maximum(ring, np.exp(-((v - z - wav * np.sin(u * 6.283 + rng.uniform(0, 6))) / width) ** 2))
+        z += rng.uniform(.06, .1)
+    fib = blotch(n, ((4, .5), (128, .5)))                                     # vertical fibre streaks
+    fib = np.repeat(fib[:1, :], n, axis=0) * .6 + fib * .4
+    col = np.array([.42, .37, .31]) * (.85 + .3 * fib)[..., None] * (1 - .45 * ring[..., None])
+    return col * (1 + rng.normal(0, .03, (n, n, 1)))
+
+def stem_texture(n=512):
+    """Banana pseudo-stem: green with long vertical streaks and brown patches of dried sheath."""
+    u = np.linspace(0, 1, n)[None, :]
+    streak = np.repeat(blotch(n, ((16, .4), (96, .6)))[:1, :], n, axis=0)
+    dry = np.clip((blotch(n, ((6, .6), (20, .4))) - .58) * 3, 0, 1)
+    col = np.array([.30, .40, .15]) * (.8 + .4 * streak)[..., None]
+    col = col * (1 - dry[..., None]) + np.array([.38, .28, .16]) * dry[..., None]
+    return col * (1 + rng.normal(0, .03, (n, n, 1)))
+
+def planks_texture(n=512, boards=5):
+    """Weathered vertical door planks: grey-brown wood, grain, a dark gap between boards, scuffs."""
+    u = np.arange(n)[None, :] / n; v = np.arange(n)[:, None] / n
+    b = np.floor(u * boards).astype(int)
+    tone = rng.uniform(.8, 1.15, boards)[b]
+    grain = .07 * np.sin((u * boards * 9 + 2.5 * np.sin(v * 7 + b) + v * 2) * 6.283)
+    gap = (np.abs(u * boards - np.round(u * boards)) < .018) * .55
+    wear = blotch(n) * .25
+    col = np.array([.36, .29, .22]) * (tone + grain + wear)[..., None] * (1 - gap[..., None])
+    grey = blotch(n, ((5, 1.0),))[..., None]                                   # sun-greyed patches
+    return col * (1 - .35 * grey) + np.array([.42, .4, .37]) * .35 * grey
 
 def paint_rust_texture(n=512):
     """Tube-well paint: dark green enamel with rust breaking through at the edges and joints."""
-    nz = np.zeros((n, n))
-    for s, a in ((8, .5), (24, .3), (64, .2)):
-        g = rng.random((s, s)); k = -(-n // s); nz += a * np.kron(g, np.ones((k, k)))[:n, :n]
+    nz = blotch(n)
     rust = np.clip((nz - .62) * 4, 0, 1)
     green = np.array([.05, .16, .1]); rustc = np.array([.32, .14, .06])
     col = green * (1 - rust[..., None]) + rustc * rust[..., None]
     return col * (1 + rng.normal(0, .03, (n, n, 1)))
 
 leaf_img = image_from_array('village_leaf', leaf_texture())
+dead_leaf_img = image_from_array('village_leaf_dry', leaf_texture(green=(.36, .27, .13)))
 trunk_img = image_from_array('village_palm_trunk', trunk_texture())
+stem_img = image_from_array('village_banana_stem', stem_texture())
+planks_img = image_from_array('village_door_planks', planks_texture())
 paint_img = image_from_array('village_pump_paint', paint_rust_texture())
 
 M = {
     'straw': pbr('Straw', acg('ThatchedRoof002A', 'Color'), acg('ThatchedRoof002A', 'NormalGL'), acg('ThatchedRoof002A', 'Roughness'), tint=(1.1, .98, .78)),
     'bamboo': pbr('Bamboo', acg('Bamboo001C', 'Color'), acg('Bamboo001C', 'NormalGL'), acg('Bamboo001C', 'Roughness'), tint=(1.15, 1.05, .85)),
-    'mud': pbr('MudPlaster', ph('yellow_plaster_02', 'diff'), ph('yellow_plaster_02', 'nor_gl'), ph('yellow_plaster_02', 'rough'), tint=(.78, .62, .48)),
+    # walls: smeared raw clay (the plaster texture had vertical board marks that read as planks)
+    'mud': pbr('MudPlaster', acg('Clay005', 'Color'), acg('Clay005', 'NormalGL'), acg('Clay005', 'Roughness'), tint=(.66, .55, .43)),
     'mud_base': pbr('MudBase', ph('dry_mud_field_001', 'diff'), ph('dry_mud_field_001', 'nor_gl'), ph('dry_mud_field_001', 'rough'), tint=(.7, .58, .46)),
     'tin': pbr('TinRoof', ph('rusty_corrugated_iron', 'diff'), ph('rusty_corrugated_iron', 'nor_gl'), ph('rusty_corrugated_iron', 'rough'), metallic=.35),
-    'wood': pbr('OldWood', acg('Planks039', 'Color'), acg('Planks039', 'NormalGL'), acg('Planks039', 'Roughness'), tint=(.85, .78, .7)),
+    'wood': pbr('OldWood', planks_img, rough_value=.85),
     'clay': pbr('Terracotta', acg('Clay005', 'Color'), acg('Clay005', 'NormalGL'), acg('Clay005', 'Roughness'), tint=(1.05, .6, .38)),
     'dung': pbr('DungCake', acg('Clay005', 'Color'), acg('Clay005', 'NormalGL'), acg('Clay005', 'Roughness'), tint=(.42, .32, .22)),
-    'jute': pbr('Jute', ph('hessian_230', 'diff'), ph('hessian_230', 'nor_gl'), ph('hessian_230', 'rough')),
+    'jute': pbr('Jute', ph('hessian_230', 'diff'), ph('hessian_230', 'nor_gl'), ph('hessian_230', 'rough'), tint=(.72, .56, .36)),
     'concrete': pbr('Concrete', ph('yellow_plaster_02', 'diff'), ph('yellow_plaster_02', 'nor_gl'), ph('yellow_plaster_02', 'rough'), tint=(.72, .72, .7)),
     'leaf': pbr('Leaf', leaf_img, rough_value=.55),
+    'dead_leaf': pbr('DryLeaf', dead_leaf_img, rough_value=.8),
+    'stem': pbr('BananaStem', stem_img, rough_value=.6),
+    'frond': pbr('FrondStem', leaf_img, tint=(1.4, 1.25, .8), rough_value=.6),
     'trunk': pbr('PalmTrunk', trunk_img, rough_value=.85),
     'paint': pbr('PumpPaint', paint_img, rough_value=.45, metallic=.5),
 }
@@ -216,9 +254,10 @@ def tube_well(prop='TubeWell'):
     revolve(prop + '_base', [(.11, .14), (.11, .2), (.07, .24)], prop, M['paint'], seg=20)
     revolve(prop + '_body', [(.065, .24), (.065, .78), (.075, .8), (.075, .86), (.04, .9)], prop, M['paint'], seg=20, u_tiles=1)
     tube(prop + '_spout', [(0, .05, .66), (0, .2, .63), (0, .26, .58)], .022, prop, M['paint'], seg=10)
-    tube(prop + '_handle', [(0, -.04, .9), (0, -.35, 1.02), (0, -.7, 1.06)], .018, prop, M['paint'], seg=8)
-    box(prop + '_pivot', (.05, .08, .1), (0, -.02, .88), prop, M['paint'], bevel=.005, tile=.3)
-    revolve(prop + '_grip', [(.024, 0), (.024, .14)], prop, M['wood'], seg=10, loc=(0, -.71, 1.0))
+    revolve(prop + '_cap', [(.075, .86), (.06, .9), (.03, .93), (.001, .94)], prop, M['paint'], seg=20)
+    box(prop + '_bracket', (.03, .1, .12), (0, -.05, .9), prop, M['paint'], bevel=.005, tile=.3)
+    tube(prop + '_handle', [(0, -.05, .93), (0, -.3, 1.0), (0, -.62, 1.04)], .018, prop, M['paint'], seg=8)
+    tube(prop + '_grip', [(0, -.62, 1.04), (0, -.8, 1.05)], .026, prop, M['wood'], seg=10)   # worn wooden grip on the handle end
 
 def mud_house(prop='MudHouse', W=5.2, D=3.6, Hw=2.3, plinth=.45):
     # raised earthen plinth (bhita) with a front verandah
@@ -227,16 +266,22 @@ def mud_house(prop='MudHouse', W=5.2, D=3.6, Hw=2.3, plinth=.45):
     # walls with a door and a window in the front (facing -Y)
     door_w, door_h, win_w, win_h, win_z = .95, 1.85, .7, .55, 1.0
     fx = -D / 2
-    segs = [(-W / 2, -door_w / 2 - .6), (-door_w / 2 - .6 + door_w, 1.0), (1.0 + win_w, W / 2)]
-    left = -W / 2; door_l = -.6 - door_w / 2; door_r = door_l + door_w; win_l = 1.0; win_r = win_l + win_w
-    for x0, x1 in ((left, door_l), (door_r, win_l), (win_r, W / 2)):
-        box(prop + '_wall_f', (x1 - x0, t, Hw), ((x0 + x1) / 2, fx, z0 + Hw / 2), prop, M['mud'], bevel=.05, tile=1.6)
-    box(prop + '_wall_f_door_top', (door_w, t, Hw - door_h), ((door_l + door_r) / 2, fx, z0 + door_h + (Hw - door_h) / 2), prop, M['mud'], bevel=.04, tile=1.6)
-    box(prop + '_wall_f_win_low', (win_w, t, win_z), ((win_l + win_r) / 2, fx, z0 + win_z / 2), prop, M['mud'], bevel=.04, tile=1.6)
-    box(prop + '_wall_f_win_top', (win_w, t, Hw - win_z - win_h), ((win_l + win_r) / 2, fx, z0 + win_z + win_h + (Hw - win_z - win_h) / 2), prop, M['mud'], bevel=.04, tile=1.6)
-    box(prop + '_wall_b', (W, t, Hw), (0, D / 2, z0 + Hw / 2), prop, M['mud'], bevel=.05, tile=1.6)
+    door_l = -.6 - door_w / 2; door_r = door_l + door_w; win_l = 1.0; win_r = win_l + win_w
+    # one continuous front wall with the openings cut out (separate pieces showed seams like planks)
+    front = box(prop + '_wall_f', (W + t, t, Hw), (0, fx, z0 + Hw / 2), prop, M['mud'], tile=1.6)
+    for w, h, cxx, czz in ((door_w, door_h, (door_l + door_r) / 2, z0 + door_h / 2 - .01),
+                           (win_w, win_h, (win_l + win_r) / 2, z0 + win_z + win_h / 2)):
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(cxx, fx, czz)); cutter = bpy.context.active_object
+        cutter.scale = (w, t * 3, h)
+        mod = front.modifiers.new('cut', 'BOOLEAN'); mod.object = cutter; mod.operation = 'DIFFERENCE'; mod.solver = 'EXACT'
+        bpy.context.view_layer.objects.active = front; bpy.ops.object.modifier_apply(modifier='cut')
+        bpy.data.objects.remove(cutter, do_unlink=True)
+    bev = front.modifiers.new('bevel', 'BEVEL'); bev.width = .03; bev.segments = 2; bev.limit_method = 'ANGLE'
+    bpy.context.view_layer.objects.active = front; bpy.ops.object.modifier_apply(modifier='bevel')
+    uv_box(front, 1.6)
+    box(prop + '_wall_b', (W + t, t, Hw), (0, D / 2, z0 + Hw / 2), prop, M['mud'], bevel=.03, tile=1.6)
     for sx in (-1, 1):
-        box(prop + '_wall_s', (t, D, Hw), (sx * W / 2, 0, z0 + Hw / 2), prop, M['mud'], bevel=.05, tile=1.6)
+        box(prop + '_wall_s', (t, D - t, Hw), (sx * W / 2, 0, z0 + Hw / 2), prop, M['mud'], bevel=.03, tile=1.6)
     # darker mud band along the bottom of the walls (re-plastered often)
     box(prop + '_band_f', (W + .04, t + .03, .35), (0, fx, z0 + .175), prop, M['mud_base'], bevel=.03, tile=1.6)
     # wooden door (closed, slightly ajar) and shutter
@@ -284,31 +329,43 @@ def bamboo_fence(prop='BambooFence', L=4.0, H=1.6):
             rot=(0, math.radians(rng.uniform(-2, 2)), 0))
         x += w + rng.uniform(.0, .015)
 
-def leaf_blade(name, prop, base, direction, length, width, droop, twist=0.0, tear=True, n=16):
-    """A single banana leaf: midrib curving out and down, blade with optional torn gaps."""
+def leaf_blade(name, prop, base, direction, length, width, rise, droop, twist=0.0, tear=.25, n=24, mat=None):
+    """A banana leaf: a narrow petiole, then a long blade that rises and arches over (rise/droop in leaf
+    lengths), slightly V-shaped across the midrib, with tears between the veins on the outer part."""
     verts, faces, uvs = [], [], []
-    d = Vector(direction).normalized(); side = d.cross(Vector((0, 0, 1))).normalized()
+    d = Vector(direction); d.z = 0; d.normalize(); side = d.cross(Vector((0, 0, 1))).normalized()
     for j in range(n + 1):
         t = j / n
-        p = Vector(base) + d * length * t + Vector((0, 0, length * (.35 * t - droop * t * t)))
-        w = width * math.sin(math.pi * min(1, t * 1.1)) ** .6
-        tilt = Vector((0, 0, -.25 * w)) + side.cross(d) * 0
+        p = Vector(base) + d * length * t + Vector((0, 0, length * (rise * t - droop * t * t)))
+        bt = min(1, max(0, (t - .16) / .84))                                  # blade starts after the petiole
+        w = .012 if t < .16 else width * math.sin(math.pi * min(1, bt * 1.08)) ** .45
         for s in (-1, 0, 1):
-            off = side * w * s * math.cos(twist * t) + Vector((0, 0, -abs(s) * w * .25 * math.sin(twist * t + .5)))
+            off = side * w * s * math.cos(twist * t) + Vector((0, 0, -abs(s) * w * (.22 + .25 * t)))
             verts.append(p + off); uvs.append(((s + 1) / 2, t))
     for j in range(n):
         for k in range(2):
-            if tear and j > 2 and rng.random() < .22: continue               # tears between veins
+            if tear and j > n * .35 and rng.random() < tear: continue        # torn strips toward the tip
             a = j * 3 + k; faces.append((a, a + 1, a + 4, a + 3))
-    return mesh(name, verts, faces, prop, M['leaf'], uvs)
+    return mesh(name, verts, faces, prop, mat or M['leaf'], uvs)
 
-def banana_plant(prop='BananaPlant', H=2.1):
-    tube(prop + '_stem', [(0, 0, 0), (.02, 0, H * .5), (.03, .01, H)], .13, prop, M['trunk'], seg=12,
-         taper=lambda t: 1 - .4 * t)
-    for k in range(9):
-        a = k * 2.4 + rng.uniform(-.2, .2)
-        leaf_blade(prop + '_leaf', prop, (.03, .01, H - .05 - .02 * k), (math.cos(a), math.sin(a), .55 - .04 * k),
-                   rng.uniform(1.3, 1.8), rng.uniform(.26, .34), rng.uniform(.5, .9), twist=rng.uniform(-.6, .6))
+def banana_clump_plant(prop, at, H, leaves, size):
+    tube(prop + '_stem', [(at[0], at[1], 0), (at[0] + .01, at[1], H * .5), (at[0] + .02, at[1] + .01, H)],
+         .12 * size, prop, M['stem'], seg=12, taper=lambda t: 1 - .35 * t)
+    for k in range(leaves):                                                  # live leaves from the crown
+        a = k * 2.4 + rng.uniform(-.25, .25)
+        leaf_blade(prop + '_leaf', prop, (at[0] + .02, at[1] + .01, H - .03), (math.cos(a), math.sin(a), 0),
+                   rng.uniform(2.0, 2.6) * size, rng.uniform(.3, .38) * size, rng.uniform(.9, 1.4), rng.uniform(1.1, 1.7),
+                   twist=rng.uniform(-.5, .5))
+    for k in range(3 if size > .8 else 1):                                   # old leaves hanging dead along the stem
+        a = rng.uniform(0, 6.28)
+        leaf_blade(prop + '_dead', prop, (at[0], at[1], H * rng.uniform(.6, .85)), (math.cos(a), math.sin(a), 0),
+                   rng.uniform(1.1, 1.5) * size, .2 * size, -.1, 1.1, twist=1.2, tear=.4, mat=M['dead_leaf'])
+
+def banana_plant(prop='BananaPlant', H=2.5):
+    """A banana clump: a mature plant and two young suckers, as they grow beside village houses."""
+    banana_clump_plant(prop, (0, 0), H, 8, 1.0)
+    banana_clump_plant(prop, (.55, .3), 1.1, 4, .5)
+    banana_clump_plant(prop, (-.4, .45), .8, 3, .4)
 
 def coconut_palm(prop='CoconutPalm', H=7.5):
     pts = [(0, 0, 0)]
@@ -320,7 +377,7 @@ def coconut_palm(prop='CoconutPalm', H=7.5):
         a = k * 2 * math.pi / 14 + rng.uniform(-.15, .15); up = rng.uniform(-.1, .5)
         d = Vector((math.cos(a), math.sin(a), up)).normalized(); L = rng.uniform(3.0, 3.8)
         spine = [top + d * L * t + Vector((0, 0, -1.4 * t * t * (1 - up))) for t in np.linspace(0, 1, 10)]
-        tube(prop + '_rachis', spine, .025, prop, M['trunk'], seg=5, taper=lambda t: 1 - .7 * t)
+        tube(prop + '_rachis', spine, .025, prop, M['frond'], seg=5, taper=lambda t: 1 - .7 * t)
         side = d.cross(Vector((0, 0, 1))).normalized()
         verts, faces, uvs = [], [], []
         for j, p in enumerate(spine[1:], 1):                                   # pinnate leaflets on both sides
@@ -352,8 +409,11 @@ def jute_sack(prop='JuteSack', loc=(0, 0, 0)):
     for v in ob.data.vertices:
         if v.co.z < -.12: v.co.z = -.12 - (v.co.z + .12) * .15                 # flat bottom where it sits
         if v.co.z > .2: v.co.x *= .55; v.co.y *= .55                           # gathered, tied neck
+        v.co += v.normal * .03 * noise.noise(v.co * 6 + Vector((loc[0], 0, 0)))  # lumpy: grain inside the sack
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    uv_box(ob, .5); ob.data.materials.append(M['jute'])
+    uv_box(ob, .3); ob.data.materials.append(M['jute'])
+    for p in ob.data.polygons: p.use_smooth = True
+    tube(prop + '_tie', [(loc[0] - .09, loc[1], loc[2] + .62), (loc[0] + .09, loc[1], loc[2] + .63)], .012, prop, M['jute'], seg=6)
     for c in ob.users_collection: c.objects.unlink(ob)
     link(ob, prop)
 

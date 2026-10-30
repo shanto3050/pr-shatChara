@@ -4,20 +4,20 @@
     "objects": 3
   },
   "TubeWell": {
-    "triangles": 656,
-    "objects": 8
+    "triangles": 776,
+    "objects": 9
   },
   "MudHouse": {
-    "triangles": 11472,
-    "objects": 34
+    "triangles": 11160,
+    "objects": 29
   },
   "BambooFence": {
-    "triangles": 948,
-    "objects": 77
+    "triangles": 936,
+    "objects": 76
   },
   "BananaPlant": {
-    "triangles": 508,
-    "objects": 10
+    "triangles": 1702,
+    "objects": 23
   },
   "CoconutPalm": {
     "triangles": 4284,
@@ -28,8 +28,8 @@
     "objects": 1
   },
   "JuteSack": {
-    "triangles": 520,
-    "objects": 1
+    "triangles": 532,
+    "objects": 2
   },
   "_materials": {
     "Bamboo": [
@@ -37,15 +37,24 @@
       "Bamboo001C_1K-JPG_NormalGL.jpg",
       "Bamboo001C_1K-JPG_Roughness.jpg"
     ],
+    "BananaStem": [
+      "village_banana_stem"
+    ],
     "Concrete": [
       "yellow_plaster_02_diff_1k.jpg",
       "yellow_plaster_02_nor_gl_1k.jpg",
       "yellow_plaster_02_rough_1k.jpg"
     ],
+    "DryLeaf": [
+      "village_leaf_dry"
+    ],
     "DungCake": [
       "Clay005_1K-JPG_Color.jpg",
       "Clay005_1K-JPG_NormalGL.jpg",
       "Clay005_1K-JPG_Roughness.jpg"
+    ],
+    "FrondStem": [
+      "village_leaf"
     ],
     "Jute": [
       "hessian_230_diff_1k.jpg",
@@ -61,14 +70,12 @@
       "dry_mud_field_001_rough_1k.jpg"
     ],
     "MudPlaster": [
-      "yellow_plaster_02_diff_1k.jpg",
-      "yellow_plaster_02_nor_gl_1k.jpg",
-      "yellow_plaster_02_rough_1k.jpg"
+      "Clay005_1K-JPG_Color.jpg",
+      "Clay005_1K-JPG_NormalGL.jpg",
+      "Clay005_1K-JPG_Roughness.jpg"
     ],
     "OldWood": [
-      "Planks039_1K-JPG_Color.jpg",
-      "Planks039_1K-JPG_NormalGL.jpg",
-      "Planks039_1K-JPG_Roughness.jpg"
+      "village_door_planks"
     ],
     "PalmTrunk": [
       "village_palm_trunk"
