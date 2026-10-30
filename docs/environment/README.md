@@ -5,16 +5,16 @@ Authentic Bangladeshi village props for the courtyard, built by `art-source/crea
 | Prop | Bangla | Triangles | Notes |
 |---|---|---|---|
 | Mud house | মাটির ঘর | 11,160 | Raised earthen plinth (ভিটা) with a verandah, one-piece earthy clay walls (door and window cut out) with a darker base band, weathered plank door and shutter, corrugated tin gable roof (real corrugation), bamboo posts, dung cakes (ঘুঁটে) drying on the side wall |
-| Haystack | খড়ের গাদা | 3,992 | Straw dome stacked in layers around a bamboo pole, with 900 loose straw cards sticking out and hanging down so the outline isn't smooth |
+| Haystack | খড়ের গাদা | 4,992 | Straw dome stacked in layers around a bamboo pole, with 1,400 thin loose straw strands sticking out and hanging down so the outline isn't smooth |
 | Tube well | চাপকল | 776 | Cast-iron hand pump (green paint, rust at edges) with cap, bracket and wooden grip, on a concrete pad with a drain |
-| Bamboo fence | বাঁশের বেড়া | 912 | 4 m section: posts, rails and uneven split-bamboo slats |
-| Banana clump | কলাগাছ | 1,706 | A mature plant and two suckers: green pseudo-stems, 2–2.6 m leaves that rise and arch over with torn edges, dead leaves hanging down |
-| Coconut palm | নারকেল গাছ | 7,098 | 7.5 m leaning trunk with irregular leaf-scar rings, 14 fronds with wider drooping leaflets, three dry fronds hanging down, a coconut bunch |
+| Bamboo fence | বাঁশের বেড়া | 936 | 4 m section: posts, rails and uneven split-bamboo slats |
+| Banana clump | কলাগাছ | 1,682 | A mature plant and two suckers: green pseudo-stems, 2–2.6 m leaves that rise and arch over with torn edges, dead leaves hanging down |
+| Coconut palm | নারকেল গাছ | 7,530 | 7.5 m leaning trunk with irregular leaf-scar rings, 14 fronds with wider drooping leaflets, three dry fronds with limp leaflets hanging down the trunk, a coconut bunch |
 | Clay water pot | কলসি | 504 | Classic round kolshi in terracotta |
 | Jute sack | পাটের বস্তা | 532 | Lumpy jute-brown hessian sack with a tied neck |
-| Clothes line | কাপড় শুকানোর দড়ি | 1,704 | Two bamboo poles, a sagging jute rope, a checked lungi, a red gamcha and a green saree drying |
+| Clothes line | কাপড় শুকানোর দড়ি | 1,704 | Two bamboo poles, a sagging jute rope, a blue checked lungi, a red-and-white checked gamcha and a green saree with gold buti and border |
 | Straw drying | খড় শুকানো | 1,784 | Rice straw spread in drifts on a woven bamboo mat (চাটাই) |
-| Pond edge | পুকুর | 2,086 | Dark still water below a sloping mud bank, water-hyacinth rosettes with lilac flowers |
+| Pond edge | পুকুর | 2,182 | Still water inside a raised earth bank (পাড়) that rises above the yard, water-hyacinth rosettes with lilac flowers |
 | Van-rickshaw | ভ্যান গাড়ি | 2,232 | Pedal van: bicycle front with handlebar and saddle, painted frame, spoked wheels, flat wooden cargo deck with rails |
 | Grass clump | ঘাস | 28 | Alpha grass cards, scattered along the fence, plinth, pond bank and courtyard border |
 
@@ -27,4 +27,5 @@ Renders of the courtyard, with the Bablu mockup for scale, are in this folder.
 - Replace guesses with the reference photos of a real village (D19): proportions of houses and haystacks, colours, local details.
 - Mobile LODs for the house roof and the palm (the corrugated roof is most of the house's triangles).
 - Animals (cow, goat, chickens): organic shapes like these don't come out well when built by script. Free CC0 scans or models, or a 3D artist, are the better route.
+- Water-hyacinth flowers read as small eggs from a distance; cloth dents slightly where it hangs over the rope.
 - More ground variety: footpaths worn into the courtyard, puddles after rain, scattered leaves.
