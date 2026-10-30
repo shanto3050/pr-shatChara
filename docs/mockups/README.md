@@ -2,6 +2,8 @@
 
 ## Current work: concept-driven Bablu v4
 
+**Direction change, 31 October:** the user judged the procedural model too puppet-like and selected the [MetaHuman production track](../metahuman-bablu.md). The v4 model below remains a fallback and clothing reference; it is not approved final character art.
+
 See the [3D refinement renders and portable model](v4-model/README.md) and the [public-reference credits and concept prompt](v4-references/README.md). The photographic concept is the quality target. The rigged model is still an art work in progress and has not replaced the Android character.
 
 ## Bablu (বাবলু): free resources only

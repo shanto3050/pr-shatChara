@@ -31,3 +31,9 @@ node_modules/
 art-source/vendor/
 *.blend1
 __pycache__/
+
+# Unreal is a character-authoring tool; the shipped game remains Unity.
+art-source/metahuman/BabluCreator/DerivedDataCache/
+art-source/metahuman/BabluCreator/Intermediate/
+art-source/metahuman/BabluCreator/Saved/
+art-source/metahuman/BabluCreator/Binaries/

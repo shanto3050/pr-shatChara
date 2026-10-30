@@ -1,0 +1,11 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.8",
+  "Category": "Character Art",
+  "Description": "Sat Chara Bablu MetaHuman authoring and export project. The Android game remains in Unity.",
+  "Plugins": [
+    { "Name": "MetaHumanCharacter", "Enabled": true },
+    { "Name": "PythonScriptPlugin", "Enabled": true },
+    { "Name": "EditorScriptingUtilities", "Enabled": true }
+  ]
+}
