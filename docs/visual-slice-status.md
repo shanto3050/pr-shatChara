@@ -41,3 +41,8 @@ Ground albedo uses built-in image generation. Original prompt: "Perfectly overhe
 ## Captured actions continuation (0.2.5)
 
 [Action integration checkpoint](reports/2026-10-30-action-integration.md): throw/quick throw, stone pickup/place, duck and dodge now use captured poses with fixed-step event timing. Corrected walk/jog, all action clips, pause while throwing and a full eight-round match pass Unity validation. Samsung phone touch throw/topple/movement/pickup/place/pause pass; two short Realistic windows measured 29.9 / 29.7 FPS, with one >100 ms frame in the latter. Deep-crouch clothing and exact prop contacts remain unfinished. New village source assets have imported metadata; material/scene integration is the next serial task.
+
+
+## Village prop continuation (0.2.6)
+
+[Village integration report](reports/2026-10-30-village-props.md): 13 URP prop types, preserved import transforms, shared-material combined meshes, house/palm/haystack LODs and blended dry/grass terrain. Source bounds, zero added colliders, preset restoration, animation and full-match checks pass. Samsung touch gameplay passes; Low/Realistic/High short windows stay around 29.7–29.9 FPS. One PSS snapshot is about 380 MiB. M2 art approval, sustained thermals and the proposed 3 GB floor remain open. Continue via the [Chhuti roadmap](chhuti-roadmap.md), starting with free Bablu v3 export/clothing and focused touch/rule review.

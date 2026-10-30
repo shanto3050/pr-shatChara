@@ -1,0 +1,436 @@
+{
+  "materials": [
+    {
+      "name": "Bamboo",
+      "texture": "Bamboo001C_1K-JPG_Color.jpg",
+      "normal": "Bamboo001C_1K-JPG_NormalGL.jpg",
+      "roughness": "Bamboo001C_1K-JPG_Roughness.jpg",
+      "color": [
+        1.15,
+        1.05,
+        0.85,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "BananaStem",
+      "texture": "village_banana_stem.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.4,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "Concrete",
+      "texture": "yellow_plaster_02_diff_1k.jpg",
+      "normal": "yellow_plaster_02_nor_gl_1k.jpg",
+      "roughness": "yellow_plaster_02_rough_1k.jpg",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "DryLeaf",
+      "texture": "village_leaf_dry.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": true
+    },
+    {
+      "name": "DungCake",
+      "texture": "Clay005_1K-JPG_Color.jpg",
+      "normal": "Clay005_1K-JPG_NormalGL.jpg",
+      "roughness": "Clay005_1K-JPG_Roughness.jpg",
+      "color": [
+        0.45,
+        0.32,
+        0.2,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "FrondStem",
+      "texture": "village_leaf.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1.4,
+        1.25,
+        0.8,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.4,
+      "cutout": false,
+      "twoSided": true
+    },
+    {
+      "name": "GamchaCloth",
+      "texture": "village_cloth_gamcha.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": true
+    },
+    {
+      "name": "GrassCards",
+      "texture": "strands_2.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": true,
+      "twoSided": true
+    },
+    {
+      "name": "HyacinthFlower",
+      "texture": "",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        0.55,
+        0.45,
+        0.85,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "Jute",
+      "texture": "hessian_230_diff_1k.jpg",
+      "normal": "hessian_230_nor_gl_1k.jpg",
+      "roughness": "hessian_230_rough_1k.jpg",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "Leaf",
+      "texture": "village_leaf.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.3,
+      "cutout": false,
+      "twoSided": true
+    },
+    {
+      "name": "LungiCloth",
+      "texture": "village_cloth_lungi.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": true
+    },
+    {
+      "name": "MudBase",
+      "texture": "dry_mud_field_001_diff_1k.jpg",
+      "normal": "dry_mud_field_001_nor_gl_1k.jpg",
+      "roughness": "dry_mud_field_001_rough_1k.jpg",
+      "color": [
+        0.7,
+        0.58,
+        0.46,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "MudPlaster",
+      "texture": "Clay005_1K-JPG_Color.jpg",
+      "normal": "Clay005_1K-JPG_NormalGL.jpg",
+      "roughness": "Clay005_1K-JPG_Roughness.jpg",
+      "color": [
+        0.74,
+        0.64,
+        0.54,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "OldWood",
+      "texture": "village_door_planks.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "PalmTrunk",
+      "texture": "village_palm_trunk.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "PondWater",
+      "texture": "",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        0.035,
+        0.06,
+        0.045,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.8,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "PumpPaint",
+      "texture": "village_pump_paint.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0.5,
+      "smoothness": 0.55,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "RickshawPaint",
+      "texture": "village_pump_paint.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1.3,
+        2.2,
+        3.6,
+        1
+      ],
+      "metallic": 0.4,
+      "smoothness": 0.6,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "Rope",
+      "texture": "hessian_230_diff_1k.jpg",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        0.6,
+        0.5,
+        0.36,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "SareeCloth",
+      "texture": "village_cloth_saree.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": true
+    },
+    {
+      "name": "Straw",
+      "texture": "ThatchedRoof002A_1K-JPG_Color.jpg",
+      "normal": "ThatchedRoof002A_1K-JPG_NormalGL.jpg",
+      "roughness": "ThatchedRoof002A_1K-JPG_Roughness.jpg",
+      "color": [
+        1.1,
+        0.98,
+        0.78,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "StrawCards",
+      "texture": "strands_1.png",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": true,
+      "twoSided": true
+    },
+    {
+      "name": "Terracotta",
+      "texture": "Clay005_1K-JPG_Color.jpg",
+      "normal": "Clay005_1K-JPG_NormalGL.jpg",
+      "roughness": "Clay005_1K-JPG_Roughness.jpg",
+      "color": [
+        1.05,
+        0.6,
+        0.38,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "TinRoof",
+      "texture": "rusty_corrugated_iron_diff_1k.jpg",
+      "normal": "rusty_corrugated_iron_nor_gl_1k.jpg",
+      "roughness": "rusty_corrugated_iron_rough_1k.jpg",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0.35,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "Tyre",
+      "texture": "",
+      "normal": "",
+      "roughness": "",
+      "color": [
+        0.025,
+        0.025,
+        0.025,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.15,
+      "cutout": false,
+      "twoSided": false
+    },
+    {
+      "name": "GroundGrass",
+      "texture": "grass_ground_diff_1k.jpg",
+      "normal": "grass_ground_nor_gl_1k.jpg",
+      "roughness": "grass_ground_rough_1k.jpg",
+      "color": [
+        0.8,
+        0.9,
+        0.72,
+        1
+      ],
+      "metallic": 0,
+      "smoothness": 0.08,
+      "cutout": false,
+      "twoSided": false
+    }
+  ]
+}

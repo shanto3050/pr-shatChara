@@ -25,7 +25,8 @@
 | D19 | 2026-10-29 | Reference photography of a real village field, houses, objects and clothing; photogrammetry for props | User confirmed it's possible. Needed before environment production |
 | D20 | 2026-10-29 | Provisional manual Low/Realistic/High presets; resolution height 540/720/900; target 30 FPS | Realistic 720p initially measured 18.3 FPS on SC-03K. Mobile geometry and shadow costs were reduced, reaching near 30 FPS in short samples; these are smoke-test settings, not certification. Low has no real-time shadows; realistic uses 1024 hard shadows; High uses 2048 soft shadows. Final Low hair/LODs/blob-shadow work remains open |
 | D21 | 2026-10-29 | Use official CMU subject 02 walking/jogging recordings for provisional locomotion, with source data, hashes and reuse terms included | Free recorded motion replaces the sine-wave gait. Direction-space retargeting, stride-by-distance, flat-ground foot locking and authored action overlays remain a prototype. Throws, stacking, duck and sidestep still need game-specific animation; M2 is not approved |
-
+| D22 | 2026-10-30 | Fixed-step captured throw/pickup/place events and shared action poses; integrated village props with preserved FBX transforms and distance LODs | Serial implementation checkpoints 0.2.5–0.2.6; separate technical checks from final clothing/contact/art approval |
+| D23 | 2026-10-30 | Reconcile the Chhuti draft through match → Day 1 → Chapter 1 → later chapters → online gates | Working implementation sequence from the incoming concept; current match work is reusable. The concept's 3 GB candidate supersedes the earlier 4 GB planning candidate, without certifying hardware or changing the development APK's API floor |
 
 ## Open questions
 
@@ -33,7 +34,7 @@ These do not block writing the plan. Resolve them at the specified gate and reco
 
 | Question | When needed | Working assumption |
 |---|---|---|
-| Which low-end phone/chipset and oldest Android version are supported by the Low preset? | Before Low-preset certification | 4 GB candidate, exact device/OS unselected; realistic minimum is SC-03K (D15) |
+| Which low-end phone/chipset and oldest Android version are supported by the Low preset? | Before Low-preset certification | 3 GB / Android 10 candidate from the Chhuti concept (D23), unverified; exact device unselected; realistic reference is SC-03K (D15) |
 | Character source and art budget (D16) | Start of M2 | Evaluate free Bablu on-device first; paid tools or artist remain options, with explicit purchase authorization |
 | Which local rule variants should be authoritative? | M1 | Browser behavior until reviewed |
 | Landscape or portrait? | M1 input test | Landscape; camera direction set by D18 |

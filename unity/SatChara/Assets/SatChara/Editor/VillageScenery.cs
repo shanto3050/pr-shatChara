@@ -15,35 +15,11 @@ namespace SatChara.Editor
             Object.DestroyImmediate(ob.GetComponent<Collider>());
             ob.isStatic = true; return ob;
         }
-        private static void BuildCourtyard(GameObject tree, GameObject barrel)
+        private static void BuildCourtyard()
         {
-            scenery = new GameObject("Village surroundings").transform;
-            Block("Packed earth", new Vector3(0,-.12f,0), new Vector3(180,.2f,200), earth, Quaternion.identity);
-            House(new Vector3(-20,0,13), 10, 7, 12);
-            House(new Vector3(17,0,20), 11, 6, -12);
-            House(new Vector3(2,0,29), 9, 6, 3);
-            DecorateCourtyard(tree);
-            // Decoration stays outside the playable bounds (x +/- 11, z +/- 14).
-            for(int side=-1;side<=1;side+=2)
-                for(int i=0;i<15;i++)
-                {
-                    float z=-21+i*3.2f;
-                    Block("Bamboo fence post",new Vector3(side*17, .8f,z),new Vector3(.09f,1.6f,.09f),wood,Quaternion.Euler(0,0,(i%3-1)*3));
-                    if(i<14) for(int rail=0;rail<2;rail++)
-                        Block("Bamboo rail",new Vector3(side*17,.6f+rail*.6f,z+1.6f),new Vector3(.07f,.07f,3.3f),wood,Quaternion.identity);
-                }
-            Vector3[] trees={new Vector3(-26,0,-8),new Vector3(25,0,-4),new Vector3(-29,0,22),new Vector3(27,0,29),new Vector3(-10,0,37),new Vector3(11,0,39)};
-            for(int i=0;i<trees.Length;i++)
-            {
-                var ob=(GameObject)PrefabUtility.InstantiatePrefab(tree); ob.transform.SetParent(scenery,false);
-                ob.transform.position=trees[i]; ob.transform.rotation=Quaternion.Euler(0,i*73,0); ob.transform.localScale=Vector3.one*(1+i%3*.22f);
-            }
-            for(int i=0;i<3;i++)
-            {
-                var ob=(GameObject)PrefabUtility.InstantiatePrefab(barrel);ob.transform.SetParent(scenery,false);
-                ob.transform.position=new Vector3(12+i*.9f,0,23+i%2);ob.transform.rotation=Quaternion.Euler(0,i*43,0);
-            }
+            ImportedCourtyard();
         }
+
         private static void House(Vector3 center,float width,float depth,float yaw)
         {
             Quaternion rotation=Quaternion.Euler(0,yaw,0);

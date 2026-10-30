@@ -4,6 +4,9 @@
 
 The next product is a realistic 3D Android game designed to scale down to lower-spec phones. A **playable 4 vs 4 Android graybox** now runs on the test phone with touch aiming/movement, AI, stone rebuilding and scoring. An early textured village proof now integrates Bablu, houses and environment art; final animation, art quality and balance remain open. See the [village phone capture and report](docs/reports/2026-10-29-village-visual-proof.md). See [controls and build instructions](docs/playable-graybox.md), the [verified phone report and gameplay clip](docs/reports/2026-10-28-graybox.md), and [development setup status](docs/setup-status.md). The browser prototype remains the original gameplay reference.
 
+- [Chhuti concept and staged implementation roadmap](docs/chhuti-roadmap.md)
+- [Village props, terrain and phone performance checkpoint](docs/reports/2026-10-30-village-props.md)
+- [Captured actions and phone gameplay checkpoint](docs/reports/2026-10-30-action-integration.md)
 - [Detailed production plan and milestones](docs/production-plan.md)
 - [Technical architecture, budgets, and verification](docs/technical-plan.md)
 - [Implementation backlog and acceptance checks](docs/backlog.md)
@@ -13,13 +16,13 @@ The next product is a realistic 3D Android game designed to scale down to lower-
 - [Visual polish and phone performance report](docs/reports/2026-10-29-village-polish.md)
 - [Visual-slice status and continuation notes](docs/visual-slice-status.md)
 
-These documents are an editable v0.2 baseline dated 29 October 2026. Realism on mid/high devices is the primary goal; Low scales down. Sustained performance figures remain unverified targets.
+These documents are an editable v0.3 baseline with the Chhuti roadmap (30–31 October 2026). Realism on mid/high devices is the primary goal; Low scales down. Sustained performance figures remain unverified targets.
 
 Large art files use Git LFS. Install Git LFS, run `git lfs install` and `git lfs pull` after cloning, then open `unity/SatChara` in Unity 6000.3.27f1. FBX/textures are included; regenerating Blender assets is optional.
 
 ### C# rules implementation
 
-The [local rules package](packages/com.satchara.rules/README.md) implements and checks the match state independently of Unity rendering. Run `dotnet run --project tools/rules-check/RulesCheck.csproj` with .NET 10 SDK (54 assertions). It also compiles in the Unity 6000.3.27f1 project at unity/SatChara. The foundation APK passed installation, rendering, rebuild/reset and basic resume checks on Samsung SC-03K (Android 10). [Android build instructions](docs/android-build.md) explain reproduction. Full gameplay and sustained performance remain pending.
+The [local rules package](packages/com.satchara.rules/README.md) implements and checks the match state independently of Unity rendering. Run `dotnet run --project tools/rules-check/RulesCheck.csproj` with .NET 10 SDK (54 assertions). It also compiles in the Unity 6000.3.27f1 project at unity/SatChara. The foundation APK passed installation, rendering, rebuild/reset and basic resume checks on Samsung SC-03K (Android 10). [Android build instructions](docs/android-build.md) explain reproduction. Full automated matches and basic physical gameplay now pass; sustained performance and final art approval remain open.
 
 A playable gray-box prototype of **Sat Chara** (সাতচারা, "seven stones"), the traditional Bangladeshi team game. It's used to test the rules, AI and game feel before building the full Android game in Unity.
 

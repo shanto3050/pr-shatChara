@@ -18,14 +18,14 @@ Authentic Bangladeshi village props for the courtyard, built by `art-source/crea
 | Van-rickshaw | ভ্যান গাড়ি | 2,232 | Pedal van: bicycle front with handlebar and saddle, painted frame, spoked wheels, flat wooden cargo deck with rails |
 | Grass clump | ঘাস | 28 | Alpha grass cards, scattered along the fence, plinth, pond bank and courtyard border |
 
-Exported for Unity to `unity/SatChara/Assets/SatChara/Art/Environment/Village/` (one FBX per prop) with their textures in `Village/Textures/`. Unity hasn't imported them yet: on the Unity PC, assign URP Lit materials using the colour / normal (OpenGL; set the texture type to Normal map) / roughness maps listed per material in `art-source/village-props-summary.json`, and set the texture tiling to match (UVs are in metres). Straw, grass and hair-card materials need **alpha clipping**.
+Exported for Unity to `unity/SatChara/Assets/SatChara/Art/Environment/Village/` (one FBX per prop) with their textures in `Village/Textures/`. Unity integration is now implemented in `VillageProps.cs`: explicit URP materials, normal-map import, packed metallic/smoothness maps, alpha clipping, per-material mesh combining and distance LODs. Generated runtime prefabs/materials/meshes live beside the source FBXs. `art-source/village-unity-materials.json` records the material mapping and `create_village_lods.py` regenerates the heavy-prop LODs. See the [integration checkpoint](../reports/2026-10-30-village-props.md) for runtime evidence and remaining limits.
 
 Renders of the courtyard, with the Bablu mockup for scale, are in this folder.
 
 ## Still to do
 
 - Replace guesses with the reference photos of a real village (D19): proportions of houses and haystacks, colours, local details.
-- Mobile LODs for the house roof and the palm (the corrugated roof is most of the house's triangles).
+- Continue LOD/readability review on devices; initial house, palm and haystack distance LODs are integrated.
 - Animals (cow, goat, chickens): organic shapes like these don't come out well when built by script. Free CC0 scans or models, or a 3D artist, are the better route.
 - Water-hyacinth flowers read as small eggs from a distance; cloth dents slightly where it hangs over the rope.
 - More ground variety: footpaths worn into the courtyard, puddles after rain, scattered leaves.

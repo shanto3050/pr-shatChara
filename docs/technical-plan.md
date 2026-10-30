@@ -84,3 +84,10 @@ Before release verify current official Android/Google Play requirements, target 
 ### Captured action integration (30 October 2026)
 
 `GrayboxMatch` owns fixed-step action time and pending throw/pickup/place transactions. `VillageAvatar` samples `CapturedActions.json` and blends through the same ordered bone bindings as locomotion. A throw releases at the clip's release marker, not at button-up; pickup/place recheck rules and proximity at their marker. Pending pickups reserve stones, and new rounds/deaths clear pending actions. Presentation updates do not advance the action clock. Pausing simulation therefore freezes both poses and transactions. Gameplay owns roots and dodge displacement; captured root travel is not applied. See the [checkpoint](reports/2026-10-30-action-integration.md) for evidence and limitations.
+
+
+### Village runtime assets (0.2.6)
+
+`VillageProps.cs` converts the supplied FBXs into shared-material combined mesh prefabs, with a per-level source-bounds assertion that preserves FBX root transforms. Blender's `art-source/create_village_lods.py` supplies the heavy-prop distant models. `village-unity-materials.json` maps source material slots to URP textures, tint, cutout/culling and linear metallic/smoothness masks. Generated meshes and the terrain data are Git LFS assets; prefabs, material definitions and metadata remain source-controlled.
+
+`VillageSceneryQuality` applies prop LOD/grass visibility and terrain sampling settings when `MobileVisualQuality` changes. The latter restores its original LOD bias on destruction. The flat two-layer terrain is visual only, adds no collider and keeps the playable rectangle swept clear. See the [village checkpoint](reports/2026-10-30-village-props.md) for measured preset windows and the limits of those measurements. Chhuti's save/dialogue/chapter architecture remains staged work in the [roadmap](chhuti-roadmap.md).

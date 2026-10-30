@@ -18,12 +18,12 @@ namespace SatChara
         private LightShadows originalSunShadows;
         private int nativeWidth, nativeHeight, count, over100;
         private readonly float[] intervals = new float[4096];
-        private float warmupUntil, elapsed;
+        private float warmupUntil, elapsed, originalLodBias;
         private bool focused = true;
 
         private void Awake()
         {
-            nativeWidth=Screen.width;nativeHeight=Screen.height;
+            nativeWidth=Screen.width;nativeHeight=Screen.height;originalLodBias=QualitySettings.lodBias;
             originalQuality=QualitySettings.renderPipeline;originalDefault=GraphicsSettings.defaultRenderPipeline;
             var source=GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
             if (!source) { Debug.LogError("SAT_CHARA_QUALITY: URP asset missing");enabled=false;return; }
@@ -45,6 +45,7 @@ namespace SatChara
             pipeline.msaaSampleCount=preset==Preset.High?2:1;
             pipeline.mainLightShadowmapResolution=preset==Preset.Low?512:preset==Preset.High?2048:1024;
             if(sun) sun.shadows=preset==Preset.Low?LightShadows.None:preset==Preset.High?LightShadows.Soft:LightShadows.Hard;
+            foreach(var scenery in FindObjectsByType<VillageSceneryQuality>(FindObjectsSortMode.None))scenery.Apply(preset);
             Application.targetFrameRate=30;
             PlayerPrefs.SetInt("SatChara.VisualQuality",(int)preset);
             ResetSamples();
@@ -71,7 +72,7 @@ namespace SatChara
         private void OnDestroy()
         {
             if (!pipeline) return;
-            QualitySettings.renderPipeline=originalQuality;GraphicsSettings.defaultRenderPipeline=originalDefault;
+            QualitySettings.renderPipeline=originalQuality;GraphicsSettings.defaultRenderPipeline=originalDefault;QualitySettings.lodBias=originalLodBias;
             if(sun) sun.shadows=originalSunShadows;
             Destroy(pipeline);
         }

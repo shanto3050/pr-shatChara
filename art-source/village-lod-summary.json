@@ -1,0 +1,23 @@
+{
+  "MudHouse": {
+    "source_triangles": 11160,
+    "distant_triangles": 5736,
+    "blender": "5.2.1 LTS",
+    "source_sha256": "37d77569473bff29e2a11cffd47f076042b5bcc97d2a0968a20fc67d075311d9",
+    "lod_sha256": "44ea7452f385c6ddeac028e54a94b850c897801c3dfc0039df02556b07a2b75d"
+  },
+  "CoconutPalm": {
+    "source_triangles": 7530,
+    "distant_triangles": 4297,
+    "blender": "5.2.1 LTS",
+    "source_sha256": "0d78f9ff0b88e69fd575b9d2abb6081ab8495cf68826cfb5b64bf45cc6a9211b",
+    "lod_sha256": "768b42fe9e17c1d1d967189da361de9dc907b86a6f8aebfa81f35dfae40b5e57"
+  },
+  "Haystack": {
+    "source_triangles": 4992,
+    "distant_triangles": 1021,
+    "blender": "5.2.1 LTS",
+    "source_sha256": "7adfeb16f105dc471b7af24a407f04da54ea1f8911ef7c2db558bf1374a893ce",
+    "lod_sha256": "70368d792ffcb68c95bbe80c7ffad25f29ec9f54913bcea5bb65ba6b1841bad0"
+  }
+}

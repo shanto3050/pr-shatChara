@@ -1,12 +1,12 @@
 # Sat Chara Android production plan
 
-Version 0.2 · 29 October 2026 · Status: working baseline, open to revision
+Version 0.3 · 30 October 2026 · Status: working baseline, open to revision
 
 ## 1. Product goal
 
 Build a convincing, realistic 3D Android adaptation of Bangladeshi Sat Chara. Players should recognize both the traditional game and the village setting. Natural movement, responsive controls, readable action, and reliable performance matter as much as visual detail.
 
-The browser game is a reference prototype, not the Android implementation. Preserve it so rules and balance can be compared during development. No Unity project or Android build is delivered by this planning milestone.
+The browser game remains the reference for rules and balance. A Unity Android prototype now exists, with captured actions and village integration checkpoints. The broader Chhuti concept is staged in the [implementation roadmap](chhuti-roadmap.md); the milestones below describe the Sat Chara foundation and its quality gates.
 
 ## 2. Agreed direction and provisional choices
 
@@ -17,7 +17,7 @@ Agreed 29 October 2026 (D15–D19):
 - **Realism first on mid and high phones.** Lower-spec phones are supported through a Low preset that is allowed to look clearly simpler. Low-end support no longer limits the target look.
 - **Visual benchmark: Real Cricket 24**, a realistic South Asian sports game on mid-range Android. It is the reference for character, lighting and camera quality (see "Visual target" below).
 - **Camera:** a broadcast-style sports camera as the default, with a wide tactical view as an option.
-- **Real reference photography** of a Bangladeshi village field, houses, objects and children's clothing is available and is used for authenticity, textures and photogrammetry.
+- **Reference photography** of a Bangladeshi village field, houses, objects and children's clothing is planned for authenticity and target matching. Linked research is in docs/reference; an approved project-specific photo set and target frame remain open.
 - Test phones: Samsung SC-03K (Galaxy S9+ class: Snapdragon 845, Adreno 630, ~6 GB RAM) is the current minimum for the realistic tier. A Xiaomi 17 Ultra is mentioned as available but has not been used yet.
 
 Baseline: Unity with Universal Render Pipeline (URP), landscape orientation, offline single-player 4 vs 4 matches, three difficulty levels, one village courtyard, and eight selectable characters. Unreal Engine 5 was considered: it is stronger at realism on PC, but its main realism features (Lumen, Nanite) don't run on mobile and its Android builds are heavy, so Unity URP stays. Record changes in decisions.md.
@@ -38,7 +38,7 @@ What "Real Cricket 24 level" means here, and what to expect:
 | Movement | Close, if game actions are motion-captured (phone-based mocap) and cleaned up; not with procedural posing |
 | Characters (faces, skin, hair, clothing) | The hardest gap. A studio benchmark relies on dedicated character artists. Matching it needs a paid character tool or a 3D character artist; code-generated or free base meshes will look noticeably weaker |
 
-## 3. First release scope
+## 3. Sat Chara foundation scope
 
 Include:
 
@@ -48,10 +48,10 @@ Include:
 - AI allies and opponents; Easy, Normal, Hard.
 - Touch controls, contextual tutorial, pause, settings, audio controls.
 - Bangla and English UI, readable fonts and language switching.
-- Low, Medium, High graphics presets, persistent settings and basic local progression only if time permits after core quality gates.
+- Low, Realistic, High graphics presets, persistent settings and basic local progression only if time permits after core quality gates.
 - Offline play, interruption recovery, signed Android test and release artifacts.
 
-Exclude from first release: online multiplayer, accounts, backend, chat, ads, purchases, open-world exploration, multiple maps, weather cycles, cinematic story, facial capture, and elaborate cloth/hair simulation. Adding any requires an explicit scope revision.
+Deferred from the match-foundation delivery: online multiplayer, accounts, backend, chat, ads, purchases, open-village exploration, multiple maps, weather cycles, cinematic story, facial capture and elaborate cloth/hair simulation. The [Chhuti roadmap](chhuti-roadmap.md) stages the story, additional locations and proposed release monetization after the foundation gates.
 
 ## 4. Device, performance, and size targets
 
@@ -59,11 +59,11 @@ These are hypotheses until a representative low-end device is selected and teste
 
 | Tier | Initial target | Quality approach |
 |---|---|---|
-| Low (supported, simpler look) | 4 GB RAM Android phone; exact chipset and OS still to be chosen | Stable 30 FPS; reduced resolution, lower LODs, opaque hair, blob shadows. Allowed to look clearly simpler |
+| Low (supported, simpler look) | 3 GB / Android 10 candidate from the Chhuti concept; exact device unselected and compatibility unverified | Stable 30 FPS; reduced resolution, lower LODs, opaque hair, blob shadows. Allowed to look clearly simpler |
 | Realistic minimum | Samsung SC-03K / Galaxy S9+ class (Snapdragon 845, ~6 GB) | Stable 30 FPS with the realistic look: baked lighting, character shadows, hair cards |
 | High | Recent flagship (e.g. Xiaomi 17 Ultra, if available for testing) | Full detail, higher resolution and shadows; optional 60 FPS |
 
-Initial engineering budgets: 30 FPS means 33.3 ms/frame; aim for p95 frame time at or below that during warmed-up active play. Investigate spikes above 100 ms. Peak process memory below 1.5 GB on the realistic minimum and below 1 GB on Low. Download around 150 MB for the base app, with the realistic content delivered through Google Play Asset Delivery; total download up to about 1 GB. Cold start below 15 seconds, and fewer than 1% of sessions ending in crashes during beta. These are goals, not measured results. Review budgets after the first real build rather than silently weakening them.
+Initial engineering budgets: 30 FPS means 33.3 ms/frame; aim for p95 frame time at or below that during warmed-up active play. Investigate spikes above 100 ms. Peak process memory below 1.5 GB on the realistic minimum and below 1 GB on Low. Download around 150 MB for the base app, with the realistic content delivered through Google Play Asset Delivery; the Chhuti concept proposes around 1.5–2 GB for eventual full content, which must be reviewed per chapter. Cold start below 15 seconds, and fewer than 1% of sessions ending in crashes during beta. These are goals, not measured results. Review budgets after the first real build rather than silently weakening them.
 
 Run at least 20 minutes of continuous matches on physical devices to expose heat and throttling. Record quality preset, render resolution, battery/thermal condition, build ID, frame timing, memory, and crashes. The Xiaomi cannot certify the minimum tier. Obtain or borrow a low-end device; emulators and editor profiling are supplementary.
 
@@ -107,7 +107,7 @@ Create consistent reference sheets, human-proportion models, shared compatible h
 | Lighting, materials, shaders (including a mobile skin shader), post-processing, LODs, import tooling | Code and configuration |
 | **Realistic characters** (faces, skin, hair, clothing) | **Open decision (D16):** evaluate free Bablu v2 in Unity and Android first; compare paid tools or an artist if it falls short. The earlier Western-clothed model is a placeholder; Bablu is an unapproved visual experiment |
 | Clothing folds (lungi, dupatta, kameez, frock) | Simulated offline (e.g. Marvelous Designer or Blender cloth) and baked into the mesh; no real-time cloth |
-| Animation | CMU captured walk/jog is integrated in prototype 0.2.4 (D21); Mixamo remains an alternative for basic movement; **phone-based motion capture** (e.g. Move.ai, Rokoko Video) for the game's own actions (overarm throw, crouch-and-stack, duck, sidestep); Unity Animation Rigging for foot locking and hand reach. Adjust adult motion for children's proportions. Procedural posing (VillageAvatar.cs) is a stopgap, not the final animation |
+| Animation | CMU captured walk/jog and game-action clips are integrated in prototypes 0.2.4–0.2.5 (D21/D22); Mixamo remains an alternative for basic movement; **phone-based motion capture** (e.g. Move.ai, Rokoko Video) for the game's own actions (overarm throw, crouch-and-stack, duck, sidestep); Unity Animation Rigging for foot locking and hand reach. Adjust adult motion for children's proportions. Procedural posing (VillageAvatar.cs) is a stopgap, not the final animation |
 
 Animation priority: idle, locomotion with turns/stops, aim/wind-up/release, pass/catch, carry/place, dodge/duck, hit/out, celebration. Align release and contact events to gameplay. Fix sliding feet, floating hands, snapping turns, and stone clipping. Use shared rigs and retargeting but check clothing and limb proportions per character. Keep signature animations optional until core actions are polished. Faces: blinking, a few expressions, and eyes that track the ball; no facial capture.
 
@@ -165,11 +165,7 @@ Update backlog.md as work changes. Update decisions.md when direction changes. K
 
 ## 13. Immediate next work
 
-1. Review this plan with the user and record any changes.
-2. Audit Unity, Android SDK/JDK, available disk, build tools, and device connectivity without altering unrelated projects.
-3. Select/pin supported editor and packages using current official documentation at implementation time.
-4. Confirm a low-end reference device and rule variants; proceed with provisional rules while independent setup continues.
-5. Complete M0 with a real empty-scene Android build, then begin M1.
+Follow the serial queue in [Chhuti implementation roadmap](chhuti-roadmap.md). Captured actions are integrated; village prop integration is the current checkpoint. Continue with the free character export/clothing review, focused touch/rule playtests, reference/target-frame approval and sustained/lower-memory device checks. A saved, complete Day 1 slice follows the match foundation gates.
 
 ## Change log
 
@@ -182,3 +178,5 @@ Update backlog.md as work changes. Update decisions.md when direction changes. K
 
 
 30 October 2026 implementation checkpoint: runtime captured actions and fixed-step release/grab/place events now pass Unity and basic Samsung phone verification; see [evidence](reports/2026-10-30-action-integration.md). Continue serially with village materials/scene integration and mobile optimization, then reconcile this match-focused plan with the Chhuti concept. The larger story is not implemented by this checkpoint.
+
+- 2026-10-30: v0.3 reconciles the Chhuti concept with the match foundation through a staged roadmap; the 3 GB candidate and chapter/download targets remain unverified. Village 0.2.6 adds shared-material props, distance LODs and blended terrain.

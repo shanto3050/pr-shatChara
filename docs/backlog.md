@@ -19,8 +19,8 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 | V01 | M2 | Reference photo shoot (village field, houses, objects, children's clothing); mood board with Real Cricket 24 captures; target frame | Photos in repo (LFS) or linked; mood board and target frame approved by user | TODO |
 | V01b | M2 | Decide character source (D16): free Bablu proof, paid tool or 3D artist | Unity/device comparison and decision recorded; any purchase authorized by user. Free Bablu v3 done (docs/mockups); MetaHuman trial on the Unity PC per [metahuman-trial.md](metahuman-trial.md) | IN PROGRESS |
 | V02 | M2 | Integrate one realistic rigged character with motion-captured throw, carry/place, duck and sidestep | CMU walk/jog and captured throw/pickup/place/duck/dodge integrated; fixed-step events and Unity action/contact/match checks pass; phone throw/topple/movement/pickup/place/pause verified; clothing/contact cleanup and target comparison remain open | IN PROGRESS |
-| V03 | M2 | Build finished courtyard section (photogrammetry/photo textures) and golden-hour lighting; broadcast camera | On-device capture matches target frame; user sign-off | IN PROGRESS |
-| V04 | M2 | Implement quality presets and profile devices | Provisional resolution/shadow/MSAA presets and short-window frame diagnostics implemented; device/thermal certification remains open | IN PROGRESS |
+| V03 | M2 | Build finished courtyard section (photogrammetry/photo textures) and golden-hour lighting; broadcast camera | 13 URP prop types and distance LODs integrated; Samsung captures reviewed; reference-matched target frame/baked lighting and user sign-off remain open | IN PROGRESS |
+| V04 | M2 | Implement quality presets and profile devices | Three preset gameplay windows near 30 FPS on SC-03K; one ~380 MiB PSS sample; sustained thermals and 3 GB certification remain open | IN PROGRESS |
 | S01 | M3 | Finish courtyard and all core interactions | Complete playable match in real scene | TODO |
 | S02 | M3 | Add tutorial, pause, settings and initial languages | Uncoached player completes basics; UI inspection | TODO |
 | S03 | M3 | Tune AI and gameplay feedback | Seeded scenarios and human playtest findings | TODO |
@@ -36,3 +36,17 @@ Status: TODO / IN PROGRESS / BLOCKED / DONE. DONE requires the listed evidence. 
 Plan v0.2 (29 October 2026) makes realistic graphics the primary goal; see D15–D19. Start V00 and V01 now, since they don't depend on M1.
 
 Next: V00 asset organization and V01 visual reference work, followed by one character/courtyard Unity proof and Android comparison (V02/V03). Dedicated pass/dodge/duck/multitouch checks, rules review and AI balance remain open M1 work. Full roster production stays gated by V04. See reports/2026-10-28-graybox.md.
+
+
+## Chhuti follow-on queue
+
+See [staged roadmap](chhuti-roadmap.md). These are planned tasks, not implemented story systems.
+
+| ID | Stage | Task | Completion evidence | Status |
+|---|---|---|---|---|
+| C01 | Day 1 | Write the arrival-to-bed playable scene/content outline | Reviewed dialogue/quest/phase flow with a small location list | TODO |
+| C02 | Day 1 | Versioned save/settings and durable content IDs | Phase-boundary save/reload and application interruption checks | TODO |
+| C03 | Day 1 | Dialogue, NPC interaction and quest/phase progression | Complete arrival → tutorial → curfew → night path | TODO |
+| C04 | Day 1 | Integrate Bangla text and village-life settings | Readable device UI; optional scenes preserve story/time state | TODO |
+| C05 | Day 1 | Village audience and cultural review | Recorded reviewer/playtester findings and addressed issues | TODO |
+| C06 | Chapter 1 | Expand only after Day 1 gate passes | Reviewed days 1–3 scope and measured content/device budgets | TODO |

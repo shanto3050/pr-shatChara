@@ -48,9 +48,7 @@ namespace SatChara.Editor
             grass = Surface("Grass", null, new Color(.2f,.29f,.07f), 0, .08f);
             stem = Surface("Banana Stem", null, new Color(.38f,.42f,.17f), 0, .06f);
             var character = CharacterPrefab();
-            var tree = EnvironmentPrefab("island_tree_01", 6.5f);
-            var barrel = EnvironmentPrefab("barrel_03", .95f);
-            BuildCourtyard(tree, barrel);
+            BuildCourtyard();
             var game = UnityEngine.Object.FindFirstObjectByType<GrayboxMatch>();
             game.SetVillageArt(character, earth, StoneMesh());
             game.gameObject.AddComponent<MobileVisualQuality>();
@@ -75,7 +73,7 @@ namespace SatChara.Editor
             Camera.main.clearFlags = CameraClearFlags.Skybox; Camera.main.allowHDR = false;
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), ScenePath);
             EditorBuildSettings.scenes = new[] {new EditorBuildSettingsScene(ScenePath,true)};
-            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.5"; PlayerSettings.Android.bundleVersionCode = 8;
+            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.6"; PlayerSettings.Android.bundleVersionCode = 9;
             AssetDatabase.SaveAssets();
             Debug.Log("SAT_CHARA_VILLAGE_READY: real skinned character, textured environment and perspective camera");
         }
@@ -149,7 +147,7 @@ namespace SatChara.Editor
             {
                 var importer = AssetImporter.GetAtPath(file.Replace('\\','/')) as TextureImporter;
                 if (!importer) continue;
-                bool normal = file.Contains("normal") || file.Contains("nor_gl") || file.Contains("skin_pores");
+                bool normal = file.Contains("normal") || file.Contains("nor_gl") || file.Contains("skin_pores") || file.Contains("NormalGL");
                 var type = normal ? TextureImporterType.NormalMap : TextureImporterType.Default;
                 if (importer.maxTextureSize == 1024 && importer.textureType == type && importer.textureShape == TextureImporterShape.Texture2D) continue;
                 importer.maxTextureSize = 1024; importer.textureType = type; importer.textureShape = TextureImporterShape.Texture2D;
