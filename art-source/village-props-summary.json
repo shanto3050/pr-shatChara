@@ -1,7 +1,7 @@
 {
   "Haystack": {
-    "triangles": 1856,
-    "objects": 3
+    "triangles": 4992,
+    "objects": 4
   },
   "TubeWell": {
     "triangles": 776,
@@ -16,12 +16,12 @@
     "objects": 76
   },
   "BananaPlant": {
-    "triangles": 1702,
+    "triangles": 1682,
     "objects": 23
   },
   "CoconutPalm": {
-    "triangles": 4284,
-    "objects": 36
+    "triangles": 7530,
+    "objects": 42
   },
   "ClayPot": {
     "triangles": 504,
@@ -30,6 +30,26 @@
   "JuteSack": {
     "triangles": 532,
     "objects": 2
+  },
+  "ClothesLine": {
+    "triangles": 1704,
+    "objects": 6
+  },
+  "StrawDrying": {
+    "triangles": 1784,
+    "objects": 2
+  },
+  "GrassClump": {
+    "triangles": 28,
+    "objects": 1
+  },
+  "Pond": {
+    "triangles": 2182,
+    "objects": 68
+  },
+  "VanRickshaw": {
+    "triangles": 2232,
+    "objects": 80
   },
   "_materials": {
     "Bamboo": [
@@ -56,6 +76,13 @@
     "FrondStem": [
       "village_leaf"
     ],
+    "GamchaCloth": [
+      "village_cloth_gamcha"
+    ],
+    "GrassCards": [
+      "strands_2"
+    ],
+    "HyacinthFlower": [],
     "Jute": [
       "hessian_230_diff_1k.jpg",
       "hessian_230_nor_gl_1k.jpg",
@@ -63,6 +90,9 @@
     ],
     "Leaf": [
       "village_leaf"
+    ],
+    "LungiCloth": [
+      "village_cloth_lungi"
     ],
     "MudBase": [
       "dry_mud_field_001_diff_1k.jpg",
@@ -80,13 +110,26 @@
     "PalmTrunk": [
       "village_palm_trunk"
     ],
+    "PondWater": [],
     "PumpPaint": [
       "village_pump_paint"
+    ],
+    "RickshawPaint": [
+      "village_pump_paint"
+    ],
+    "Rope": [
+      "hessian_230_diff_1k.jpg"
+    ],
+    "SareeCloth": [
+      "village_cloth_saree"
     ],
     "Straw": [
       "ThatchedRoof002A_1K-JPG_Color.jpg",
       "ThatchedRoof002A_1K-JPG_NormalGL.jpg",
       "ThatchedRoof002A_1K-JPG_Roughness.jpg"
+    ],
+    "StrawCards": [
+      "strands_1"
     ],
     "Terracotta": [
       "Clay005_1K-JPG_Color.jpg",
@@ -97,6 +140,7 @@
       "rusty_corrugated_iron_diff_1k.jpg",
       "rusty_corrugated_iron_nor_gl_1k.jpg",
       "rusty_corrugated_iron_rough_1k.jpg"
-    ]
+    ],
+    "Tyre": []
   }
 }

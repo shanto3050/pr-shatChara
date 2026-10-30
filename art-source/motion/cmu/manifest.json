@@ -80,16 +80,6 @@
       "sha256": "f43bf0118df112568d809fedc97dab0ee7633b1fec19505c892e86f9e0b50a67"
     },
     {
-      "name": "64.asf",
-      "url": "http://mocap.cs.cmu.edu/subjects/64/64.asf",
-      "sha256": "931aa1defb080cb8487817b92138cfc042d6bb5c2e84aecc7da0da3af20cd585"
-    },
-    {
-      "name": "64_26.amc",
-      "url": "http://mocap.cs.cmu.edu/subjects/64/64_26.amc",
-      "sha256": "4dee881631ac57e38c167542e14f5e260343f69cc35b71709c5a6d00470cddf4"
-    },
-    {
       "name": "69.asf",
       "url": "http://mocap.cs.cmu.edu/subjects/69/69.asf",
       "sha256": "c3019031ae5789b1d43d3bba424229ac544ccc68bb8c06e7d67bf75b1c41605f"
@@ -98,6 +88,16 @@
       "name": "69_75.amc",
       "url": "http://mocap.cs.cmu.edu/subjects/69/69_75.amc",
       "sha256": "7994991a42e95dc649a6b66e9fe5c2230e51d153b9e8457baaec4691661219c0"
+    },
+    {
+      "name": "111_17.amc",
+      "url": "http://mocap.cs.cmu.edu/subjects/111/111_17.amc",
+      "sha256": "a2a2dc6621d53c9bf390673ae598ddaec1983f30b961fa722e247c98654edd0c"
+    },
+    {
+      "name": "111_18.amc",
+      "url": "http://mocap.cs.cmu.edu/subjects/111/111_18.amc",
+      "sha256": "6ba04e997aaecdf7cc817ba786af6e2011f80733953fa059866c23e750dff299"
     }
   ],
   "retrieved_actions": "2026-10-30"

@@ -28,7 +28,8 @@ def speed(track, i):
 ACTIONS = [
     ('Throw',       '124', '124_01', 'throw',  .95, .65, 'release'),   # baseball pitch: full overarm throw
     ('ThrowCasual', '111', '111_33', 'throw',  .75, .55, 'release'),   # everyday throw
-    ('PickUp',      '64',  '64_26',  'lowest_hand', .95, .85, 'grab'),  # picking up a ball from the ground
+    ('PickUp',      '111', '111_17', 'lowest_hand', .95, .85, 'grab'),  # bend down, feet still (64_26-30 all stepped or kicked)
+    ('PickUpSquat', '111', '111_18', 'lowest_hand', .95, .9, 'grab'),   # squat right down to the ground
     ('Place',       '69',  '69_75',  'second_lowest_hand', .9, .8, 'place'),  # squat and set an object down
     ('Duck',        '139', '139_09', 'lowest_head', .55, .75, 'lowest'),
     ('DodgeRight',  '127', '127_14', 'side_step', .45, .55, 'step'),

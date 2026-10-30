@@ -6,13 +6,16 @@ Recorded human motion for the actions the game needs beyond walk/jog, converted 
 |---|---|---|---|---|
 | `Throw` | 124_01 "Baseball Pitch" | 49 | `release` 0.95 s | Full overarm throw at the tower |
 | `ThrowCasual` | 111_33 "Throwing" | 40 | `release` 0.75 s | Quick throw at a rival, passes |
-| `PickUp` | 64_26 "Picking up Ball" | 55 | `grab` 0.95 s | Grab the ball or a stone from the ground (bend at the waist) |
+| `PickUp` | 111_17 "Pick up" | 55 | `grab` 0.95 s | Grab the ball or a stone from the ground, bending down with the feet still |
+| `PickUpSquat` | 111_18 "Pick up" | 57 | `grab` 0.95 s | Squat right down to pick a stone off the ground |
 | `Place` | 69_75 "walk up to object, squat, pick up object, set down in another place" | 52 | `place` 0.9 s | Deep squat to place a stone on the tower |
 | `Duck` | 139_09 "Ducking" | 40 | `lowest` 0.55 s | Duck under a throw |
 | `DodgeRight` | 127_14 "Run Side Step Right" | 21 | `step` 0.12 s | Side-step dodge (running cut) |
 | `DodgeLeft` | mirror of `DodgeRight` | 21 | `step` 0.12 s | 127_13 "Run Side Step Left" barely moves sideways, so the right one is mirrored |
 
 Preview videos and a still at each event are in this folder (`<Clip>.mp4`, `<Clip>-<event>.jpg`), retargeted onto the Bablu mockup in Blender.
+
+**How the pick-up takes were chosen:** each CMU pick-up take was scored over its clip window. The first choice, 64_26, kicked its back leg out in the preview; the other "Picking up Ball" takes (64_27–30) also step or lift a foot (0.19–0.50 leg lengths). 111_17 keeps both feet planted (foot lift 0.04, travel 0.02) and 111_18 squats with the hand reaching the ground (0.07) and feet nearly still. Scoring script: `art-source/score_pickup_takes.py` (needs the 64_* and 115_* takes from the CMU site, which aren't kept in the repo).
 
 ## Files
 
@@ -31,15 +34,15 @@ All source takes and their SHA-256 digests are listed in `art-source/motion/cmu/
 4. Blend in and out over about 0.1–0.15 s from and to locomotion. Gameplay keeps owning the root; `root` is there if you want the body to lean into the travel.
 5. Check on the phone: feet, the arm at release, and the stone in the hand at `place`.
 
-## Important finding: left and right are mirrored in the walk/jog data
+## Fixed: left and right were mirrored in the walk/jog data
 
-In CMU data, `np.cross(UP, heading)` (used by `convert_cmu_motion.py`) points to the subject's **left**, not right. Checked on walk 02_01: dot product with the anatomical right (right hip minus left hip) = **−0.997**. In Unity, where x is right, the existing `CapturedLocomotion.json` therefore plays **mirrored left-to-right**. For a symmetric walk that's hard to see, but lateral leg and arm offsets are on the wrong side.
+In CMU data, `np.cross([0,1,0], heading)` (the old basis in `convert_cmu_motion.py`) points to the subject's **left**. Checked on walk 02_01: dot product with the anatomical right (right hip minus left hip) = **−0.997**. In Unity, where x is right (`VillageAvatar`'s idle pose puts left limbs at −x, with no compensation elsewhere), `CapturedLocomotion.json` played **mirrored left-to-right**.
 
-`CapturedActions.json` uses the anatomical right, so the right-handed throw stays right-handed. The walk/jog asset was **not** changed, because it was tuned and verified on the phone. To fix it, change `right=np.cross([0,1,0],heading)` to `right=np.cross(heading,[0,1,0])` in `convert_cmu_motion.py`, regenerate, and recheck the foot contacts on the device.
+**Fixed on 30 October 2026:** the basis is now `np.cross(heading, [0,1,0])` and `CapturedLocomotion.json` was regenerated. Verified against the previous file: every direction's x component flipped sign exactly (max error 0), y/z, pelvis bob, foot contacts and the summary are identical, and the pelvis roll was already anatomical and is unchanged. **Recheck walk/jog foot contacts and the arm swing on the phone** before calling it done. `CapturedActions.json` used the anatomical right from the start.
 
 ## Limits
 
 - These are adult recordings on a teenage body: timing and range of motion are adult.
-- `Place` is a two-handed set-down from a squat, and `PickUp` bends at the waist. Stacking small stones one-handed would ideally be captured specifically.
+- `Place` is a two-handed set-down from a squat. Stacking small stones one-handed would ideally be captured specifically (phone motion capture of a person acting it out).
 - The dodges are running side-steps with forward momentum, not a standing hop sideways.
 - Skinned clothing stretches in deep crouches (`Place`, `Duck`); the lungi needs corrective shapes or a simple cloth setup later.

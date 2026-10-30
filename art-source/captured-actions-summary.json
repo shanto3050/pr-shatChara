@@ -43,24 +43,45 @@
   },
   {
     "name": "PickUp",
-    "source": "64_26.amc",
-    "subject": "64",
+    "source": "111_17.amc",
+    "subject": "111",
     "key": "lowest_hand",
-    "key_frame": 314,
+    "key_frame": 198,
     "window": [
-      200,
-      416
+      84,
+      300
     ],
     "frames": 55,
     "duration": 1.8,
     "event_time": 0.95,
-    "min_pelvis": -0.0518,
+    "min_pelvis": -0.0975,
     "root_end": {
-      "x": 0.070776,
+      "x": -0.049566,
       "y": 0.0,
-      "z": 0.213772
+      "z": 0.018544
     },
-    "sha256": "4dee881631ac57e38c167542e14f5e260343f69cc35b71709c5a6d00470cddf4"
+    "sha256": "a2a2dc6621d53c9bf390673ae598ddaec1983f30b961fa722e247c98654edd0c"
+  },
+  {
+    "name": "PickUpSquat",
+    "source": "111_18.amc",
+    "subject": "111",
+    "key": "lowest_hand",
+    "key_frame": 240,
+    "window": [
+      126,
+      348
+    ],
+    "frames": 57,
+    "duration": 1.85,
+    "event_time": 0.95,
+    "min_pelvis": -0.7556,
+    "root_end": {
+      "x": 0.111044,
+      "y": 0.0,
+      "z": 0.101323
+    },
+    "sha256": "6ba04e997aaecdf7cc817ba786af6e2011f80733953fa059866c23e750dff299"
   },
   {
     "name": "Place",

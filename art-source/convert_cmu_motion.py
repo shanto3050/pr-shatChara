@@ -56,7 +56,9 @@ def convert(name,filename,min_period):
     bones,children=skeleton(SOURCE/'02.asf');raw=frames(SOURCE/filename)
     solved=[forward_kinematics(f,bones,children) for f in raw]
     roots=np.array([p['root'] for p,d in solved]);heading=roots[-10]-roots[10];heading[1]=0;heading/=np.linalg.norm(heading)
-    right=np.cross([0,1,0],heading);basis=np.array([right,[0,1,0],heading])
+    # x = the subject's anatomical right (Unity: x right). np.cross([0,1,0],heading) pointed to the subject's
+    # left in CMU data (dot with right hip minus left hip = -0.997 on 02_01), which mirrored the clip.
+    right=np.cross(heading,[0,1,0]);basis=np.array([right,[0,1,0],heading])
     leg=bones['lfemur']['length']+bones['ltibia']['length']
     ankle=np.array([basis@(p['ltibia']-p['root']) for p,d in solved])
     z=np.convolve(ankle[:,2],np.ones(9)/9,mode='same')

@@ -114,8 +114,8 @@ def image_from_array(name, arr, alpha=False):
     img.pixels.foreach_set(np.clip(arr, 0, 1).astype(np.float32).ravel()); img.pack()
     return img
 
-def pbr(name, color, normal=None, rough=None, tint=None, rough_value=None, metallic=0.0, alpha=None):
-    """Principled material from image files (or generated images). tint multiplies the colour."""
+def pbr(name, color, normal=None, rough=None, tint=None, rough_value=None, metallic=0.0, alpha=None, sat=None):
+    """Principled material from image files (or generated images). tint multiplies the colour; sat scales saturation."""
     m = bpy.data.materials.new(name); m.use_nodes = True; nt = m.node_tree; b = nt.nodes['Principled BSDF']
     def tex(src, non_color=False):
         n = nt.nodes.new('ShaderNodeTexImage')
@@ -127,6 +127,9 @@ def pbr(name, color, normal=None, rough=None, tint=None, rough_value=None, metal
         mix = nt.nodes.new('ShaderNodeMix'); mix.data_type = 'RGBA'; mix.blend_type = 'MULTIPLY'
         mix.inputs['Factor'].default_value = 1; mix.inputs[7].default_value = (*tint, 1)
         nt.links.new(col, mix.inputs[6]); col = mix.outputs[2]
+    if sat is not None:
+        hsv = nt.nodes.new('ShaderNodeHueSaturation'); hsv.inputs['Saturation'].default_value = sat
+        nt.links.new(col, hsv.inputs['Color']); col = hsv.outputs['Color']
     nt.links.new(col, b.inputs['Base Color'])
     if alpha is not None:
         nt.links.new(c.outputs['Alpha'], b.inputs['Alpha'])
@@ -205,7 +208,48 @@ def paint_rust_texture(n=512):
     col = green * (1 - rust[..., None]) + rustc * rust[..., None]
     return col * (1 + rng.normal(0, .03, (n, n, 1)))
 
+def strand_texture(n=512, color=(.62, .5, .26), count=320, seed_tone=.25):
+    """Alpha strands for straw and grass cards: thin lines, tapered tips, varied tone. RGBA."""
+    img = np.zeros((n, n, 4))
+    for _ in range(count):
+        x = rng.uniform(0, n); w = rng.uniform(.6, 2.2); a = rng.uniform(.6, 1)
+        tone = np.array(color) * rng.uniform(1 - seed_tone, 1 + seed_tone)
+        lean = rng.uniform(-.25, .25) * np.linspace(0, 1, n) ** 2 * n * .1
+        xs = np.arange(n)[None, :]; centre = x + lean[:, None]
+        prof = np.clip(1 - np.abs(xs - centre) / w, 0, 1) * a
+        length = rng.uniform(.55, 1.0); v = np.linspace(0, 1, n)[:, None]
+        alpha = prof * np.clip((length - v) / .15, 0, 1)                     # strands end at different heights
+        img[..., :3] = img[..., :3] * (1 - alpha[..., None]) + tone * alpha[..., None]
+        img[..., 3] = np.maximum(img[..., 3], alpha)
+    im = bpy.data.images.new(f'strands_{len(bpy.data.images)}', n, n, alpha=True)
+    im.pixels.foreach_set(np.clip(img, 0, 1).astype(np.float32).ravel()); im.pack()
+    return im
+
+def plaid_texture(n=256, base=(.1, .2, .45), lines=((.9, .9, .85, .1, .02), (.05, .1, .25, .55, .08))):
+    """Woven check for hanging cloth: base colour with crossing bands (r, g, b, position, width)."""
+    t = np.arange(n) / n; col = np.tile(np.array(base, float), (n, n, 1))
+    for r, g, b, pos, wid in lines:
+        band = (np.abs(((t - pos + .5) % 1) - .5) < wid).astype(float)
+        mask = np.maximum(band[None, :], band[:, None]) * .85
+        col = col * (1 - mask[..., None]) + np.array([r, g, b]) * mask[..., None]
+    return col * (1 + rng.normal(0, .03, (n, n, 1)))
+
+def saree_texture(n=512):
+    """Cotton saree: green body with small woven gold dots (buti), a gold border with a red line along the bottom
+    and one side. Used without tiling: the border must sit at the cloth's edges."""
+    u = np.arange(n)[None, :] / n; v = np.arange(n)[:, None] / n
+    col = np.tile(np.array([.08, .42, .28]), (n, n, 1))
+    dots = ((np.abs(((u * 18) % 1) - .5) < .12) & (np.abs(((v * 24 + (np.floor(u * 18) % 2) * .5) % 1) - .5) < .12)).astype(float)
+    col = col * (1 - dots[..., None] * .8) + np.array([.82, .62, .18]) * dots[..., None] * .8
+    for edge, w in ((1 - v, .14), (u, .08)):                                   # bottom and side border
+        band = (edge < w).astype(float); line = (np.abs(edge - w * .55) < .012).astype(float)
+        col = col * (1 - band[..., None]) + np.array([.8, .6, .16]) * band[..., None]
+        col = col * (1 - line[..., None]) + np.array([.6, .06, .12]) * line[..., None]
+    return col * (1 + rng.normal(0, .025, (n, n, 1)))
+
 leaf_img = image_from_array('village_leaf', leaf_texture())
+straw_cards_img = strand_texture(color=(.66, .53, .28), count=110, seed_tone=.12)
+grass_cards_img = strand_texture(color=(.32, .38, .14), count=380, seed_tone=.35)
 dead_leaf_img = image_from_array('village_leaf_dry', leaf_texture(green=(.36, .27, .13)))
 trunk_img = image_from_array('village_palm_trunk', trunk_texture())
 stem_img = image_from_array('village_banana_stem', stem_texture())
@@ -216,7 +260,7 @@ M = {
     'straw': pbr('Straw', acg('ThatchedRoof002A', 'Color'), acg('ThatchedRoof002A', 'NormalGL'), acg('ThatchedRoof002A', 'Roughness'), tint=(1.1, .98, .78)),
     'bamboo': pbr('Bamboo', acg('Bamboo001C', 'Color'), acg('Bamboo001C', 'NormalGL'), acg('Bamboo001C', 'Roughness'), tint=(1.15, 1.05, .85)),
     # walls: smeared raw clay (the plaster texture had vertical board marks that read as planks)
-    'mud': pbr('MudPlaster', acg('Clay005', 'Color'), acg('Clay005', 'NormalGL'), acg('Clay005', 'Roughness'), tint=(.66, .55, .43)),
+    'mud': pbr('MudPlaster', acg('Clay005', 'Color'), acg('Clay005', 'NormalGL'), acg('Clay005', 'Roughness'), tint=(.74, .64, .54), sat=.62),   # earthy grey-brown, not orange
     'mud_base': pbr('MudBase', ph('dry_mud_field_001', 'diff'), ph('dry_mud_field_001', 'nor_gl'), ph('dry_mud_field_001', 'rough'), tint=(.7, .58, .46)),
     'tin': pbr('TinRoof', ph('rusty_corrugated_iron', 'diff'), ph('rusty_corrugated_iron', 'nor_gl'), ph('rusty_corrugated_iron', 'rough'), metallic=.35),
     'wood': pbr('OldWood', planks_img, rough_value=.85),
@@ -225,12 +269,31 @@ M = {
     'jute': pbr('Jute', ph('hessian_230', 'diff'), ph('hessian_230', 'nor_gl'), ph('hessian_230', 'rough'), tint=(.72, .56, .36)),
     'concrete': pbr('Concrete', ph('yellow_plaster_02', 'diff'), ph('yellow_plaster_02', 'nor_gl'), ph('yellow_plaster_02', 'rough'), tint=(.72, .72, .7)),
     'leaf': pbr('Leaf', leaf_img, rough_value=.55),
+    'straw_cards': pbr('StrawCards', straw_cards_img, rough_value=.8, alpha=True),
+    'grass_cards': pbr('GrassCards', grass_cards_img, rough_value=.7, alpha=True),
+    'lungi_cloth': pbr('LungiCloth', image_from_array('village_cloth_lungi', plaid_texture(
+        base=(.12, .22, .48), lines=((.85, .85, .8, .1, .015), (.05, .1, .26, .55, .09), (.45, .6, .85, .3, .01), (.45, .6, .85, .8, .01)))), rough_value=.85),
+    'gamcha_cloth': pbr('GamchaCloth', image_from_array('village_cloth_gamcha', plaid_texture(
+        base=(.75, .1, .1), lines=((.95, .93, .88, .25, .06), (.95, .93, .88, .75, .06), (.2, .45, .2, .5, .01)))), rough_value=.85),
+    'saree_cloth': pbr('SareeCloth', image_from_array('village_cloth_saree', saree_texture()), rough_value=.6),
+    'rope': pbr('Rope', ph('hessian_230', 'diff'), tint=(.6, .5, .36), rough_value=.9),
+    'rickshaw_paint': pbr('RickshawPaint', paint_img, tint=(1.3, 2.2, 3.6), rough_value=.4, metallic=.4),
     'dead_leaf': pbr('DryLeaf', dead_leaf_img, rough_value=.8),
     'stem': pbr('BananaStem', stem_img, rough_value=.6),
     'frond': pbr('FrondStem', leaf_img, tint=(1.4, 1.25, .8), rough_value=.6),
     'trunk': pbr('PalmTrunk', trunk_img, rough_value=.85),
     'paint': pbr('PumpPaint', paint_img, rough_value=.45, metallic=.5),
 }
+
+def plain(name, color, rough, metallic=0.0, ior=None):
+    m = bpy.data.materials.new(name); m.use_nodes = True; b = m.node_tree.nodes['Principled BSDF']
+    b.inputs['Base Color'].default_value = (*color, 1); b.inputs['Roughness'].default_value = rough
+    b.inputs['Metallic'].default_value = metallic
+    if ior: b.inputs['IOR'].default_value = ior
+    return m
+M['water'] = plain('PondWater', (.035, .06, .045), .04, ior=1.33)            # dark, still, green-brown village pond
+M['tyre'] = plain('Tyre', (.025, .025, .025), .7)
+M['hyacinth'] = plain('HyacinthFlower', (.55, .45, .85), .5)
 
 # ---------------------------------------------------------------- props (each built at the origin)
 def haystack(prop='Haystack', H=3.0, R=1.25):
@@ -240,13 +303,28 @@ def haystack(prop='Haystack', H=3.0, R=1.25):
         h = k / 21
         r = R * (1 - h ** 1.7) ** .75 * (1 + .1 * math.sin(h * math.pi))
         prof.append((max(r, .02), h * H))
-    ob = revolve(prop + '_straw', prof, prop, M['straw'], seg=40, u_tiles=4, wobble=.07, seed=1, v_scale=.6)
+    ob = revolve(prop + '_straw', prof, prop, M['straw'], seg=48, u_tiles=4, wobble=.07, seed=1, v_scale=.6)
+    for v in ob.data.vertices:                                                # stacked layers: soft horizontal bulges
+        h = v.co.z / H; rr = math.hypot(v.co.x, v.co.y)
+        if rr > .05: s = 1 + .025 * math.sin(h * 2 * math.pi * 7); v.co.x *= s; v.co.y *= s
     d = ob.modifiers.new('rough', 'DISPLACE'); tx = bpy.data.textures.new('hay_noise', 'CLOUDS'); tx.noise_scale = .25
     d.texture = tx; d.strength = .08; d.mid_level = .5
     bpy.context.view_layer.objects.active = ob; bpy.ops.object.modifier_apply(modifier='rough')
     tube(prop + '_pole', [(0, 0, H - .3), (0, 0, H + .55)], .035, prop, M['bamboo'], seg=8)
     # a loose ring of straw around the base
     revolve(prop + '_skirt', [(R * 1.08, 0), (R * 1.02, .12), (R * .9, .2)], prop, M['straw'], seg=40, u_tiles=4, wobble=.12, seed=3)
+    # loose straws sticking out and hanging down: alpha strand cards on the surface (breaks the smooth outline)
+    ob.data.update(); verts, faces, uvs = [], [], []
+    surf = [(ob.matrix_world @ v.co, (ob.matrix_world.to_3x3() @ v.normal).normalized()) for v in ob.data.vertices if v.co.z < H * .92]
+    for c in range(1400):
+        p, n = surf[rng.integers(len(surf))]
+        down = (Vector((0, 0, -1)) - n * Vector((0, 0, -1)).dot(n)).normalized()
+        L = rng.uniform(.1, .26); w = rng.uniform(.015, .03)                    # narrow, sparse strands, not patches
+        side = n.cross(down).normalized(); tip = p + down * L * .8 + n * L * rng.uniform(.15, .45)
+        b = len(verts); u0 = rng.uniform(0, .8)
+        verts += [p - side * w / 2, p + side * w / 2, tip + side * w / 2, tip - side * w / 2]
+        uvs += [(u0, 0), (u0 + .2, 0), (u0 + .2, 1), (u0, 1)]; faces.append((b, b + 1, b + 2, b + 3))
+    mesh(prop + '_loose', verts, faces, prop, M['straw_cards'], uvs, smooth=False)
 
 def tube_well(prop='TubeWell'):
     box(prop + '_pad', (1.2, 1.2, .14), (0, 0, .07), prop, M['concrete'], bevel=.02, tile=.8)
@@ -381,17 +459,32 @@ def coconut_palm(prop='CoconutPalm', H=7.5):
         side = d.cross(Vector((0, 0, 1))).normalized()
         verts, faces, uvs = [], [], []
         for j, p in enumerate(spine[1:], 1):                                   # pinnate leaflets on both sides
-            t = j / 9; ll = .75 * math.sin(math.pi * min(1, t * 1.05)) + .1
+            t = j / 9; ll = .95 * math.sin(math.pi * min(1, t * 1.05)) + .12
+            for s in (-1, 1):
+                for q in range(4):
+                    root = spine[j - 1].lerp(p, q / 4)
+                    l2 = ll * rng.uniform(.85, 1.1)
+                    mid = root + side * s * l2 * .55 + d * .06 + Vector((0, 0, -.12 * l2))
+                    tip = root + side * s * l2 + d * .14 + Vector((0, 0, -.5 * l2))  # leaflets droop at the tips
+                    w = (d * .035 + Vector((0, 0, .012))); b = len(verts)          # ~7 cm wide, folded slightly
+                    verts += [root - w * .6, root + w * .6, mid + w, mid - w, tip + w * .15, tip - w * .15]
+                    uvs += [(.35, 0), (.65, 0), (.65, .55), (.35, .55), (.55, 1), (.45, 1)]
+                    faces += [(b, b + 1, b + 2, b + 3), (b + 3, b + 2, b + 4, b + 5)]
+        mesh(prop + '_leaflets', verts, faces, prop, M['leaf'], uvs, smooth=False)
+    for k in range(3):                                                         # dry old fronds hanging down the trunk
+        a = rng.uniform(0, 6.28); d = Vector((math.cos(a), math.sin(a), 0))
+        spine = [top + Vector((0, 0, -.15)) + d * .45 * t + Vector((0, 0, -2.2 * t)) for t in np.linspace(0, 1, 12)]
+        tube(prop + '_dry_rachis', spine, .022, prop, M['dead_leaf'], seg=5, taper=lambda t: 1 - .6 * t)
+        side = d.cross(Vector((0, 0, 1))).normalized(); verts, faces, uvs = [], [], []
+        for j, p in enumerate(spine[1:], 1):                                   # dense, limp leaflets hanging almost straight down
             for s in (-1, 1):
                 for q in range(3):
-                    off = (j * 3 + q) / 30
-                    root = spine[j - 1].lerp(p, q / 3)
-                    tip = root + side * s * ll + Vector((0, 0, -.35 * ll)) + d * .15
-                    w = Vector((0, 0, .02)); b = len(verts)
+                    root = spine[j - 1].lerp(p, q / 3); b = len(verts)
+                    tip = root + side * s * rng.uniform(.06, .16) + d * rng.uniform(-.05, .08) + Vector((0, 0, -rng.uniform(.45, .7)))
+                    w = side * .025
                     verts += [root - w, root + w, tip + w * .3, tip - w * .3]
-                    uvs += [(.45, 0), (.55, 0), (.55, 1), (.45, 1)]
-                    faces.append((b, b + 1, b + 2, b + 3))
-        mesh(prop + '_leaflets', verts, faces, prop, M['leaf'], uvs, smooth=False)
+                    uvs += [(.4, 0), (.6, 0), (.55, 1), (.45, 1)]; faces.append((b, b + 1, b + 2, b + 3))
+        mesh(prop + '_dry_leaflets', verts, faces, prop, M['dead_leaf'], uvs, smooth=False)
     for k in range(7):                                                         # coconut bunch
         bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=8, radius=.11,
                                              location=top + Vector((math.cos(k) * .2, math.sin(k) * .2, -.25 - .05 * (k % 2))))
@@ -417,8 +510,131 @@ def jute_sack(prop='JuteSack', loc=(0, 0, 0)):
     for c in ob.users_collection: c.objects.unlink(ob)
     link(ob, prop)
 
+def cloth_panel(name, prop, top_left, top_right, drop, mat, n=10, sway=.03, repeat=(1, 1)):
+    """A cloth hanging over the line: grid from the line downwards, gentle folds and sag.
+    repeat tiles the woven pattern so checks are cloth-sized, not flag-sized."""
+    a, b = Vector(top_left), Vector(top_right); verts, faces, uvs = [], [], []
+    for j in range(n + 1):
+        t = j / n
+        for i in range(n + 1):
+            s = i / n; p = a.lerp(b, s)
+            fold = sway * math.sin(s * math.pi * 5 + t * 2) * (.3 + t)
+            verts.append(p + Vector((0, fold, -drop * t - .03 * math.sin(s * math.pi) * t))); uvs.append((s * repeat[0], (1 - t) * repeat[1]))
+    faces = [(j * (n + 1) + i, j * (n + 1) + i + 1, (j + 1) * (n + 1) + i + 1, (j + 1) * (n + 1) + i) for j in range(n) for i in range(n)]
+    ob = mesh(name, verts, faces, prop, mat, uvs)
+    sol = ob.modifiers.new('thick', 'SOLIDIFY'); sol.thickness = .004
+    return ob
+
+def clothes_line(prop='ClothesLine', L=4.0):
+    """Two bamboo poles and a sagging jute rope with a lungi, a gamcha and a saree drying in the sun."""
+    for x in (-L / 2, L / 2):
+        tube(prop + '_pole', [(x, 0, 0), (x + rng.uniform(-.04, .04), 0, 1.95)], .035, prop, M['bamboo'], seg=8)
+    rope = [(x, 0, 1.85 - .18 * (1 - (2 * x / L) ** 2)) for x in np.linspace(-L / 2, L / 2, 21)]
+    tube(prop + '_rope', rope, .006, prop, M['rope'], seg=5)
+    def at(x): return Vector((x, 0, 1.85 - .18 * (1 - (2 * x / L) ** 2)))
+    cloth_panel(prop + '_lungi', prop, at(-1.6), at(-.65), 1.0, M['lungi_cloth'], repeat=(4, 4))
+    cloth_panel(prop + '_gamcha', prop, at(-.45), at(-.05), .55, M['gamcha_cloth'], n=8, repeat=(3, 4))
+    cloth_panel(prop + '_saree', prop, at(.15), at(1.7), 1.25, M['saree_cloth'], n=12, sway=.05)
+
+def straw_drying(prop='StrawDrying', R=1.6):
+    """Rice straw spread out on a woven bamboo mat (chatai) to dry in the courtyard."""
+    verts, faces, uvs = [], [], []
+    for j in range(9):                                                        # irregular oval mat, slightly uneven
+        for i in range(25):
+            a = 2 * math.pi * i / 24; r = R * j / 8 * (1 + .08 * math.sin(a * 3))
+            verts.append((r * math.cos(a), r * .7 * math.sin(a), .01 + .006 * noise.noise(Vector((i, j, 0)) * .7)))
+            uvs.append((r * math.cos(a) / .6, r * .7 * math.sin(a) / .6))
+    faces = [(j * 25 + i, j * 25 + i + 1, (j + 1) * 25 + i + 1, (j + 1) * 25 + i) for j in range(8) for i in range(24)]
+    mesh(prop + '_mat', verts, faces, prop, M['bamboo'], uvs)
+    verts, faces, uvs = [], [], []                                            # straw strands lying flat in drifts
+    for c in range(700):
+        a = rng.uniform(0, 6.28); r = R * .95 * math.sqrt(rng.random())
+        p = Vector((r * math.cos(a), r * .7 * math.sin(a), .02 + rng.uniform(0, .05)))
+        d = Vector((math.cos(rng.uniform(0, 6.28)), math.sin(rng.uniform(0, 6.28)), 0)).normalized()
+        L = rng.uniform(.3, .6); w = rng.uniform(.04, .08); side = d.cross(Vector((0, 0, 1))) * w / 2
+        b = len(verts); u0 = rng.uniform(0, .8)
+        verts += [p - side, p + side, p + d * L + side + Vector((0, 0, .02)), p + d * L - side + Vector((0, 0, .02))]
+        uvs += [(u0, 0), (u0 + .2, 0), (u0 + .2, 1), (u0, 1)]; faces.append((b, b + 1, b + 2, b + 3))
+    mesh(prop + '_straw', verts, faces, prop, M['straw_cards'], uvs, smooth=False)
+
+def grass_clump(prop='GrassClump', blades=14):
+    """A clump of grass cards (crossed alpha strips) for scattering along edges and fences."""
+    verts, faces, uvs = [], [], []
+    for k in range(blades):
+        a = k / blades * math.pi + rng.uniform(-.2, .2); h = rng.uniform(.25, .5); w = rng.uniform(.18, .3)
+        lean = Vector((rng.uniform(-.08, .08), rng.uniform(-.08, .08), 0))
+        side = Vector((math.cos(a), math.sin(a), 0)) * w / 2; o = Vector((rng.uniform(-.08, .08), rng.uniform(-.08, .08), 0))
+        b = len(verts); u0 = rng.uniform(0, .6)
+        verts += [o - side, o + side, o + side * .8 + Vector((0, 0, h)) + lean, o - side * .8 + Vector((0, 0, h)) + lean]
+        uvs += [(u0, 0), (u0 + .4, 0), (u0 + .4, 1), (u0, 1)]; faces.append((b, b + 1, b + 2, b + 3))
+    mesh(prop, verts, faces, prop, M['grass_cards'], uvs, smooth=False)
+
+def pond(prop='Pond', R=3.2):
+    """A village pond edge: dark still water below a sloping mud bank, with water hyacinth floating."""
+    verts, faces, uvs = [], [], []
+    # raised earth bank (paar) around the pond, as village ponds are dug: rises above the yard, slopes down to the water
+    rings = [(R * 1.5, -.02), (R * 1.3, .32), (R * 1.18, .36), (R * 1.04, .08), (R * .96, -.02)]
+    for j, (r, z) in enumerate(rings):
+        for i in range(48):
+            a = 2 * math.pi * i / 48; w = 1 + .08 * noise.noise(Vector((math.cos(a) * 2, math.sin(a) * 2, j * .3)))
+            verts.append((r * w * math.cos(a), r * .75 * w * math.sin(a), z)); uvs.append((r * w * math.cos(a) / 2, r * .75 * w * math.sin(a) / 2))
+    faces = [(j * 48 + i, j * 48 + (i + 1) % 48, (j + 1) * 48 + (i + 1) % 48, (j + 1) * 48 + i) for j in range(len(rings) - 1) for i in range(48)]
+    mesh(prop + '_bank', verts, faces, prop, M['mud_base'], uvs)
+    bpy.ops.mesh.primitive_circle_add(vertices=48, radius=R, fill_type='NGON', location=(0, 0, .02))
+    wtr = bpy.context.active_object; wtr.name = prop + '_water'; wtr.scale = (1, .75, 1)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    uv_box(wtr, 2); wtr.data.materials.append(M['water'])
+    for c in wtr.users_collection: c.objects.unlink(wtr)
+    link(wtr, prop)
+    for k in range(9):                                                        # water hyacinth rosettes near the edge
+        a = rng.uniform(0, 6.28); r = R * rng.uniform(.6, .9); c = Vector((r * math.cos(a), r * .75 * math.sin(a), .03))
+        for q in range(7):
+            b2 = q * 2 * math.pi / 7 + rng.uniform(-.2, .2); d = Vector((math.cos(b2), math.sin(b2), .9))
+            leaf_blade(prop + '_hyacinth', prop, c, d, .18, .07, .9, .5, tear=0, n=6)
+        if k % 3 == 0:
+            bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=6, radius=.035, location=c + Vector((0, 0, .2)))
+            fl = bpy.context.active_object; fl.name = prop + '_flower'; fl.scale = (1, 1, 1.8); fl.data.materials.append(M['hyacinth'])
+            for col in fl.users_collection: col.objects.unlink(fl)
+            link(fl, prop)
+
+def wheel(name, prop, centre, radius, axis='x', spokes=20):
+    """Bicycle-style wheel: rubber tyre, thin rim, hub and wire spokes."""
+    rot = Matrix.Rotation(math.radians(90), 4, 'Y') if axis == 'x' else Matrix.Identity(4)
+    bpy.ops.mesh.primitive_torus_add(major_radius=radius, minor_radius=.022, major_segments=32, minor_segments=8, location=centre)
+    t = bpy.context.active_object; t.name = name + '_tyre'; t.matrix_world = Matrix.Translation(centre) @ rot
+    t.data.materials.append(M['tyre'])
+    for c in t.users_collection: c.objects.unlink(t)
+    link(t, prop)
+    c = Vector(centre)
+    tube(name + '_hub', [c + rot.to_3x3() @ Vector((0, 0, -.05)), c + rot.to_3x3() @ Vector((0, 0, .05))], .025, prop, M['rickshaw_paint'], seg=8)
+    for k in range(spokes):
+        a = 2 * math.pi * k / spokes
+        tip = c + rot.to_3x3() @ Vector((math.cos(a) * (radius - .02), math.sin(a) * (radius - .02), .0))
+        tube(name + '_spoke', [c, tip], .0025, prop, M['paint'], seg=3)
+
+def van_rickshaw(prop='VanRickshaw'):
+    """Pedal van-rickshaw: bicycle front with handlebar and saddle, flat wooden cargo deck on two rear wheels."""
+    r = .33
+    wheel(prop + '_front', prop, (0, -1.25, r), r, axis='x')
+    for sx in (-.55, .55): wheel(prop + '_rear', prop, (sx, .45, r), r, axis='x')
+    tube(prop + '_axle', [(-.6, .45, r), (.6, .45, r)], .015, prop, M['paint'], seg=6)
+    P = M['rickshaw_paint']
+    tube(prop + '_frame_top', [(0, -1.12, .95), (0, -.35, .9)], .022, prop, P, seg=8)       # bicycle frame
+    tube(prop + '_frame_down', [(0, -1.1, .9), (0, -.45, .42)], .022, prop, P, seg=8)
+    tube(prop + '_seat_tube', [(0, -.35, .92), (0, -.42, .4)], .02, prop, P, seg=8)
+    tube(prop + '_fork', [(0, -1.12, 1.0), (0, -1.25, r)], .016, prop, P, seg=6)
+    tube(prop + '_handlebar', [(-.3, -1.05, 1.08), (0, -1.12, 1.03), (.3, -1.05, 1.08)], .014, prop, P, seg=6)
+    tube(prop + '_chain_stay', [(0, -.42, .4), (0, .45, r)], .016, prop, P, seg=6)
+    box(prop + '_saddle', (.12, .24, .05), (0, -.33, .98), prop, M['tyre'], bevel=.02, tile=.3)
+    box(prop + '_deck', (1.05, 1.25, .04), (0, .4, .62), prop, M['wood'], tile=.6)          # cargo deck
+    for sx in (-1, 1):
+        box(prop + '_rail', (.04, 1.25, .1), (sx * .5, .4, .69), prop, M['wood'], tile=.6)
+        tube(prop + '_deck_strut', [(sx * .45, .45, r), (sx * .45, .45, .6)], .015, prop, P, seg=6)
+    tube(prop + '_deck_bar', [(0, -.42, .4), (0, -.2, .6)], .018, prop, P, seg=6)
+
 haystack(); tube_well(); mud_house(); bamboo_fence(); banana_plant(); coconut_palm()
 kolshi('ClayPot'); jute_sack('JuteSack')
+clothes_line(); straw_drying(); grass_clump(); pond(); van_rickshaw()
 
 # ---------------------------------------------------------------- export each prop to Unity (FBX + textures)
 summary = {}
@@ -465,6 +681,20 @@ if '--no-render' not in ARGS:
     place('CoconutPalm', Vector((-4.6, 8.8, 0)), math.radians(20))
     place('ClayPot', Vector((4.9, 1.0, .14)))
     place('JuteSack', Vector((-1.6, 4.1, .45)))
+    place('ClothesLine', Vector((-3.4, .4, 0)), math.radians(8))
+    place('StrawDrying', Vector((-1.2, -2.6, 0)), math.radians(-10))
+    place('Pond', Vector((9.5, 6.5, 0)))
+    place('VanRickshaw', Vector((-7.6, -.6, 0)), math.radians(-115))
+    place('GrassClump', Vector((-7.0, 6.0, 0)))
+    # grass along the fence, the plinth edges, the pond bank and the courtyard border
+    spots = [(-5 + 1.1 * i + rng.uniform(-.3, .3), 9.2 + rng.uniform(-.3, .3)) for i in range(9)] + \
+            [(-3.6 + rng.uniform(-.2, .2), 3.6 + i * .7) for i in range(4)] + \
+            [(9.5 + 4.2 * math.cos(a), 6.5 + 3.2 * math.sin(a)) for a in np.linspace(0, 6.28, 14, endpoint=False)] + \
+            [(10 * math.cos(a) + rng.uniform(-1, 1), 10 * math.sin(a) + 2 + rng.uniform(-1, 1)) for a in np.linspace(0, 6.28, 40, endpoint=False)]
+    for x, y in spots:
+        m_ = Matrix.Translation((x, y, 0)) @ Matrix.Rotation(rng.uniform(0, 6.28), 4, 'Z') @ Matrix.Scale(rng.uniform(.7, 1.4), 4) @ placed['GrassClump'].inverted()
+        for o in props['GrassClump']:
+            c = o.copy(); c.data = o.data; bpy.context.collection.objects.link(c); c.matrix_world = m_ @ o.matrix_world
     # extra copies for a fuller courtyard
     for src, loc, rot in (('BananaPlant', (5.4, 5.6, 0), 1.2), ('ClayPot', (4.55, .6, .14), .5), ('BambooFence', (2.6, 9.7, 0), .05),
                           ('JuteSack', (-2.2, 4.3, .45), 2.0)):
@@ -524,5 +754,8 @@ if '--no-render' not in ARGS:
     shoot('courtyard-broadcast', (6.5, -9.5, 3.6), (0, 3.2, 1.3), 30)
     shoot('courtyard-ground', (-1.2, -3.2, 1.25), (1.5, 4, 1.4), 24)
     shoot('tube-well-close', (5.6, -.4, 1.3), (4.3, 1.4, .6), 45, (1200, 1200))
+    shoot('clothes-line-rickshaw', (-1.0, -6.8, 1.7), (-5.2, .2, 1.0), 30)
+    shoot('pond-edge', (5.2, -.8, 2.2), (9.8, 6.6, -.1), 30)
+    shoot('haystack-palm-close', (-3.2, -.6, 1.6), (-6.0, 3.6, 1.6), 35, (1200, 1200))
     bpy.ops.wm.save_as_mainfile(filepath=str(ROOT / 'vendor' / 'village-courtyard.blend'))
 print('DONE', json.dumps({k: v for k, v in summary.items() if not k.startswith('_')}), flush=True)
