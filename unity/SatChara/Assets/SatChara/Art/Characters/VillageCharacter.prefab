@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SatChara.VillageAvatar
   capturedMotion: {fileID: 4900000, guid: ff98568e220e01f46bf6b49c999af575, type: 3}
+  capturedActions: {fileID: 4900000, guid: f02bcca23e94d017e7ced190ec969699, type: 3}
 --- !u!1001 &6019854384894877568
 PrefabInstance:
   m_ObjectHideFlags: 0

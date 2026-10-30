@@ -28,6 +28,11 @@ namespace SatChara
         private readonly Transform[] players = new Transform[8];
         private readonly Renderer[] bodies = new Renderer[8];
         private readonly TextMesh[] names = new TextMesh[8];
+        private enum PendingAction { None, Throw, PickUp, Place }
+        private readonly PendingAction[] pending=new PendingAction[8];
+        private readonly int[] actionStone=new int[8];
+        private readonly Vector3[] releaseDirection=new Vector3[8];
+        private readonly float[] releaseSpeed=new float[8],actionMoment=new float[8];
         private readonly float[] windup = new float[8];
         private readonly float[] duck = new float[8];
         private readonly float[] dodge = new float[8];
@@ -125,6 +130,7 @@ namespace SatChara
                     : new Vector3((i % 4 - 1.5f) * 3, .9f, 5 + (i % 2) * 3);
                 players[i].gameObject.SetActive(true);
                 windup[i] = duck[i] = dodge[i] = dodgeCooldown[i] = 0;
+                pending[i]=PendingAction.None;if(villageCharacter) avatars[i].CancelAction();
             }
             players[att].position = new Vector3(0, .9f, -10);
             for (int i = 0; i < 7; i++) StackStone(i);
@@ -168,7 +174,12 @@ namespace SatChara
             {
                 duck[i] = Mathf.Max(0, duck[i] - dt); dodge[i] = Mathf.Max(0, dodge[i] - dt);
                 dodgeCooldown[i] = Mathf.Max(0, dodgeCooldown[i] - dt);
-                if (!Alive(i)) continue;
+                if (!Alive(i)) { pending[i]=PendingAction.None;if(villageCharacter) avatars[i].CancelAction();continue; }
+                if(villageCharacter)
+                {
+                    avatars[i].AdvanceAction(dt);CompleteAction(i);
+                    if(avatars[i].ActionBusy && dodge[i]<=0) continue;
+                }
                 bool human = i == HumanIndex() && !AutomatedPlayer;
                 if (human) MoveHuman(i, dt); else MoveBot(i, dt);
                 if (State.Phase == MatchPhase.Rebuild && i / 4 == State.AttackingTeam) Interact(i % 4, dt);
@@ -233,7 +244,8 @@ namespace SatChara
                 if (delta.magnitude > .5f) Move(i, delta.normalized * .85f, dt);
                 // Readable lateral avoidance, rather than probabilistic invulnerability.
                 if (flying && throwingTeam != State.AttackingTeam && Vector3.Distance(players[i].position, ball.position) < 3 && dodgeCooldown[i] <= 0)
-                { dodgeDirection[i] = Vector3.Cross(Vector3.up, ballVelocity).normalized; dodge[i] = .2f; dodgeCooldown[i] = 2; }
+                { dodgeDirection[i] = Vector3.Cross(Vector3.up, ballVelocity).normalized; dodge[i] = .2f; dodgeCooldown[i] = 2;
+                    if(villageCharacter && !avatars[i].ActionBusy) avatars[i].BeginAction(Vector3.Dot(dodgeDirection[i],avatars[i].transform.right)>=0?"DodgeRight":"DodgeLeft"); }
                 if (dodge[i] > 0) Move(i, dodgeDirection[i], dt);
             }
             else if (holder == i)
@@ -267,32 +279,81 @@ namespace SatChara
             if (!State.IsAlive(slot) || State.Phase != MatchPhase.Rebuild) return;
             var p = players[State.AttackingTeam * 4 + slot].position;
             int carried = State.CarriedStone(slot);
-            if (carried < 0)
+            int i=State.AttackingTeam*4+slot;
+            if(villageCharacter && (pending[i]!=PendingAction.None || avatars[i].ActionBusy)) return;
+            if(carried<0)
             {
-                for (int s = State.StackedStones; s < 7; s++)
-                    if (!StoneHeld(s) && Vector3.Distance(Flat(p), Flat(stones[s].position)) < .85f && State.PickUpStone(slot, s))
-                    { Debug.Log($"SAT_CHARA_PICKUP: slot={slot}, stone={s}"); break; }
+                for(int stone=State.StackedStones;stone<7;stone++)
+                {
+                    if(StoneHeld(stone) || Vector3.Distance(Flat(p),Flat(stones[stone].position))>=.85f)continue;
+                    if(villageCharacter) { actionStone[i]=stone;StartAction(i,PendingAction.PickUp,"PickUp","grab"); }
+                    else if(State.PickUpStone(slot,stone)) Debug.Log($"SAT_CHARA_PICKUP: slot={slot}, stone={stone}");
+                    break;
+                }
             }
             else
             {
-                stones[carried].position = villageCharacter ? p + Vector3.up * .2f + avatars[State.AttackingTeam * 4 + slot].transform.forward * .35f : p + Vector3.up * .5f;
-                if (Flat(p).magnitude < 1.1f && carried == State.StackedStones && State.PlaceStone(slot))
-                { StackStone(carried); Placements++; Debug.Log($"SAT_CHARA_PLACE: stone={carried}"); }
+                stones[carried].position=villageCharacter?avatars[i].HandPosition:p+Vector3.up*.5f;
+                if(Flat(p).magnitude<1.1f && carried==State.StackedStones)
+                {
+                    if(villageCharacter) { actionStone[i]=carried;StartAction(i,PendingAction.Place,"Place","place"); }
+                    else if(State.PlaceStone(slot)) { StackStone(carried);Placements++;Debug.Log($"SAT_CHARA_PLACE: stone={carried}"); }
+                }
             }
         }
 
-        private void ReleaseBall(Vector3 direction, float speed)
+        private void ReleaseBall(Vector3 direction,float speed)
+        {
+            if(holder<0 || paused || suspended || cooldown>0 || direction.sqrMagnitude<.01f) return;
+            if(State.Phase!=MatchPhase.TowerAttack && State.Phase!=MatchPhase.Rebuild) return;
+            if(!villageCharacter) { LaunchBall(direction,speed);return; }
+            int i=holder;if(avatars[i].ActionBusy || pending[i]!=PendingAction.None)return;
+            releaseDirection[i]=direction.normalized;releaseSpeed[i]=speed;
+            avatars[i].transform.rotation=Quaternion.LookRotation(direction);
+            StartAction(i,PendingAction.Throw,State.Phase==MatchPhase.TowerAttack?"Throw":"ThrowCasual","release");
+        }
+        private void StartAction(int i,PendingAction kind,string clip,string moment)
+        {
+            if(kind==PendingAction.PickUp || kind==PendingAction.Place)
+            {
+                Vector3 target=kind==PendingAction.Place?Vector3.zero:stones[actionStone[i]].position;
+                Vector3 facing=Flat(target-players[i].position);
+                if(facing.sqrMagnitude>.001f)avatars[i].transform.rotation=Quaternion.LookRotation(facing);
+            }
+            avatars[i].BeginAction(clip);pending[i]=kind;actionMoment[i]=avatars[i].ActionEvent(moment);
+            if(actionMoment[i]<0)throw new InvalidOperationException("Missing action event: "+clip+"/"+moment);
+            Debug.Log($"SAT_CHARA_ACTION_START: player={i}, clip={clip}, eventSeconds={actionMoment[i]:F3}");
+        }
+        private void CompleteAction(int i)
+        {
+            if(pending[i]==PendingAction.None || avatars[i].ActionTime<actionMoment[i]) return;
+            var kind=pending[i];pending[i]=PendingAction.None;
+            Debug.Log($"SAT_CHARA_ACTION_EVENT: player={i}, action={kind}, elapsed={avatars[i].ActionTime:F3}, eventSeconds={actionMoment[i]:F3}");
+            if(!Alive(i))return;
+            avatars[i].Drive(avatars[i].transform.forward,holder==i,State.CarriedStone(i%4)>=0,duck[i]>0,frameDelta:0);
+            if(kind==PendingAction.Throw) { if(holder==i)LaunchBall(releaseDirection[i],releaseSpeed[i]);return; }
+            if(State.Phase!=MatchPhase.Rebuild || i/4!=State.AttackingTeam)return;
+            int slot=i%4,stone=actionStone[i];
+            if(kind==PendingAction.PickUp && !StoneHeld(stone) && Vector3.Distance(Flat(players[i].position),Flat(stones[stone].position))<.85f && State.PickUpStone(slot,stone))
+                Debug.Log($"SAT_CHARA_PICKUP: slot={slot}, stone={stone}");
+            if(kind==PendingAction.Place && State.CarriedStone(slot)==stone && Flat(players[i].position).magnitude<1.1f && State.PlaceStone(slot))
+            { StackStone(stone);Placements++;Debug.Log($"SAT_CHARA_PLACE: stone={stone}"); }
+        }
+        private void LaunchBall(Vector3 direction, float speed)
         {
             if (holder < 0 || paused || suspended || cooldown > 0) return;
             if (State.Phase != MatchPhase.TowerAttack && State.Phase != MatchPhase.Rebuild) return;
             if (direction.sqrMagnitude < .01f) return;
             thrower = holder; throwingTeam = holder / 4;
+            Vector3 targetPlane=Flat(players[holder].position)+direction*Flat(players[holder].position).magnitude;
             ball.position = villageCharacter ? avatars[holder].HandPosition + direction * .2f : players[holder].position + Vector3.up * .2f + direction * .7f;
+            // Preserve the aimed point on the tower's distance plane when the captured hand is off-centre.
+            if(villageCharacter && State.Phase==MatchPhase.TowerAttack) direction=Flat(targetPlane-ball.position).normalized;
             float vertical = 1.8f;
             if (villageCharacter && State.Phase == MatchPhase.TowerAttack)
             { float travel = Mathf.Max(.1f, Flat(ball.position).magnitude / speed); vertical = (.18f - ball.position.y + 4.9f * travel * travel) / travel; }
             ballVelocity = direction * speed + Vector3.up * vertical;
-            if (villageCharacter) avatars[holder].Throw();
+
             windup[holder] = 0; holder = -1; flying = true; flightTime = 0; cooldown = .4f;
             Debug.Log($"SAT_CHARA_THROW: player={thrower}, phase={State.Phase}");
         }
@@ -312,12 +373,16 @@ namespace SatChara
             int h = HumanIndex(); if (paused || State.Phase != MatchPhase.Rebuild || State.AttackingTeam != 0 || dodgeCooldown[h] > 0) return;
             Vector2 v = movement.Value;
             dodgeDirection[h] = v.sqrMagnitude > .04f ? new Vector3(v.x, 0, v.y).normalized : Vector3.right;
+            if(villageCharacter && avatars[h].ActionBusy)return;
             dodge[h] = .22f; dodgeCooldown[h] = 1.8f;
+            if(villageCharacter) avatars[h].BeginAction(Vector3.Dot(dodgeDirection[h],avatars[h].transform.right)>=0?"DodgeRight":"DodgeLeft");
         }
         private void DuckHuman()
         {
             int h = HumanIndex(); if (paused || State.Phase != MatchPhase.Rebuild || State.AttackingTeam != 0 || dodgeCooldown[h] > 0) return;
+            if(villageCharacter && avatars[h].ActionBusy)return;
             duck[h] = .55f; dodgeCooldown[h] = 1.5f;
+            if(villageCharacter) { avatars[h].BeginAction("Duck");duck[h]=avatars[h].ActionDuration; }
         }
 
         private void StepBall(float dt)
@@ -342,7 +407,8 @@ namespace SatChara
                 bool eligible = State.Phase == MatchPhase.TowerAttack ? defender && flying
                     : State.Phase == MatchPhase.Rebuild && (defender ? throwingTeam == i / 4 || !flying : throwingTeam != State.AttackingTeam && flying && speed > 5);
                 if (!eligible) continue;
-                float centre = duck[i] > 0 ? .4f : .9f;
+                bool lowDuck=duck[i]>0 && (!villageCharacter || (avatars[i].ActionTime>=.25f && avatars[i].ActionTime<=.95f));
+                float centre = lowDuck ? .4f : .9f;
                 float hit = SweepFraction(from, p, Flat(players[i].position) + Vector3.up * centre, .65f);
                 float endDistance = Vector3.Distance(players[i].position, p);
                 if (defender && !flying && endDistance < 1.15f) hit = Mathf.Min(hit, 1);
@@ -402,7 +468,7 @@ namespace SatChara
         }
         private bool Alive(int i) => i / 4 != State.AttackingTeam || State.IsAlive(i % 4);
         private bool StoneHeld(int stone)
-        { for (int i = 0; i < 4; i++) if (State.CarriedStone(i) == stone) return true; return false; }
+        { for(int i=0;i<4;i++) if(State.CarriedStone(i)==stone || (pending[State.AttackingTeam*4+i]==PendingAction.PickUp && actionStone[State.AttackingTeam*4+i]==stone))return true;return false; }
         private int NearestAttacker(Vector3 p)
         {
             int best = -1; float distance = float.MaxValue;
@@ -449,6 +515,7 @@ namespace SatChara
                     if (holder == i) facing = i == h ? aimDirection : Flat(players[Mathf.Max(0, NearestAttacker(players[i].position))].position - position);
                     else if (State.Phase == MatchPhase.Rebuild) facing = Flat((i / 4 == State.AttackingTeam && State.CarriedStone(i % 4) >= 0 ? Vector3.zero : ball.position) - position);
                     avatars[i].Drive(facing, holder == i, i / 4 == State.AttackingTeam && State.CarriedStone(i % 4) >= 0, duck[i] > 0, i == h && aiming.Held ? aiming.Value.magnitude : windup[i], paused || suspended);
+                    if(i/4==State.AttackingTeam && State.CarriedStone(i%4)>=0) stones[State.CarriedStone(i%4)].position=avatars[i].HandPosition;
                     teamMarkers[i].gameObject.SetActive(Alive(i)); teamMarkers[i].position = Flat(position) + Vector3.up * .014f;
                 }
                 names[i].text = (i == h ? "YOU" : labels[i]) + (holder == i ? (windup[i] > .7f ? " !" : " *") : "");
@@ -517,10 +584,14 @@ namespace SatChara
             UIButton("Camera", new Vector2(0, 1), new Vector2(88, -32), () => closeCamera = !closeCamera);
             UIButton("Pause", new Vector2(1, 1), new Vector2(-85, -32), () =>
             {
-                paused = !paused; movement.ResetInput(); aiming.ResetInput();
-                Debug.Log($"SAT_CHARA_PAUSE: paused={paused}, remaining={State.SecondsRemaining:F2}");
+                SetPaused(!paused);
             });
             UIButton("New match", new Vector2(1, 1), new Vector2(-85, -95), NewMatch);
+        }
+        public void SetPaused(bool value)
+        {
+            paused=value;movement?.ResetInput();aiming?.ResetInput();
+            Debug.Log($"SAT_CHARA_PAUSE: paused={paused}, remaining={State.SecondsRemaining:F2}");
         }
         private TouchStick Stick(string name, Vector2 anchor, Vector2 position)
         {

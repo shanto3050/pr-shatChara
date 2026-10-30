@@ -36,3 +36,8 @@ To regenerate Bablu, fetch the documented free dependencies and HDRI, run the mo
 MakeHuman meshes, skin, eyes, brows, lashes, hair and old casual outfit use CC0 system assets; MPFB generator code is GPLv3 and is not shipped in the Android runtime. Poly Haven environment assets are CC0. See `asset-register.csv`, `art-source/licenses/`, and recorded download manifests.
 
 Ground albedo uses built-in image generation. Original prompt: "Perfectly overhead close photograph of dry compacted warm brown alluvial earth in a rural Bangladeshi village courtyard, subtle worn footpaths, fine sand grains and occasional tiny pale stones embedded flush with the earth, very sparse flattened straw fragments. Flat diffuse overcast illumination, no directional shadows, no perspective, no horizon, no objects, no lettering, no plants, no large rocks. Natural irregular fine detail and modest color variation. Seamless repeating edges, no obvious central feature or borders."
+
+
+## Captured actions continuation (0.2.5)
+
+[Action integration checkpoint](reports/2026-10-30-action-integration.md): throw/quick throw, stone pickup/place, duck and dodge now use captured poses with fixed-step event timing. Corrected walk/jog, all action clips, pause while throwing and a full eight-round match pass Unity validation. Samsung phone touch throw/topple/movement/pickup/place/pause pass; two short Realistic windows measured 29.9 / 29.7 FPS, with one >100 ms frame in the latter. Deep-crouch clothing and exact prop contacts remain unfinished. New village source assets have imported metadata; material/scene integration is the next serial task.

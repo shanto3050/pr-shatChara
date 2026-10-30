@@ -79,3 +79,8 @@ Record results in a dated report with commit/build ID, device model/chipset/OS, 
 Development APKs go to an external artifact location or deliberate release attachment, with checksums and matching commit IDs. Repository history stores source and small reports, not every binary. Before beta establish package ID, versioning, signing ownership, backup, and repeatable build steps. User owns production signing credentials; keep secrets out of source and chat.
 
 Before release verify current official Android/Google Play requirements, target API, supported architectures, privacy/data declarations, content rating, licenses, and store graphics. Do this again near submission because requirements can change. Prepare a concrete release candidate before requesting publication approval.
+
+
+### Captured action integration (30 October 2026)
+
+`GrayboxMatch` owns fixed-step action time and pending throw/pickup/place transactions. `VillageAvatar` samples `CapturedActions.json` and blends through the same ordered bone bindings as locomotion. A throw releases at the clip's release marker, not at button-up; pickup/place recheck rules and proximity at their marker. Pending pickups reserve stones, and new rounds/deaths clear pending actions. Presentation updates do not advance the action clock. Pausing simulation therefore freezes both poses and transactions. Gameplay owns roots and dodge displacement; captured root travel is not applied. See the [checkpoint](reports/2026-10-30-action-integration.md) for evidence and limitations.

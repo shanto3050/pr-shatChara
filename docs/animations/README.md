@@ -20,19 +20,17 @@ Preview videos and a still at each event are in this folder (`<Clip>.mp4`, `<Cli
 ## Files
 
 - **Data:** `unity/SatChara/Assets/SatChara/Animation/CapturedActions.json`, the same direction-space format as `CapturedLocomotion.json` (one direction per mapped bone), plus per frame: `pelvis` (height change, in leg lengths), `root` (travel, in leg lengths), foot contacts, and per clip the `events`.
-- **Loader:** `unity/SatChara/Assets/SatChara/Scripts/CapturedActions.cs` with `Load`, `Find(name)`, `EventTime(clip, name)` and `Sample(clip, time, ...)`. Type-checked and run outside Unity against the real JSON with `dotnet` and small stand-ins for the Unity types. **Not yet compiled inside Unity.**
+- **Loader:** `unity/SatChara/Assets/SatChara/Scripts/CapturedActions.cs` with `Load`, `Find(name)`, `EventTime(clip, name)` and `Sample(clip, time, ...)`. Type-checked and run outside Unity against the real JSON with `dotnet` and small stand-ins for the Unity types. **Now compiled and integrated in Unity; see the [runtime integration checkpoint](../reports/2026-10-30-action-integration.md).**
 - **Converter:** `art-source/convert_cmu_actions.py` (run with Blender's Python). It finds the key moment automatically (fastest hand for throws, lowest hand or head for pick-up/place/duck, fastest sideways step for dodges), cuts a window around it, and orients the clip: throws face along the stride, everything else faces the hips' forward direction.
 - **Preview:** `art-source/preview_actions.py` retargets the clips onto the Bablu mockup and renders the videos. It adds a simple ground lock for planted feet; it does not do full foot IK.
 
 All source takes and their SHA-256 digests are listed in `art-source/motion/cmu/manifest.json`.
 
-## Hooking into the game (for the Unity PC)
+## Runtime integration
 
-1. Add a `TextAsset capturedActions` field next to `capturedMotion` in `VillageAvatar` and load it with `CapturedActions.Load`.
-2. When gameplay starts an action (throw, pick up, place, duck, dodge), play the matching clip from time 0: each frame, call `CapturedActions.Sample` and feed the directions through the same retargeting path as the locomotion pose, instead of the authored overlay in `Arm(...)` and the duck leg override.
-3. Fire the gameplay moment from the clip's event, e.g. release the ball at `EventTime(clip, "release")` and place the stone at `"place"`. That keeps hand and ball in sync.
-4. Blend in and out over about 0.1–0.15 s from and to locomotion. Gameplay keeps owning the root; `root` is there if you want the body to lean into the travel.
-5. Check on the phone: feet, the arm at release, and the stone in the hand at `place`.
+`VillageAvatar` receives the action bank from `VillageModels.CharacterPrefab`. `GrayboxMatch` advances its clock in fixed simulation steps, queues throw/pickup/place transactions at the named event, and prevents repeated commits. Poses blend through the existing retargeting path; foot contacts use the same flat-ground leg IK. Holding/carrying between clips remains authored. Ball catches retain the existing contact logic.
+
+The full integration and its remaining limits are documented in the checkpoint above. Device validation is recorded there; Blender previews in this folder are not runtime captures.
 
 ## Fixed: left and right were mirrored in the walk/jog data
 

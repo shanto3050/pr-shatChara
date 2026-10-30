@@ -75,7 +75,7 @@ namespace SatChara.Editor
             Camera.main.clearFlags = CameraClearFlags.Skybox; Camera.main.allowHDR = false;
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), ScenePath);
             EditorBuildSettings.scenes = new[] {new EditorBuildSettingsScene(ScenePath,true)};
-            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.4"; PlayerSettings.Android.bundleVersionCode = 7;
+            PlayerSettings.productName = "Sat Chara Village"; PlayerSettings.bundleVersion = "0.2.5"; PlayerSettings.Android.bundleVersionCode = 8;
             AssetDatabase.SaveAssets();
             Debug.Log("SAT_CHARA_VILLAGE_READY: real skinned character, textured environment and perspective camera");
         }
@@ -91,6 +91,16 @@ namespace SatChara.Editor
             Prepare();
             var game = UnityEngine.Object.FindFirstObjectByType<GrayboxMatch>();
             game.AutomatedPlayer = true; game.Initialize();
+            for(int tick=0;tick<75;tick++)game.Simulate(.02f);
+            var active=UnityEngine.Object.FindObjectsByType<VillageAvatar>(FindObjectsSortMode.None);
+            var actionTimes=active.Select(a=>a.ActionTime).ToArray();
+            if(!active.Any(a=>a.ActionBusy))throw new Exception("Opening throw action did not start");
+            double remaining=game.State.SecondsRemaining;
+            game.SetPaused(true);game.Simulate(2);
+            for(int i=0;i<active.Length;i++)if(active[i].ActionTime!=actionTimes[i])throw new Exception("Paused action advanced in simulation");
+            if(game.State.SecondsRemaining!=remaining)throw new Exception("Paused match deadline advanced");
+            game.SetPaused(false);
+            Debug.Log("SAT_CHARA_ACTION_SIMULATION_PAUSE_PASS");
             for (int tick = 0; tick < 60000 && game.State.Phase != SatChara.Rules.MatchPhase.MatchOver; tick++) game.Simulate(.02f);
             string summary = $"rounds={game.CompletedRounds}, topples={game.Topples}, placements={game.Placements}, hits={game.Hits}, score={game.State.Score(0)}-{game.State.Score(1)}, phase={game.State.Phase}";
             if (game.Topples < 2 || game.Placements < 7 || game.Hits < 1 || game.State.Phase != SatChara.Rules.MatchPhase.MatchOver)

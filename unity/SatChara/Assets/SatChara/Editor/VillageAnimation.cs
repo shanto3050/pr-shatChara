@@ -21,6 +21,26 @@ namespace SatChara.Editor
                 avatar.PreviewMotion(i*.25f,3.5f);
                 CaptureSkinnedPose(avatar,camera,"animation-jog-"+i+".png");
             }
+            foreach(string clip in new[]{"Throw","ThrowCasual","PickUp","PickUpSquat","Place","Duck","DodgeLeft","DodgeRight"})
+            {
+                avatar.BeginAction(clip);float eventTime=avatar.ActionEvent(clip.StartsWith("Throw")?"release":clip.StartsWith("PickUp")?"grab":clip=="Place"?"place":clip=="Duck"?"lowest":"step");
+                if(eventTime<0)throw new Exception("Missing action event: "+clip);
+                Vector3 root=driver.transform.position;
+                for(int tick=0;tick<100 && avatar.ActionBusy;tick++)
+                {
+                    avatar.AdvanceAction(.02f);avatar.Drive(Vector3.forward,false,false,false,frameDelta:.02f);
+                    if(driver.transform.position!=root || float.IsNaN(avatar.HandPosition.y))throw new Exception("Invalid action pose: "+clip);
+                    if(tick==10)
+                    {
+                        float time=avatar.ActionTime;Vector3 hand=avatar.HandPosition;
+                        avatar.Drive(Vector3.forward,false,false,false,freeze:true,frameDelta:1);
+                        if(time!=avatar.ActionTime || hand!=avatar.HandPosition)throw new Exception("Action pause failed");
+                    }
+                    if(Mathf.Abs(avatar.ActionTime-eventTime)<.011f) CaptureSkinnedPose(avatar,camera,"action-"+clip+".png");
+                }
+                if(avatar.ActionBusy)throw new Exception("Action did not finish: "+clip);
+                Debug.Log("SAT_CHARA_ACTION_PASS: clip="+clip+", event="+eventTime+", pause=held, root=unchanged");
+            }
             UnityEngine.Object.DestroyImmediate(driver);
             foreach(float speed in new[]{1.3f,3.5f})
             {

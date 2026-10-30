@@ -179,3 +179,6 @@ Update backlog.md as work changes. Update decisions.md when direction changes. K
 
 - 2026-10-29: v0.2, realism review. Realistic graphics become the primary goal on mid/high phones with a simpler Low preset; Real Cricket 24 as visual benchmark; look-dev target frame and user sign-off gate M2; broadcast camera default; reference photography and photogrammetry; character source as an open budget decision; motion capture for game actions; lighting look defined; download budget moved to Play Asset Delivery; Git LFS before more art (D15–D19).
 - 2026-10-28: v0.1, initial Android production baseline. Realistic art replaces the original exaggerated low-poly direction; all performance values remain unverified targets.
+
+
+30 October 2026 implementation checkpoint: runtime captured actions and fixed-step release/grab/place events now pass Unity and basic Samsung phone verification; see [evidence](reports/2026-10-30-action-integration.md). Continue serially with village materials/scene integration and mobile optimization, then reconcile this match-focused plan with the Chhuti concept. The larger story is not implemented by this checkpoint.

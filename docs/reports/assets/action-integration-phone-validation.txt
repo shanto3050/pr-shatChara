@@ -1,0 +1,83 @@
+10-30 22:54:15.825 16345 16500 I Unity   : SAT_CHARA_QUALITY: preset=Realistic, requested=1480x720, renderScale=1, shadows=35, msaa=1
+10-30 22:54:15.984 16345 16500 I Unity   : SAT_CHARA_ROUND_START: round=1, attacking=0
+10-30 22:54:19.433 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=0, clip=Throw, eventSeconds=0.950
+10-30 22:54:20.100 16345 16500 I Unity   : SAT_CHARA_PAUSE: paused=True, remaining=45.00
+10-30 22:54:22.540 16345 16500 I Unity   : SAT_CHARA_PAUSE: paused=False, remaining=45.00
+10-30 22:54:22.841 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=0, action=Throw, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:22.843 16345 16500 I Unity   : SAT_CHARA_THROW: player=0, phase=TowerAttack
+10-30 22:54:23.344 16345 16500 I Unity   : SAT_CHARA_TOPPLE
+10-30 22:54:24.982 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=1, clip=PickUp, eventSeconds=0.950
+10-30 22:54:25.752 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=6, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:54:25.953 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=1, action=PickUp, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:25.954 16345 16500 I Unity   : SAT_CHARA_PICKUP: slot=1, stone=5
+10-30 22:54:26.355 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=2, clip=PickUp, eventSeconds=0.950
+10-30 22:54:26.488 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=6, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:54:26.490 16345 16500 I Unity   : SAT_CHARA_THROW: player=6, phase=Rebuild
+10-30 22:54:26.556 16345 16500 I Unity   : SAT_CHARA_HIT: slot=3
+10-30 22:54:27.192 16345 16500 I Unity   : SAT_CHARA_MOVE_INPUT: position=(1.64, 0.90, -7.01)
+10-30 22:54:27.323 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=2, action=PickUp, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:27.324 16345 16500 I Unity   : SAT_CHARA_PICKUP: slot=2, stone=0
+10-30 22:54:28.761 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=2, clip=Place, eventSeconds=0.900
+10-30 22:54:29.665 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=6, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:54:29.668 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=2, action=Place, elapsed=0.920, eventSeconds=0.900
+10-30 22:54:29.669 16345 16500 I Unity   : SAT_CHARA_PLACE: stone=0
+10-30 22:54:30.433 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=6, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:54:30.434 16345 16500 I Unity   : SAT_CHARA_THROW: player=6, phase=Rebuild
+10-30 22:54:30.436 16345 16500 I Unity   : SAT_CHARA_HIT: slot=2
+10-30 22:54:33.411 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=6, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:54:34.179 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=6, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:54:34.180 16345 16500 I Unity   : SAT_CHARA_THROW: player=6, phase=Rebuild
+10-30 22:54:34.181 16345 16500 I Unity   : SAT_CHARA_HIT: slot=1
+10-30 22:54:36.253 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=5, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:54:36.989 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=5, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:54:36.990 16345 16500 I Unity   : SAT_CHARA_THROW: player=5, phase=Rebuild
+10-30 22:54:38.700 16345 16500 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=599, seconds=20.03, fps=29.9, p50ms=33.44, p95ms=33.45, p99ms=33.47, over100ms=0
+10-30 22:54:42.473 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=6, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:54:43.242 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=6, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:54:43.244 16345 16500 I Unity   : SAT_CHARA_THROW: player=6, phase=Rebuild
+10-30 22:54:43.443 16345 16500 I Unity   : SAT_CHARA_HIT: slot=0
+10-30 22:54:43.444 16345 16500 I Unity   : SAT_CHARA_ROUND_END: round=1, result=AllOut, score=0-1
+10-30 22:54:45.969 16345 16500 I Unity   : SAT_CHARA_ROUND_START: round=2, attacking=1
+10-30 22:54:47.406 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=4, clip=Throw, eventSeconds=0.950
+10-30 22:54:48.343 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=4, action=Throw, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:48.345 16345 16500 I Unity   : SAT_CHARA_THROW: player=4, phase=TowerAttack
+10-30 22:54:48.877 16345 16500 I Unity   : SAT_CHARA_TOPPLE
+10-30 22:54:50.584 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=4, clip=PickUp, eventSeconds=0.950
+10-30 22:54:51.253 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=2, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:54:51.554 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=4, action=PickUp, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:51.555 16345 16500 I Unity   : SAT_CHARA_PICKUP: slot=0, stone=5
+10-30 22:54:52.021 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=2, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:54:52.022 16345 16500 I Unity   : SAT_CHARA_THROW: player=2, phase=Rebuild
+10-30 22:54:52.457 16345 16500 I Unity   : SAT_CHARA_HIT: slot=0
+10-30 22:54:52.891 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=5, clip=PickUp, eventSeconds=0.950
+10-30 22:54:53.092 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=6, clip=PickUp, eventSeconds=0.950
+10-30 22:54:53.093 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=7, clip=PickUp, eventSeconds=0.950
+10-30 22:54:53.861 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=5, action=PickUp, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:53.861 16345 16500 I Unity   : SAT_CHARA_PICKUP: slot=1, stone=0
+10-30 22:54:54.062 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=6, action=PickUp, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:54.063 16345 16500 I Unity   : SAT_CHARA_PICKUP: slot=2, stone=1
+10-30 22:54:54.064 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=7, action=PickUp, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:54.066 16345 16500 I Unity   : SAT_CHARA_PICKUP: slot=3, stone=2
+10-30 22:54:55.165 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=5, clip=Place, eventSeconds=0.900
+10-30 22:54:56.068 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=5, action=Place, elapsed=0.920, eventSeconds=0.900
+10-30 22:54:56.069 16345 16500 I Unity   : SAT_CHARA_PLACE: stone=0
+10-30 22:54:56.169 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=6, clip=Place, eventSeconds=0.900
+10-30 22:54:56.369 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=2, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:54:57.104 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=6, action=Place, elapsed=0.920, eventSeconds=0.900
+10-30 22:54:57.106 16345 16500 I Unity   : SAT_CHARA_PLACE: stone=1
+10-30 22:54:57.138 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=2, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:54:57.139 16345 16500 I Unity   : SAT_CHARA_THROW: player=2, phase=Rebuild
+10-30 22:54:57.373 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=7, clip=Place, eventSeconds=0.900
+10-30 22:54:57.439 16345 16500 I Unity   : SAT_CHARA_HIT: slot=2
+10-30 22:54:58.308 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=7, action=Place, elapsed=0.920, eventSeconds=0.900
+10-30 22:54:58.309 16345 16500 I Unity   : SAT_CHARA_PLACE: stone=2
+10-30 22:54:58.676 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=5, clip=PickUp, eventSeconds=0.950
+10-30 22:54:58.713 16345 16500 I Unity   : SAT_CHARA_FRAME_SAMPLE: preset=Realistic, resolution=1480x720, frames=595, seconds=20.02, fps=29.7, p50ms=33.44, p95ms=33.45, p99ms=33.53, over100ms=1
+10-30 22:54:59.647 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=5, action=PickUp, elapsed=0.960, eventSeconds=0.950
+10-30 22:54:59.648 16345 16500 I Unity   : SAT_CHARA_PICKUP: slot=1, stone=3
+10-30 22:54:59.848 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=1, clip=ThrowCasual, eventSeconds=0.750
+10-30 22:55:00.215 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=7, clip=PickUp, eventSeconds=0.950
+10-30 22:55:00.617 16345 16500 I Unity   : SAT_CHARA_ACTION_EVENT: player=1, action=Throw, elapsed=0.760, eventSeconds=0.750
+10-30 22:55:00.618 16345 16500 I Unity   : SAT_CHARA_THROW: player=1, phase=Rebuild
+10-30 22:55:00.885 16345 16500 I Unity   : SAT_CHARA_HIT: slot=3
+10-30 22:55:01.787 16345 16500 I Unity   : SAT_CHARA_ACTION_START: player=5, clip=Place, eventSeconds=0.900

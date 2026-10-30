@@ -3,10 +3,30 @@ using UnityEngine;
 
 namespace SatChara
 {
-    // Captured walk/jog retargeting with temporary authored action overlays.
+    // Gameplay owns action timing and root travel; this component retargets the captured pose.
     public sealed class VillageAvatar : MonoBehaviour
     {
         [SerializeField] private TextAsset capturedMotion;
+        [SerializeField] private TextAsset capturedActions;
+        private static TextAsset cachedActionsSource;
+        private static CapturedActions cachedActions;
+        private CapturedActions actions;
+        private CapturedActions.Clip action;
+        private Vector3[] actionDirections;
+        public float ActionTime { get; private set; }
+        public float ActionDuration => action==null?0:action.duration;
+        public bool ActionBusy => action!=null && ActionTime<action.duration;
+        public float ActionEvent(string name) => action==null?-1:CapturedActions.EventTime(action,name);
+        public void SetActions(TextAsset source) => capturedActions=source;
+        public void BeginAction(string name)
+        {
+            Initialize();action=actions.Find(name);
+            if(action==null) throw new System.InvalidOperationException("Missing action: "+name);
+            ActionTime=0;planted[0]=planted[1]=false;
+        }
+        public void AdvanceAction(float dt) { if(action!=null) ActionTime=Mathf.Min(action.duration,ActionTime+dt); }
+        public void CancelAction() { action=null;ActionTime=0;planted[0]=planted[1]=false; }
+
         private static TextAsset cachedSource;
         private static CapturedLocomotion cachedMotion;
         private CapturedLocomotion motion;
@@ -32,7 +52,11 @@ namespace SatChara
             if(ready)return;
             foreach(var bone in GetComponentsInChildren<Transform>()) { bones[bone.name]=bone;rest[bone]=bone.localRotation; }
             if(cachedSource!=capturedMotion || cachedMotion==null) { cachedMotion=CapturedLocomotion.Load(capturedMotion);cachedSource=capturedMotion; }
+            if(cachedActionsSource!=capturedActions || cachedActions==null) { cachedActions=CapturedActions.Load(capturedActions);cachedActionsSource=capturedActions; }
+            actions=cachedActions;actionDirections=new Vector3[actions.bones.Length];
             motion=cachedMotion;directions=new Vector3[motion.bones.Length];driven=new Transform[directions.Length];ends=new Transform[directions.Length];
+            if(actions.bones.Length!=motion.bones.Length) throw new System.InvalidOperationException("Action rig mismatch");
+            for(int i=0;i<motion.bones.Length;i++) if(actions.bones[i]!=motion.bones[i] || actions.children[i]!=motion.children[i]) throw new System.InvalidOperationException("Action bone mismatch");
             bindDirections=new Vector3[driven.Length];referenceDirections=new Vector3[driven.Length];
             for(int i=0;i<driven.Length;i++)
             {
@@ -57,8 +81,8 @@ namespace SatChara
             speed=Mathf.Lerp(speed,delta.magnitude/Mathf.Max(.001f,dt),1-Mathf.Exp(-10*dt));
             float jog=Mathf.InverseLerp(1.5f,3.5f,speed);
             cycle=Mathf.Repeat(cycle+delta.magnitude/Mathf.Max(.1f,motion.Stride(jog)*legLength),1);
-            if(delta.sqrMagnitude>.00001f && !holdingBall) facing=delta;
-            if(facing.sqrMagnitude>.01f) transform.rotation=Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(facing),1-Mathf.Exp(-12*dt));
+            if(delta.sqrMagnitude>.00001f && !holdingBall && !ActionBusy) facing=delta;
+            if(!ActionBusy && facing.sqrMagnitude>.01f) transform.rotation=Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(facing),1-Mathf.Exp(-12*dt));
             ApplyPose(jog,Mathf.Clamp01(speed/.6f),holdingBall,carryingStone,ducking,charge,true);
         }
         // Deterministic editor pose inspection; this does not animate gameplay roots.
@@ -71,8 +95,18 @@ namespace SatChara
         {
             foreach(var pair in rest) if(pair.Key!=transform) pair.Key.localRotation=pair.Value;
             motion.Sample(cycle,jog,directions,out float bob,out float roll,out bool left,out bool right);
-            transform.localPosition=new Vector3(0,-.9f+groundOffset+bob*legLength*moving-(ducking?.3f:0),0);
-            if(bones.TryGetValue("pelvis",out var pelvis)) pelvis.rotation=Quaternion.AngleAxis(roll*moving,transform.forward)*pelvis.rotation;
+            float actionWeight=0;
+            if(ActionBusy)
+            {
+                actionWeight=Mathf.Min(Mathf.Clamp01(ActionTime/.12f),Mathf.Clamp01((action.duration-ActionTime)/.12f));
+                CapturedActions.Sample(action,ActionTime,actionDirections,out float actionBob,out float actionRoll,out _,out bool actionLeft,out bool actionRight);
+                for(int i=0;i<directions.Length;i++) directions[i]=Vector3.Slerp(directions[i],actionDirections[i],actionWeight);
+                bob=Mathf.Lerp(bob*moving,actionBob,actionWeight);roll=Mathf.Lerp(roll*moving,actionRoll,actionWeight);
+                if(actionWeight>.5f) { left=actionLeft;right=actionRight; }
+            }
+            else { bob*=moving;roll*=moving; }
+            transform.localPosition=new Vector3(0,-.9f+groundOffset+bob*legLength,0);
+            if(bones.TryGetValue("pelvis",out var pelvis)) pelvis.rotation=Quaternion.AngleAxis(roll,transform.forward)*pelvis.rotation;
             for(int i=0;i<driven.Length;i++)
             {
                 string name=motion.bones[i];
@@ -81,12 +115,12 @@ namespace SatChara
                 bool torso=name.StartsWith("spine")||name.StartsWith("neck");
                 if(torso) idle=bindDirections[i];
                 Vector3 captured=torso?Quaternion.FromToRotation(referenceDirections[i],directions[i])*bindDirections[i]:directions[i];
-                Vector3 desired=Vector3.Slerp(idle,captured,moving);
-                if(ducking && name.StartsWith("thigh")) desired=new Vector3(desired.x,-.7f,.7f);
-                if(ducking && name.StartsWith("calf")) desired=new Vector3(desired.x,-.65f,-.75f);
+                Vector3 desired=Vector3.Slerp(idle,captured,Mathf.Max(moving,actionWeight));
+                if(ducking && !ActionBusy && name.StartsWith("thigh")) desired=new Vector3(desired.x,-.7f,.7f);
+                if(ducking && !ActionBusy && name.StartsWith("calf")) desired=new Vector3(desired.x,-.65f,-.75f);
                 Aim(driven[i],ends[i],desired);
             }
-            if(holding||carrying||visualTime-throwTime<.42f) { Arm("l",holding,carrying,charge);Arm("r",holding,carrying,charge); }
+            if(!ActionBusy && (holding||carrying||visualTime-throwTime<.42f)) { Arm("l",holding,carrying,charge);Arm("r",holding,carrying,charge); }
             float lowest=Mathf.Min(bones["foot_l"].position.y,bones["ball_l"].position.y,bones["foot_r"].position.y,bones["ball_r"].position.y)-.04f;
             if(left||right||moving<.2f||ducking||lowest<.015f)
             { float correction=.015f-lowest;groundOffset+=correction;transform.position+=Vector3.up*correction; }
@@ -95,7 +129,7 @@ namespace SatChara
             {
                 bool contact=side==0?left:right;
                 string suffix=Sides[side];var foot=bones["foot_"+suffix];
-                bool plant=lockFeet&&contact&&moving>.5f&&!ducking;
+                bool plant=lockFeet&&contact&&(moving>.5f||actionWeight>.5f);
                 if(plant && !planted[side]) { anchors[side]=foot.position;anchors[side].y=ankleHeight; }
                 if(plant) anchors[side].y=Mathf.Max(ankleHeight,.055f-(bones["ball_"+suffix].position.y-foot.position.y));
                 planted[side]=plant;
