@@ -49,6 +49,26 @@ macro.update(gender=1.0, age=.272, muscle=.62, weight=.64, height=.58)
 macro['race'] = {'asian': .50, 'african': .30, 'caucasian': .20}
 human = HumanService.create_human(macro_detail_dict=macro)
 human.name = 'Bablu'
+
+# Face: a distinct Bengali teenage boy, not MakeHuman's default. Uses MakeHuman's CC0 shape targets
+# (shipped in the packaged MPFB 2.0.18 release). '*' means the left and right versions.
+FACE = {
+    'nose-scale-horiz-incr': .45, 'nose-flaring-incr': .5, 'nose-nostrils-width-incr': .4, 'nose-point-width-incr': .35,
+    'nose-volume-incr': .25, 'nose-hump-decr': .2, 'nose-scale-vert-decr': .1,
+    'mouth-upperlip-volume-incr': .1, 'mouth-lowerlip-height-decr': .25, 'mouth-scale-depth-decr': .3, 'mouth-scale-horiz-incr': .12, 'mouth-lowerlip-middle-up': .25,
+    'mouth-cupidsbow-incr': .3, 'mouth-angles-up': .15,
+    '*eye-scale-incr': .04, '*eye-push1-in': .2, '*eye-bag-incr': .22, '*eye-height2-incr': .1,
+    'eyebrows-trans-down': .25, 'eyebrows-angle-down': .1,
+    '*cheek-bones-incr': .3, '*cheek-volume-incr': .25,
+    'chin-width-incr': .3, 'chin-prominent-incr': .15, 'chin-bones-incr': .2,
+    'head-round': .3, 'head-fat-incr': .2, 'head-scale-horiz-incr': .1, 'forehead-scale-vert-decr': .15,
+}
+for name, value in FACE.items():
+    for n in (['l-' + name[1:], 'r-' + name[1:]] if name.startswith('*') else [name]):
+        path = TargetService.target_full_path(n)
+        if path: TargetService.load_target(human, path, weight=value, name=n)
+        else: print('NO_TARGET', n, flush=True)
+print('FACE_TARGETS', len(FACE), flush=True)
 skin = next(ASSETS.glob('skins/young_asian_male/*.mhmat'), None) or next(ASSETS.glob('skins/**/*.mhmat'))
 HumanService.set_character_skin(str(skin), human, skin_type='GAMEENGINE')
 HumanService.add_builtin_rig(human, 'game_engine')
@@ -526,6 +546,75 @@ for mat in body.data.materials:
     nt.links.new(tex.outputs['Color'], nm.inputs['Color']); nt.links.new(nm.outputs['Normal'], bsdf.inputs['Normal'])
     if 'Subsurface Weight' in bsdf.inputs: bsdf.inputs['Subsurface Weight'].default_value = .2
     if 'Specular IOR Level' in bsdf.inputs: bsdf.inputs['Specular IOR Level'].default_value = .45
+
+# ---------- skin colour detail: generated per vertex, so it needs no photo of a real person ----------
+# Darker skin around the eyes and on the lips (common in South Asian faces), a warmer nose and cheeks,
+# darker knees/elbows/knuckles, a faint upper-lip shadow, lighter nails, and low-frequency tone variation.
+eyes_ob = next(o for o in bpy.data.objects if 'low-poly' in o.name)
+EP = np.array([eyes_ob.matrix_world @ v.co for v in eyes_ob.data.vertices])
+eye_l = EP[EP[:, 0] > np.mean(EP[:, 0])].mean(axis=0); eye_r = EP[EP[:, 0] <= np.mean(EP[:, 0])].mean(axis=0)
+w_lips = weights('lips'); w_nails = weights('fingernails', 'toenails'); w_scalp2 = weights('scalp')
+def near(points, radius):
+    d = np.min([np.linalg.norm(V - p, axis=1) for p in points], axis=0)
+    return np.clip(1 - np.nan_to_num(d, nan=9) / radius, 0, 1)
+joints = [head_w(bone(k)) for k in ('calf_l', 'calf_r', 'lowerarm_l', 'lowerarm_r')]
+mouth_c = V[w_lips > .5].mean(axis=0) if (w_lips > .5).any() else eye_l
+nose_tip = V[np.nanargmin(np.where(np.abs(V[:, 0] - cx) < .02, V[:, 1], 9))]
+def vnoise(P, freq, seed):
+    r = np.random.default_rng(seed); out = np.zeros(len(P))
+    for k in range(4):
+        d = r.normal(size=3); d /= np.linalg.norm(d)
+        out += np.sin(np.nan_to_num(P) @ d * freq * (1.7 ** k) + r.uniform(0, 6.3)) / (1.6 ** k)
+    return out / 2
+tint = np.ones((len(V), 3))
+def apply(mask, rgb):
+    global tint
+    tint = tint * (1 - mask[:, None]) + tint * np.array(rgb) * mask[:, None]
+apply(near([eye_l, eye_r], .038) * .95, (.74, .66, .64))                                    # periorbital darkening
+apply(np.clip(w_lips, 0, 1), (.70, .54, .52))                                               # lips
+upper_lip = near([mouth_c + np.array([0, -.004, .018])], .022) * (1 - np.clip(w_lips, 0, 1))
+apply(upper_lip * .7, (.88, .84, .82))                                                      # faint upper-lip shadow
+apply(near([nose_tip], .03) * .6, (1.05, .93, .88))                                         # warmer nose
+apply(near([eye_l + np.array([0, -.02, -.035]), eye_r + np.array([0, -.02, -.035])], .035) * .5, (1.04, .94, .9))
+apply(near([np.array(j) for j in joints], .05) * .7, (.84, .78, .75))                       # knees and elbows
+apply(np.clip(w_nails, 0, 1), (1.25, 1.15, 1.08))                                           # nails
+apply(np.clip(w_scalp2, 0, 1) * .8, (.45, .42, .4))                                         # scalp under the hair
+tone = vnoise(V, 9, 21) * .035 + vnoise(V, 40, 22) * .015
+tint *= (1 + tone)[:, None]
+tint = np.clip(np.nan_to_num(tint, nan=1), 0, 1.4)
+attr = body.data.color_attributes.new('skin_detail', 'FLOAT_COLOR', 'POINT')
+attr.data.foreach_set('color', np.hstack([np.clip(tint, 0, 1), np.ones((len(V), 1))]).astype(np.float32).ravel())
+rough = .58 - .12 * near([nose_tip, eye_l + np.array([.0, -.01, .05]), eye_r + np.array([.0, -.01, .05])], .045)
+rattr = body.data.color_attributes.new('skin_rough', 'FLOAT_COLOR', 'POINT')
+rattr.data.foreach_set('color', np.repeat(rough[:, None], 4, axis=1).astype(np.float32).ravel())
+body.data.color_attributes.active_color = attr
+for mat in body.data.materials:
+    if not (mat and mat.use_nodes): continue
+    nt = mat.node_tree; bsdf = next((n for n in nt.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+    if not bsdf or not bsdf.inputs['Base Color'].is_linked: continue
+    ca = nt.nodes.new('ShaderNodeVertexColor'); ca.layer_name = 'skin_detail'
+    mul = nt.nodes.new('ShaderNodeMix'); mul.data_type = 'RGBA'; mul.blend_type = 'MULTIPLY'; mul.inputs['Factor'].default_value = 1
+    nt.links.new(bsdf.inputs['Base Color'].links[0].from_socket, mul.inputs[6]); nt.links.new(ca.outputs['Color'], mul.inputs[7])
+    nt.links.new(mul.outputs[2], bsdf.inputs['Base Color'])
+    cr = nt.nodes.new('ShaderNodeVertexColor'); cr.layer_name = 'skin_rough'
+    sep = nt.nodes.new('ShaderNodeSeparateColor'); nt.links.new(cr.outputs['Color'], sep.inputs['Color'])
+    nt.links.new(sep.outputs[0], bsdf.inputs['Roughness'])
+print('SKIN_DETAIL', 'eyes', eye_l.round(3), eye_r.round(3), flush=True)
+
+# brows darker and fuller-looking, eyes wet
+for o in bpy.data.objects:
+    if o.type != 'MESH': continue
+    for mat in o.data.materials:
+        if not (mat and mat.use_nodes): continue
+        b = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+        if not b: continue
+        if 'eyebrow' in o.name and b.inputs['Base Color'].is_linked:
+            nt = mat.node_tree; m = nt.nodes.new('ShaderNodeMix'); m.data_type = 'RGBA'; m.blend_type = 'MULTIPLY'
+            m.inputs['Factor'].default_value = 1; m.inputs[7].default_value = (.25, .22, .2, 1)
+            nt.links.new(b.inputs['Base Color'].links[0].from_socket, m.inputs[6]); nt.links.new(m.outputs[2], b.inputs['Base Color'])
+        if 'low-poly' in o.name:
+            b.inputs['Roughness'].default_value = .08
+            if 'Coat Weight' in b.inputs: b.inputs['Coat Weight'].default_value = 1; b.inputs['Coat Roughness'].default_value = .02
 
 # ---------- stage: packed earth ground, evening sky, warm low sun ----------
 scene = bpy.context.scene
