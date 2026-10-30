@@ -133,13 +133,13 @@ html { scroll-behavior: smooth }
     <li><a href="#biz">Audience and business</a></li>
     <li><a href="#plan">Production plan</a></li>
     <li><a href="#risks">Risks</a></li>
-    <li><a href="#open">Open questions</a></li>
+    <li><a href="#open">Decisions</a></li>
   </ol>
 </nav>
 
 <main>
 <header class="hero" id="top">
-  <div class="eyebrow">Game concept · draft 1 · 30 October 2026</div>
+  <div class="eyebrow">Game concept · draft 2 · 30 October 2026</div>
   <h1>ছুটি <span class="bn">Chhuti</span></h1>
   <p class="tagline">Fourteen days of summer holiday at Nanabari. Play Sat Chara, cricket and ha-du-du, steal mangoes at noon, and get home before the maghrib azan.</p>
   <div class="meta">
@@ -147,12 +147,15 @@ html { scroll-behavior: smooth }
     <span><b>Platform</b> Android first</span>
     <span><b>Engine</b> Unity (URP)</span>
     <span><b>Working title</b> Chhuti (ছুটি, "holiday")</span>
+    <span><b>Player picks</b> character, era, home region</span>
+    <span><b>Business</b> free with ads</span>
   </div>
 </header>
 
 <section id="pitch">
   <h2>The pitch</h2>
   <p><strong>One line:</strong> the street games you grew up with, set in the village you remember, over one summer holiday you never wanted to end.</p>
+  <p>The player makes their own character (boy or girl, name and look) and picks the era and the region their village is in. The examples in this document use the default character, Shuvo.</p>
   <p>Shuvo is twelve and lives in a Dhaka flat. When school closes for the summer he is sent to Nanabari, his grandparents' village of Hijoltoli, for two weeks. His cousins and the neighbourhood kids have a problem. The end-of-holiday tournament against Uttar Para is in fourteen days, last year they lost badly, and their team has fallen apart: the captain has quit, one boy works on the river every afternoon, one girl isn't allowed on the field, and one is banned for breaking a window.</p>
   <p>Shuvo is a city kid. He can't swim, he has never flown a kite, and he doesn't know the rules of Sat Chara. Over fourteen days he learns the village, brings the team back together one friend at a time, and finds out that his quiet Nana was once the best Sat Chara player the village had ever seen.</p>
 
@@ -190,14 +193,46 @@ html { scroll-behavior: smooth }
 <section id="setting">
   <h2>Setting and era</h2>
   <h3>Hijoltoli <span class="bn">হিজলতলী</span></h3>
-  <p>A fictional village in central Bangladesh, named after the hijol trees along its khal. It's about an hour by launch and van from the district town. A river on one side, rice fields on the other, a bazaar where the two roads meet. It's fictional so we can put everything iconic in one walkable place, and so no real village is singled out.</p>
+  <p>A fictional village, named after the hijol trees along its khal. It's about an hour by launch and van from the district town. A river on one side, rice fields on the other, a bazaar where the two roads meet. It's fictional so we can put everything iconic in one walkable place, and so no real village is singled out.</p>
+
+  <h3>The player picks the region</h3>
+  <p>At the start the player chooses which part of Bangladesh Nanabari is in. The map, story and games stay the same; what changes is how people talk and the local details around them.</p>
+  <div class="tbl"><table>
+    <tr><th>Region</th><th>How people talk</th><th>Local touches</th></tr>
+    <tr><td><strong>Central (default)</strong><span class="bn">ঢাকা · মধ্যাঞ্চল</span></td><td>Standard Bangla with a light rural colour</td><td>The base village as described in this document</td></tr>
+    <tr><td><strong>Mymensingh</strong><span class="bn">ময়মনসিংহ</span></td><td>Mymensingh dialect</td><td>Haor-edge fields, Brahmaputra boats, monda sweets</td></tr>
+    <tr><td><strong>Chattogram</strong><span class="bn">চট্টগ্রাম</span></td><td>Chatgaiya (close to a separate language; needs full translation)</td><td>Hills on the horizon, shutki drying racks, mezban feast at the wedding</td></tr>
+    <tr><td><strong>Sylhet</strong><span class="bn">সিলেট</span></td><td>Sylheti (close to a separate language; needs full translation)</td><td>Tea-garden hills in the distance, letters from relatives in London instead of the Middle East</td></tr>
+    <tr><td><strong>Barishal</strong><span class="bn">বরিশাল</span></td><td>Barishal dialect</td><td>More river and canals, boat travel, guava orchards, the launch is bigger</td></tr>
+    <tr><td><strong>Rajshahi</strong><span class="bn">রাজশাহী</span></td><td>Rajshahi/Varendra dialect</td><td>Red soil, famous mango orchards (bigger orchard), the Padma</td></tr>
+    <tr><td><strong>Khulna</strong><span class="bn">খুলনা</span></td><td>Khulna dialect</td><td>Shrimp ponds (gher), golpata roofs, Sundarbans stories from Nani</td></tr>
+    <tr><td><strong>Rangpur</strong><span class="bn">রংপুর</span></td><td>Rangpuri dialect</td><td>Teesta river, colder nights, bhawaiya songs on the radio</td></tr>
+  </table></div>
+  <h4>How it's built</h4>
+  <ul>
+    <li><strong>Dialogue</strong> is written once in standard Bangla, then each line has a version per region, written by a native speaker from that region (not machine-converted). The game picks the line set by the player's region.</li>
+    <li><strong>Voice</strong> is the expensive part: every region multiplies the voice recording. Plan: all lines voiced for the central version; for each other region, the short shouts and key story lines are voiced and the rest is shown as dialect text with the central voice, or text only. More full voice packs can be added later if a region is popular.</li>
+    <li><strong>Local touches</strong> are swaps on top of the same map: a few props, foods, background songs on the radio, one or two side quests per region.</li>
+    <li><strong>Launch:</strong> central plus one or two regions; the rest added in updates. Each region needs a native-speaker writer and a reviewer from there.</li>
+    <li>The player's own character speaks the region's dialect too; the city kid from Dhaka still speaks standard Bangla, which is a running joke in itself ("Dhakar pola").</li>
+  </ul>
   <p>The village is split into paras (neighbourhoods). Shuvo's grandparents live in <strong>Dokkhin Para</strong> (south). The rivals are <strong>Uttar Para</strong> (north). There's also <strong>Pal Para</strong>, where the potter families live, and <strong>Ghat Para</strong> by the river, where the fishing families live.</p>
 
   <h3>Season: Jaistha, the honey month <span class="bn">জ্যৈষ্ঠ · মধুমাস</span></h3>
   <p>Mid-May to mid-June. Schools close for the summer holiday. It's mango, lychee and jackfruit season, the afternoons are hot and long, and kalboishakhi storms come in late in the day. Every storm ends with children running out to collect the mangoes it knocked down.</p>
 
-  <h3>Era: around 2001</h3>
-  <p>Recommended: the summer after Bangladesh became a Test-playing nation (June 2000). It's the peak nostalgia window for today's 25–40-year-olds, and it removes smartphones from the story:</p>
+  <h3>The player picks the era</h3>
+  <p>At the start the player chooses when their childhood summer happened. The story, people and map stay the same; the era changes the technology, prices, clothes, shop signs and some missions.</p>
+  <div class="tbl"><table>
+    <tr><th>Era</th><th>What's different</th><th>Missions that change</th></tr>
+    <tr><td><strong>Late 1990s</strong></td><td>Radio is king, the tea stall TV is new and rare, cassette players, hurricane lanterns everywhere, older-style lungis and frocks, lower prices.</td><td>Cricket on the radio instead of TV. Ammu's call comes as a telegram or a letter.</td></tr>
+    <tr><td><strong>Around 2001 (default)</strong></td><td>As described below.</td><td>The base story.</td></tr>
+    <tr><td><strong>Around 2010</strong></td><td>Mobile phones arrive: Mama has a basic Nokia-style phone, some boys play snake on it. Solar panels on a few roofs, more bicycles, the TV is colour.</td><td>Ammu calls Mama's mobile. A side quest to charge the phone at the bazaar.</td></tr>
+    <tr><td><strong>Present day</strong></td><td>Smartphones, a mobile-banking shop at the bazaar, an electric auto-rickshaw instead of the van, fewer kids outside. Load-shedding is rarer.</td><td>A new thread: getting the cousins off their phones and back onto the field. Video call with Ammu.</td></tr>
+  </table></div>
+  <p>How it's built: each era is a set of swaps on the same world (props, textures, clothing variants, prices, some dialogue lines, two or three missions). Launch with the default era first; the others are about 20–30% extra environment and character-outfit work each, so they're good updates after release.</p>
+  <h3>The default era: around 2001</h3>
+  <p>The summer after Bangladesh became a Test-playing nation (June 2000). It's the peak nostalgia window for today's 25–40-year-olds, and it removes smartphones from the story:</p>
   <ul>
     <li>One television in the village, at Shiuli's father's tea stall: black-and-white, with the antenna on a bamboo pole. Everyone crowds in for cricket and the Friday film.</li>
     <li>Cricket fever is everywhere. Every kid wants to bowl like Shoaib Akhtar and has a tape-ball with insulation tape wound tight.</li>
@@ -210,11 +245,20 @@ html { scroll-behavior: smooth }
 
 <section id="people">
   <h2>Characters</h2>
-  <h3>The player</h3>
+  <h3>The player character</h3>
+  <p>The player creates their character: <strong>boy or girl</strong>, name (default Shuvo for a boy, Shuchi for a girl), skin tone, face, hair and clothes. Whoever they make is the city cousin, 12 years old, from a flat in Dhaka.</p>
   <div class="tbl"><table>
-    <tr><th>Name</th><th>Who</th><th>Arc</th></tr>
-    <tr><td><strong>Shuvo</strong><span class="bn">শুভ</span></td><td>12, from a Dhaka flat. Good at school, bad at everything the village kids can do. Polite, curious, a little scared of cows.</td><td>Starts with weaker match stats (10 points instead of the roster's 13). Every game he practises and every skill he learns (swimming, climbing, kites) raises his stats. By the final he's as good as the locals, and he can't imagine going back.</td></tr>
+    <tr><th>Default</th><th>Who</th><th>Arc</th></tr>
+    <tr><td><strong>Shuvo</strong><span class="bn">শুভ</span> or <strong>Shuchi</strong><span class="bn">শুচি</span></td><td>12, from a Dhaka flat. Good at school, bad at everything the village kids can do. Polite, curious, a little scared of cows.</td><td>Starts with weaker match stats (10 points instead of the roster's 13). Every game they practise and every skill they learn (swimming, climbing, kites) raises their stats. By the final they're as good as the locals, and can't imagine going back.</td></tr>
   </table></div>
+  <h4>How a boy or girl changes the story</h4>
+  <ul>
+    <li><strong>Bangla helps:</strong> the third person (সে, তিনি) has no gender, so most dialogue works for both unchanged. Only the lines that address the player change: "bhai", "bhaiya" or "Dhakar pola" for a boy; "apu", "bon" or "Dhakar maiya" for a girl. Those lines are written and recorded twice.</li>
+    <li><strong>The main story is the same:</strong> the team, the tournament, Nana's stones, the ending.</li>
+    <li><strong>Some scenes change honestly.</strong> On Friday a girl prays at home with Nani instead of going to the mosque with Nana, spends the noon nap with the women of the house, and faces the same "girls shouldn't run on the field" talk that Nusrat does, which makes the Nusrat and Mami arcs her own. A boy's scenes are as written in this document.</li>
+    <li><strong>Matches are the same:</strong> both can play every game. The local kids' teasing changes, not the rules.</li>
+    <li><strong>Cost:</strong> two sets of player animations, outfits and voice, plus about 10–15% extra writing.</li>
+  </ul>
 
   <h3>The Dokkhin Para team (the existing roster)</h3>
   <p>The eight kids already designed for Sat Chara are Shuvo's friends and cousins. Their stats, looks and voice lines carry over unchanged. The story gives each one a reason they aren't playing at the start.</p>
@@ -573,6 +617,14 @@ html { scroll-behavior: smooth }
     <li>Azan, prayer, maktab, the Imam and the tablighi visit are part of village life and are shown warmly and accurately. They're never a joke, a villain or an obstacle the game wants you to resent.</li>
     <li>Prayer itself is never a minigame and never shown in close interactive detail. Scenes cut to before and after.</li>
     <li>Going to the mosque is always a free choice with no stat reward or penalty. The game doesn't preach in either direction.</li>
+    <li><strong>Player settings (Settings → Village life).</strong> All religious scenes are in the game and on by default; each can be switched off:
+      <ul>
+        <li><em>Azan sound:</em> on / softer / off. With it off, the maghrib curfew still happens: the sky darkens, lamps are lit and the mothers start calling.</li>
+        <li><em>Jumma scene:</em> on / off. Off skips straight from the morning to after prayer.</li>
+        <li><em>Tablighi visit:</em> on / off. Off removes the gasht event; nothing else in the story depends on it.</li>
+        <li><em>Maktab mornings:</em> on / off.</li>
+      </ul>
+      Every scene that can be switched off is written so the story still makes sense without it.</li>
     <li>Recorded azan by a real muezzin, with permission. Quran recitation is not used as background music.</li>
     <li>The Pal Para potter family is Hindu and shown as neighbours like any others: Gopal kaka's courtyard, a small shrine (tulsi plant) in their yard, a sweet from their kitchen. No interfaith conflict storylines.</li>
   </ul>
@@ -629,7 +681,9 @@ html { scroll-behavior: smooth }
     <tr><td>People</td><td>About 40 named NPCs with daily schedules; at most 12–15 animated people near the player at once.</td></tr>
     <tr><td>Download</td><td>Base app under 150 MB from the Play Store; chapters as on-demand asset packs (Play Asset Delivery). Full game about 1.5–2 GB.</td></tr>
     <tr><td>Online</td><td>Sat Chara, cricket and ha-du-du for 2–8 players. Small dedicated servers or a hosted relay; matches are short and need little bandwidth.</td></tr>
-    <tr><td>Language</td><td>Bangla first, English subtitles. Bangla text rendering tested on low-end phones.</td></tr>
+    <tr><td>Language</td><td>Bangla first, English subtitles. Bangla text rendering tested on low-end phones. Dialogue stored as one table with a column per region dialect, chosen at the start.</td></tr>
+    <tr><td>Player choices</td><td>Character, era and region stored in the save; era and region applied as swap sets (props, materials, outfits, dialogue lines, audio) on one shared world, with region voice packs as downloadable asset packs.</td></tr>
+    <tr><td>Ads</td><td>AdMob (or a mediation SDK) with mediation, rewarded and interstitial formats, blocked categories, and the remove-ads purchase through Google Play Billing.</td></tr>
   </table></div>
 </section>
 
@@ -642,9 +696,22 @@ html { scroll-behavior: smooth }
     <li><strong>Third:</strong> players outside Bangladesh who like slow, warm games (the <em>Boku no Natsuyasumi</em> and <em>Stardew</em> audience), reached through English subtitles and festivals.</li>
     <li>Expected rating: Everyone / PEGI 7.</li>
   </ul>
-  <h3>Making money</h3>
-  <p>Recommended: <strong>chapter 1 free, the rest a one-time unlock</strong>, plus optional cosmetics for online play (kite designs, lungi and jersey colours, marble skins). No ads during the story, no loot boxes, no pay-to-win, no energy timers. Price to be tested; check local payment options (carrier billing, mobile wallets) because card ownership in Bangladesh is low.</p>
-  <p>Chapter 1 free does two jobs: it's the marketing (the nostalgia hits in the first ten minutes) and it tests whether people want more before the expensive chapters are built.</p>
+  <h3>Making money: free with ads</h3>
+  <p>The whole game is free to download and play. Money comes from ads. Ads are common and accepted in Bangladesh, and free reaches the most players. The risk is that ads break the mood the game depends on, so where they appear matters more than how many.</p>
+  <div class="tbl"><table>
+    <tr><th>Ad type</th><th>Where</th><th>Rule</th></tr>
+    <tr><td><strong>Rewarded</strong> (player chooses to watch)</td><td>Double the coins from a match; a second try at a failed minigame; an extra hint; a free kite design.</td><td>Main source of income. Always optional; the game never needs them to progress.</td></tr>
+    <tr><td><strong>Full-screen</strong> (interstitial)</td><td>At the night save, after an online match, when returning to the main menu.</td><td>At most one per real 15–20 minutes. Never in a cutscene, story moment, match, or any religious scene.</td></tr>
+    <tr><td><strong>Banner</strong></td><td>Main menu and online lobby only.</td><td>Never during play.</td></tr>
+    <tr><td><strong>Remove ads</strong> (one-time purchase)</td><td>Settings.</td><td>Removes full-screen and banner ads for good; rewarded ads stay available as an option.</td></tr>
+  </table></div>
+  <ul>
+    <li><strong>Also sold:</strong> optional cosmetics for online play (kite designs, lungi and jersey colours, marble skins). No loot boxes, no pay-to-win, no energy timers.</li>
+    <li><strong>Ad content:</strong> block categories that clash with the game or its audience: gambling and betting, dating, alcohol, adult content, and violent games. This is easy to set in AdMob and other networks.</li>
+    <li><strong>Children:</strong> if Google Play sees the game as aimed at children, it must use only Play-certified family ad networks and no personalised ads. Decide the target age early (recommended: 13+ as the target, with family-safe ads anyway).</li>
+    <li><strong>Payments:</strong> for the remove-ads purchase and cosmetics, check carrier billing and mobile-wallet support on Google Play in Bangladesh, since few players have cards.</li>
+    <li><strong>Chapter release:</strong> chapters can still come out one at a time as free updates, which keeps the game in the news.</li>
+  </ul>
 </section>
 
 <section id="plan">
@@ -654,8 +721,8 @@ html { scroll-behavior: smooth }
     <tr><th>Phase</th><th>What's built</th><th>Proves</th></tr>
     <tr><td><strong>0 · Now</strong></td><td>Finish the Sat Chara match in Unity on the phone (current work). Playtest the browser prototype with 5–10 people.</td><td>The rebuild-under-fire round is fun.</td></tr>
     <tr><td><strong>1 · Vertical slice</strong></td><td>Day 1 only: launch arrival, Nanabari and its courtyard, Nani and the cousins, the Sat Chara tutorial match, the maghrib azan and curfew, one load-shedding night.</td><td>The feeling works. Show it to people who grew up in villages; if they don't get a lump in their throat, rethink before going further.</td></tr>
-    <tr><td><strong>2 · Chapter 1</strong></td><td>Days 1–3, Nanabari, pond and two paras, Sat Chara, kanamachi, marbles, swimming basics. Release free on the Play Store.</td><td>People download, finish, and ask for more.</td></tr>
-    <tr><td><strong>3 · Chapters 2–4</strong></td><td>The rest of the village, cricket and ha-du-du at full quality, the other games, the full story and ending.</td><td>The paid unlock sells.</td></tr>
+    <tr><td><strong>2 · Chapter 1</strong></td><td>Days 1–3, Nanabari, pond and two paras, Sat Chara, kanamachi, marbles, swimming basics. Boy or girl character, default era, central region plus one more region. Ads switched on. Release free on the Play Store.</td><td>People download, finish, and ask for more; ads don't drive them away.</td></tr>
+    <tr><td><strong>3 · Chapters 2–4</strong></td><td>The rest of the village, cricket and ha-du-du at full quality, the other games, the full story and ending, released as free updates. More regions and the other eras added alongside.</td><td>Players come back for each update; ad income covers the work.</td></tr>
     <tr><td><strong>4 · Online</strong></td><td>Online Sat Chara, cricket and ha-du-du with friends.</td><td>Long-term play.</td></tr>
   </table></div>
   <h3>Who does what</h3>
@@ -682,22 +749,30 @@ html { scroll-behavior: smooth }
     <tr><td>Religious and cultural backlash</td><td>One careless scene can sink the game in Bangladesh.</td><td>The rules in <a href="#respect">Culture and respect</a> and a reviewer sign-off per chapter.</td></tr>
     <tr><td>Nostalgia without fun</td><td>Pretty and warm but nothing to do after an hour.</td><td>The core games must stand alone; phase 0 and 1 test exactly this.</td></tr>
     <tr><td>Children in the game</td><td>Kids as characters (and as voice actors) need care.</td><td>No harm shown to children; guardians and proper contracts for child actors.</td></tr>
-    <tr><td>Market size and payments</td><td>Bangladeshi players pay less for games, and card payment is rare.</td><td>Free chapter 1, low price, carrier billing, the diaspora and international audience.</td></tr>
+    <tr><td>Ads break the mood</td><td>The game's value is its atmosphere; a loud ad after a tender scene undoes it.</td><td>Rewarded ads first, strict placement rules, blocked ad categories, a remove-ads purchase.</td></tr>
+    <tr><td>Ad income in Bangladesh</td><td>Ad rates in Bangladesh are low compared with richer markets.</td><td>Lean on rewarded ads, the diaspora and international players; keep costs low.</td></tr>
+    <tr><td>Choices multiply content</td><td>Character × era × region multiplies dialogue, voice, outfits and props.</td><td>Build every choice as swaps on one world; launch with the defaults plus a few options and add the rest in updates.</td></tr>
     <tr><td>Piracy</td><td>Modded APKs are common.</td><td>Online modes and cosmetics need an account; the story can't be fully protected, so keep the price fair.</td></tr>
   </table></div>
 </section>
 
 <section id="open">
-  <h2>Open questions</h2>
-  <p>Decisions for you. My recommendation is first in each.</p>
+  <h2>Decisions</h2>
+  <p>Decided on 30 October 2026.</p>
   <div class="qa">
-    <div><strong>Title.</strong> Chhuti (ছুটি). Alternatives: Nanabari (নানাবাড়ি), Shesh Bikel (শেষ বিকেল, "the last afternoon"), Gramer Chhuti.</div>
-    <div><strong>Era.</strong> Around 2001. Alternatives: late 1990s (more radio, fewer TVs), or present day (phones everywhere, which kills much of the nostalgia).</div>
-    <div><strong>Player character.</strong> Fixed boy, Shuvo, with Mitu as the co-lead. Alternative: choose Shuvo or his cousin sister from the city; costs more writing and voice work.</div>
-    <div><strong>Region and dialect.</strong> Unnamed central district, standard Bangla with light colour. Alternative: a named region (Mymensingh, Barishal, Sylhet) with its dialect; more authentic, more limiting.</div>
-    <div><strong>The tablighi and jumma scenes.</strong> Keep, as written above, with the reviewer sign-off. Alternative: keep only the azan and curfew.</div>
-    <div><strong>Business model.</strong> Free chapter 1 plus one-time unlock. Alternative: fully free with cosmetics only.</div>
-    <div><strong>What happens to the current Sat Chara game.</strong> It becomes chapter 1 and the first online mode; nothing built so far is thrown away.</div>
+    <div><strong>Title.</strong> Chhuti (ছুটি) stays the working title; no preference yet. Alternatives kept on file: Nanabari, Shesh Bikel, Gramer Chhuti.</div>
+    <div><strong>Era.</strong> The player picks: late 1990s, around 2001 (default), around 2010, or present day. See <a href="#setting">Setting and era</a>.</div>
+    <div><strong>Player character.</strong> The player creates their character, boy or girl, with name and look. See <a href="#people">Characters</a>.</div>
+    <div><strong>Region and dialect.</strong> The player picks the region; dialogue and local details follow that region's dialect. See <a href="#setting">Setting and era</a>.</div>
+    <div><strong>Religious scenes.</strong> All kept and on by default (azan, jumma, tablighi visit, maktab), each one switchable in settings. See <a href="#respect">Culture and respect</a>.</div>
+    <div><strong>Business model.</strong> Free with ads, rewarded ads first, plus a remove-ads purchase and cosmetics. See <a href="#biz">Audience and business</a>.</div>
+    <div><strong>The current Sat Chara game.</strong> It becomes chapter 1 and the first online mode; nothing built so far is thrown away.</div>
+  </div>
+  <h3>Still open</h3>
+  <div class="qa">
+    <div><strong>Which regions ship first</strong> after central (each needs a native writer and reviewer).</div>
+    <div><strong>Target age</strong> for Google Play (affects which ad networks are allowed).</div>
+    <div><strong>Final title.</strong></div>
   </div>
 </section>
 
