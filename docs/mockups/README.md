@@ -1,5 +1,9 @@
 # Character mockups
 
+## Current work: concept-driven Bablu v4
+
+See the [3D refinement renders and portable model](v4-model/README.md) and the [public-reference credits and concept prompt](v4-references/README.md). The photographic concept is the quality target. The rigged model is still an art work in progress and has not replaced the Android character.
+
 ## Bablu (বাবলু): free resources only
 
 **Purpose:** see how close free tools get to the Real Cricket 24 benchmark (D17) before deciding on paid tools or an artist (D16).

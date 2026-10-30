@@ -20,7 +20,9 @@ tempfile.tempdir = str(VENDOR / 'tmp')
 ASSETS = VENDOR / 'selected-assets'
 ARGS = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 SAMPLES = int(ARGS[ARGS.index('--samples') + 1]) if '--samples' in ARGS else 128
+DESIGN_V4 = '--design-v4' in ARGS
 OUT_IMG = PROJECT / 'docs' / 'mockups'
+if DESIGN_V4: OUT_IMG = OUT_IMG / 'v4-model'
 OUT_IMG.mkdir(parents=True, exist_ok=True)
 
 # ---------- MPFB setup (same approach as create_character.py) ----------
@@ -46,6 +48,7 @@ bpy.ops.object.delete(use_global=False)
 # ---------- body: Bablu, 15, broad and heavy (docs/characters.md) ----------
 macro = TargetService.get_default_macro_info_dict()
 macro.update(gender=1.0, age=.272, muscle=.62, weight=.64, height=.58)
+if DESIGN_V4: macro.update(muscle=.43, weight=.46, height=.58)
 macro['race'] = {'asian': .50, 'african': .30, 'caucasian': .20}
 human = HumanService.create_human(macro_detail_dict=macro)
 human.name = 'Bablu'
@@ -63,6 +66,17 @@ FACE = {
     'chin-width-incr': .3, 'chin-prominent-incr': .15, 'chin-bones-incr': .2,
     'head-round': .3, 'head-fat-incr': .2, 'head-scale-horiz-incr': .1, 'forehead-scale-vert-decr': .15,
 }
+if DESIGN_V4:
+    FACE.update({'nose-scale-horiz-incr': .23, 'nose-flaring-incr': .28,
+                 'nose-point-width-incr': .20, 'nose-volume-incr': .14,
+                 '*cheek-volume-incr': .10, 'chin-width-incr': .16,
+                 'head-fat-incr': .06, 'head-round': .12,
+                 '*eye-bag-incr': .07, '*eye-push1-in': .10})
+    FACE.update({'mouth-upperlip-volume-incr': 0, 'mouth-lowerlip-volume-decr': .22,
+                 'mouth-scale-horiz-incr': .03, 'mouth-cupidsbow-incr': .10,
+                 'mouth-upperlip-middle-down': .18, 'mouth-lowerlip-middle-up': .42,
+                 '*eye-scale-incr': 0, '*eye-height2-incr': 0,
+                 '*eye-height2-decr': .12})
 for name, value in FACE.items():
     for n in (['l-' + name[1:], 'r-' + name[1:]] if name.startswith('*') else [name]):
         path = TargetService.target_full_path(n)
@@ -233,6 +247,7 @@ def mesh_object(name, verts, faces, uvs=None, mat=None):
 # starts wider than the legs so gravity and body collision form real folds. The seam is welded.
 NA, NR = 96, 34
 z_top, z_bot = z_navel - .05, z_knee + .035
+if DESIGN_V4: z_bot = z_knee - height * .085
 legs = (w_arm < .05)
 rng_l = np.random.default_rng(7)
 rings, uvs = [], []
@@ -298,6 +313,8 @@ vest.parent = rig
 z_chest = z_neck - .15
 dx = np.abs(V[:, 0] - cx)
 keep = (V[:, 2] > z_top - .03) & (V[:, 2] < z_chest) & (w_arm < .12) & (w_neck < .35)   # straps are added below
+if DESIGN_V4:
+    keep = (V[:, 2] > z_top - .03) & (V[:, 2] < z_chest + .045) & (w_arm < .18) & is_body
 front_scoop = (V[:, 1] < cy) & (dx < .05) & (V[:, 2] > z_chest - .05)
 back_scoop = (V[:, 1] >= cy) & (dx < .05) & (V[:, 2] > z_chest - .01)
 keep &= ~front_scoop & ~back_scoop & is_body
@@ -381,7 +398,7 @@ for s_name, frac in (('Vest_strap_l', .5), ('Vest_strap_r', -.5)):
     st = V[m][np.argmax(V[m][:, 2])]
     strip(s_name, [surface(st[0], z_chest - .03, True, .009), surface(st[0], top[2] - .06, True, .009),
                    Vector((st[0], st[1], st[2] + .01)), surface(st[0], top[2] - .06, False, .009),
-                   surface(st[0], z_chest - .03, False, .009)], .035, st[2], vest.data.materials[0], ripple=0, uv_len=2)
+                   surface(st[0], z_chest - .03, False, .009)], .055 if DESIGN_V4 else .035, st[2], vest.data.materials[0], ripple=0, uv_len=2)
 
 # ---------- skin tone: warm brown per the character sheet (#9C6440), with soft subsurface for renders ----------
 for mat in body.data.materials:
@@ -509,11 +526,12 @@ for c in range(1600):
     if front: d = (d + Vector((math.copysign(.6, p.x - head_c.x), 0, .15))).normalized()   # fringe swept to the side
     else: d = (d + Vector((0, 0, -.35))).normalized()                                    # hair falls a little
     L = rng_h.uniform(.02, .032) if front else rng_h.uniform(.02, .038)
+    if DESIGN_V4: L *= 1.65
     side = d.cross(n).normalized(); W = .009
     u0 = rng_h.uniform(0, .8); base = len(verts)
     for k in range(4):
         t = k / 3
-        q = p + n * (-.001 + .004 * t) + d * L * t + Vector((0, 0, -.006 * t * t))
+        q = p + n * (-.001 + (.012 if DESIGN_V4 else .004) * t) + d * L * t + Vector((0, 0, -.006 * t * t))
         verts += [q - side * W / 2, q + side * W / 2]
         uv_h += [(u0, t), (u0 + .2, t)]
     for k in range(3):
@@ -617,6 +635,10 @@ for o in bpy.data.objects:
             if 'Coat Weight' in b.inputs: b.inputs['Coat Weight'].default_value = 1; b.inputs['Coat Roughness'].default_value = .02
 
 # ---------- stage: packed earth ground, evening sky, warm low sun ----------
+if DESIGN_V4:
+    sys.path.insert(0, str(ROOT))
+    from design_bablu_v4 import refine
+    refine(body, rig, vest, gamcha, height, globals())
 scene = bpy.context.scene
 world = bpy.data.worlds.new('Evening'); scene.world = world; world.use_nodes = True
 wn = world.node_tree.nodes; env = wn.new('ShaderNodeTexEnvironment')
@@ -647,6 +669,13 @@ ground.data.materials.append(gm)
 sun = bpy.data.lights.new('Sun', 'SUN'); sun.energy = 6.5; sun.color = (1.0, .76, .52); sun.angle = math.radians(1.5)
 sun_ob = bpy.data.objects.new('Sun', sun); scene.collection.objects.link(sun_ob)
 sun_ob.rotation_euler = (math.radians(72), 0, math.radians(-38))
+if DESIGN_V4:
+    sun.energy = 2.0; sun.color = (1.0, .93, .85); sun.angle = math.radians(18)
+    wn['Background'].inputs['Strength'].default_value = .7
+    light = bpy.data.lights.new('Portrait softbox', 'AREA'); light.energy = 110; light.size = 2.5
+    lo = bpy.data.objects.new('Portrait softbox', light); scene.collection.objects.link(lo)
+    lo.location = (cx - 1.4, cy - 2, z_floor + height * 1.3)
+    lo.rotation_euler = (Vector((cx, cy, z_floor + height * .7)) - lo.location).to_track_quat('-Z', 'Y').to_euler()
 
 scene.render.engine = 'CYCLES'; scene.cycles.samples = SAMPLES; scene.cycles.use_denoising = True
 scene.cycles.device = 'CPU'
@@ -666,7 +695,8 @@ def shoot(name, cam_pos, look_at, lens, res):
     scene.render.filepath = str(OUT_IMG / f'bablu-{name}.jpg')
     bpy.ops.render.render(write_still=True); print('RENDERED', name, flush=True)
 
-bpy.ops.wm.save_as_mainfile(filepath=str(VENDOR / 'bablu-mockup.blend'))
+MODEL_NAME = 'bablu-v4-design' if DESIGN_V4 else 'bablu-mockup'
+bpy.ops.wm.save_as_mainfile(filepath=str(VENDOR / f'{MODEL_NAME}.blend'))
 if '--no-render' not in ARGS:
     mid = (cx, cy, zmin + height * .52)
     shoot('three-quarter', (cx + 1.7, cy - 3.0, zmin + height * .6), mid, 55, (1080, 1440))
@@ -682,7 +712,7 @@ for o in (ground,): o.hide_set(True)
 bpy.ops.object.select_all(action='DESELECT')
 for o in bpy.data.objects:
     if o.type in ('MESH', 'ARMATURE') and o is not ground: o.select_set(True)
-bpy.ops.export_scene.gltf(filepath=str(VENDOR / 'bablu-mockup.glb'), export_format='GLB', use_selection=True,
+bpy.ops.export_scene.gltf(filepath=str(VENDOR / f'{MODEL_NAME}.glb'), export_format='GLB', use_selection=True,
                           export_apply=True, export_animations=False, export_image_format='AUTO')  # PNG keeps lash/brow transparency
 summary = {o.name: len(o.data.vertices) for o in bpy.data.objects if o.type == 'MESH'}
 print('DONE', json.dumps(summary), flush=True)

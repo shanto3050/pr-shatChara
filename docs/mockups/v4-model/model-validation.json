@@ -1,0 +1,29 @@
+{
+  "stage": "3D art refinement; not integrated or tested on Android",
+  "glbBytes": 13410304,
+  "sha256": "38b1724d51b458443843b0de6bf8edb51a7ad514ee7c4b4e9a71ad05bdfdf81d",
+  "meshes": 11,
+  "skins": 1,
+  "jointCounts": [
+    53
+  ],
+  "renderSizes": {
+    "bablu-face.jpg": [
+      1080,
+      1080
+    ],
+    "bablu-front.jpg": [
+      1080,
+      1440
+    ],
+    "bablu-three-quarter.jpg": [
+      1080,
+      1440
+    ]
+  },
+  "limitations": [
+    "Procedural Blender skin and fabric materials require baking for Unity",
+    "Face and hair still fall short of photographic concept",
+    "Clothing deformation not approved for gameplay"
+  ]
+}
