@@ -1,0 +1,95 @@
+{
+  "Haystack": {
+    "triangles": 1856,
+    "objects": 3
+  },
+  "TubeWell": {
+    "triangles": 656,
+    "objects": 8
+  },
+  "MudHouse": {
+    "triangles": 11472,
+    "objects": 34
+  },
+  "BambooFence": {
+    "triangles": 948,
+    "objects": 77
+  },
+  "BananaPlant": {
+    "triangles": 508,
+    "objects": 10
+  },
+  "CoconutPalm": {
+    "triangles": 4284,
+    "objects": 36
+  },
+  "ClayPot": {
+    "triangles": 504,
+    "objects": 1
+  },
+  "JuteSack": {
+    "triangles": 520,
+    "objects": 1
+  },
+  "_materials": {
+    "Bamboo": [
+      "Bamboo001C_1K-JPG_Color.jpg",
+      "Bamboo001C_1K-JPG_NormalGL.jpg",
+      "Bamboo001C_1K-JPG_Roughness.jpg"
+    ],
+    "Concrete": [
+      "yellow_plaster_02_diff_1k.jpg",
+      "yellow_plaster_02_nor_gl_1k.jpg",
+      "yellow_plaster_02_rough_1k.jpg"
+    ],
+    "DungCake": [
+      "Clay005_1K-JPG_Color.jpg",
+      "Clay005_1K-JPG_NormalGL.jpg",
+      "Clay005_1K-JPG_Roughness.jpg"
+    ],
+    "Jute": [
+      "hessian_230_diff_1k.jpg",
+      "hessian_230_nor_gl_1k.jpg",
+      "hessian_230_rough_1k.jpg"
+    ],
+    "Leaf": [
+      "village_leaf"
+    ],
+    "MudBase": [
+      "dry_mud_field_001_diff_1k.jpg",
+      "dry_mud_field_001_nor_gl_1k.jpg",
+      "dry_mud_field_001_rough_1k.jpg"
+    ],
+    "MudPlaster": [
+      "yellow_plaster_02_diff_1k.jpg",
+      "yellow_plaster_02_nor_gl_1k.jpg",
+      "yellow_plaster_02_rough_1k.jpg"
+    ],
+    "OldWood": [
+      "Planks039_1K-JPG_Color.jpg",
+      "Planks039_1K-JPG_NormalGL.jpg",
+      "Planks039_1K-JPG_Roughness.jpg"
+    ],
+    "PalmTrunk": [
+      "village_palm_trunk"
+    ],
+    "PumpPaint": [
+      "village_pump_paint"
+    ],
+    "Straw": [
+      "ThatchedRoof002A_1K-JPG_Color.jpg",
+      "ThatchedRoof002A_1K-JPG_NormalGL.jpg",
+      "ThatchedRoof002A_1K-JPG_Roughness.jpg"
+    ],
+    "Terracotta": [
+      "Clay005_1K-JPG_Color.jpg",
+      "Clay005_1K-JPG_NormalGL.jpg",
+      "Clay005_1K-JPG_Roughness.jpg"
+    ],
+    "TinRoof": [
+      "rusty_corrugated_iron_diff_1k.jpg",
+      "rusty_corrugated_iron_nor_gl_1k.jpg",
+      "rusty_corrugated_iron_rough_1k.jpg"
+    ]
+  }
+}

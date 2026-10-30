@@ -1,0 +1,207 @@
+{
+  "retrieved": "2026-10-30",
+  "license": "CC0 (ambientCG and Poly Haven)",
+  "sets": {
+    "Bamboo001C": {
+      "source": "https://ambientcg.com/view?id=Bamboo001C",
+      "files": [
+        {
+          "name": "Bamboo001C_1K-JPG_AmbientOcclusion.jpg",
+          "sha256": "2a68ac12ab9359274d8b9799032057340e2c28b2726b1ce897f875b3c2b6ef68"
+        },
+        {
+          "name": "Bamboo001C_1K-JPG_Color.jpg",
+          "sha256": "1d42cc60468758cfe203f89084e95dbfc03448c4f3c768b8f78e742dbd9a693c"
+        },
+        {
+          "name": "Bamboo001C_1K-JPG_Displacement.jpg",
+          "sha256": "6a62e454464c9934d5f4fe1ddf8ed0f60a1b1d3e99948b7ab8c413312ae737ab"
+        },
+        {
+          "name": "Bamboo001C_1K-JPG_NormalDX.jpg",
+          "sha256": "80aab8008e4572d08ac6d168b5edd2bbdecc55fa56c5624f20f1ec3b32256594"
+        },
+        {
+          "name": "Bamboo001C_1K-JPG_NormalGL.jpg",
+          "sha256": "e6690ddff65ad54004c662b14670854329e9f1a27d7970a94e71a36b911059a7"
+        },
+        {
+          "name": "Bamboo001C_1K-JPG_Opacity.jpg",
+          "sha256": "3e2f36b9781392dafbec5984c333cee44e4d2a2e3178b3e023511da96c8b6893"
+        },
+        {
+          "name": "Bamboo001C_1K-JPG_Roughness.jpg",
+          "sha256": "1dfa8710384d03d2b1243c19ea310ecd09dbb149bfa067d24919b55468c09dce"
+        }
+      ]
+    },
+    "Clay005": {
+      "source": "https://ambientcg.com/view?id=Clay005",
+      "files": [
+        {
+          "name": "Clay005_1K-JPG_Color.jpg",
+          "sha256": "10389821e482eb0e4cdc92b2198e65a8c5b1ae10f8c6ff5de8329da6af220d79"
+        },
+        {
+          "name": "Clay005_1K-JPG_Displacement.jpg",
+          "sha256": "11db8613a1d99a0378cf09c80c4366724b04b16e6235f840ae96bbaac7f46013"
+        },
+        {
+          "name": "Clay005_1K-JPG_NormalDX.jpg",
+          "sha256": "3d6c696fb26fc555eac98fb3227b6074bf514cd2b1fa85b6eef1b00cc4633f47"
+        },
+        {
+          "name": "Clay005_1K-JPG_NormalGL.jpg",
+          "sha256": "4f3256d5f53d08f69690c86fc959e393149623116810f25dba78aae2cdc680c1"
+        },
+        {
+          "name": "Clay005_1K-JPG_Roughness.jpg",
+          "sha256": "70230aa7237f30f71a079638769859aae4a601d649b94ef9e5814fe69299b0f2"
+        }
+      ]
+    },
+    "dry_mud_field_001": {
+      "source": "https://polyhaven.com/a/dry_mud_field_001",
+      "files": [
+        {
+          "name": "dry_mud_field_001_diff_1k.jpg",
+          "sha256": "fa527aa4eb6151c7dab4f0a7b31722d0aa180f728af694594439d106e76f6c6d"
+        },
+        {
+          "name": "dry_mud_field_001_nor_gl_1k.jpg",
+          "sha256": "e6217fe3e9b7cc78e613065301c282b1448da59c4d8b19b9a4ca50d463954fad"
+        },
+        {
+          "name": "dry_mud_field_001_rough_1k.jpg",
+          "sha256": "1be004ed66347e81cac1f05d1ea7f81b953c148e7082f280bed1aa3530195cc5"
+        }
+      ]
+    },
+    "grass_ground": {
+      "source": "https://polyhaven.com/a/grass_ground",
+      "files": [
+        {
+          "name": "grass_ground_diff_1k.jpg",
+          "sha256": "a79cc5ed65af0f80261b39a383b64a8c5272c5144d724deb43dbc29f0e4cd19b"
+        },
+        {
+          "name": "grass_ground_nor_gl_1k.jpg",
+          "sha256": "7000e2ccd479bb7b66dcdf4faef7b47554324566886314ca620cbf03e274e826"
+        },
+        {
+          "name": "grass_ground_rough_1k.jpg",
+          "sha256": "111341f948b7e073edf7ac6add8777e1bf10df8959400df3863243e89bbc8c08"
+        }
+      ]
+    },
+    "hessian_230": {
+      "source": "https://polyhaven.com/a/hessian_230",
+      "files": [
+        {
+          "name": "hessian_230_diff_1k.jpg",
+          "sha256": "ef9ac1a0129b6d0f44b6d5beb68db7be7a0adf11e09fe52fd2cdc9370b27d4ba"
+        },
+        {
+          "name": "hessian_230_nor_gl_1k.jpg",
+          "sha256": "6d5a6d23c880dbaae98477ed33dbd5d7c0eeda910a39319aec2d0014892974aa"
+        },
+        {
+          "name": "hessian_230_rough_1k.jpg",
+          "sha256": "469ea3c219147ba83d7a650d7769cc43f25b5e3d8ea8ae4e5e89e7226a32658a"
+        }
+      ]
+    },
+    "Planks039": {
+      "source": "https://ambientcg.com/view?id=Planks039",
+      "files": [
+        {
+          "name": "Planks039_1K-JPG_AmbientOcclusion.jpg",
+          "sha256": "527a66f445df85d115e9dae077a9d5a7ab61eb43bf990a1b17448091fe00cc8e"
+        },
+        {
+          "name": "Planks039_1K-JPG_Color.jpg",
+          "sha256": "55084c3e014cceb616aed5ec748c0f252be2f82caa0f373c3f2c0ce249217911"
+        },
+        {
+          "name": "Planks039_1K-JPG_Displacement.jpg",
+          "sha256": "c24b595917817442671176da17c148ea83d16ee480e27e89eabebbc4efb1cd1b"
+        },
+        {
+          "name": "Planks039_1K-JPG_NormalDX.jpg",
+          "sha256": "38b1087f8c6ce0a3ff40617bc4f0d9d8b06bc9c145190c14c03ffd1d7ce5b845"
+        },
+        {
+          "name": "Planks039_1K-JPG_NormalGL.jpg",
+          "sha256": "882cd81686beaa8f9292ff3f67c54aade7a2362a9504708da7fbe86125ad0eb7"
+        },
+        {
+          "name": "Planks039_1K-JPG_Roughness.jpg",
+          "sha256": "379feb35f5193e0c73525de5965242c875ca13f1b1a92d590fd1c59581d42355"
+        }
+      ]
+    },
+    "rusty_corrugated_iron": {
+      "source": "https://polyhaven.com/a/rusty_corrugated_iron",
+      "files": [
+        {
+          "name": "rusty_corrugated_iron_diff_1k.jpg",
+          "sha256": "2525deb17323eefe39e8a90c6384033e31832b6aa9736bea27f81f4148508087"
+        },
+        {
+          "name": "rusty_corrugated_iron_nor_gl_1k.jpg",
+          "sha256": "09f015ab44ff5e5a2f8e3f4718f2848df9eaa1ce42f184d361a5b902f200a216"
+        },
+        {
+          "name": "rusty_corrugated_iron_rough_1k.jpg",
+          "sha256": "dfb122cf86a75c33087ef5e6f727b68cb6e1cf5d388f8d10c9bf36822ab36afb"
+        }
+      ]
+    },
+    "ThatchedRoof002A": {
+      "source": "https://ambientcg.com/view?id=ThatchedRoof002A",
+      "files": [
+        {
+          "name": "ThatchedRoof002A_1K-JPG_AmbientOcclusion.jpg",
+          "sha256": "c8bf16698aeacdc01232ce454c6893ecab1828d359509ac931f8dd7991b22e01"
+        },
+        {
+          "name": "ThatchedRoof002A_1K-JPG_Color.jpg",
+          "sha256": "b8ffdbe8a2372dc9b26d81d524ef4c5fa99132f8843a2998a27b9656bf66fe2c"
+        },
+        {
+          "name": "ThatchedRoof002A_1K-JPG_Displacement.jpg",
+          "sha256": "33f7c529e123499753e7dad1facd832ec199ebf27862780be33fbd74ae4743d9"
+        },
+        {
+          "name": "ThatchedRoof002A_1K-JPG_NormalDX.jpg",
+          "sha256": "ed8c8a463133ba27f6e9395c1fdc1cad3bd05b5f7c29002e03506a1c5b5f1973"
+        },
+        {
+          "name": "ThatchedRoof002A_1K-JPG_NormalGL.jpg",
+          "sha256": "0e6ce1573988a44e1e50cc057db4388878477f9943e9dce381a399fe3f2e179e"
+        },
+        {
+          "name": "ThatchedRoof002A_1K-JPG_Roughness.jpg",
+          "sha256": "377e9c06c7d850cdacb73e20ca58d3f5aa70038531509c5b825bdbb10f917772"
+        }
+      ]
+    },
+    "yellow_plaster_02": {
+      "source": "https://polyhaven.com/a/yellow_plaster_02",
+      "files": [
+        {
+          "name": "yellow_plaster_02_diff_1k.jpg",
+          "sha256": "b8ba1c2a8d73c610371e6ff66e9e2c2385b85fee4073fffb3fd6ffe254e9a370"
+        },
+        {
+          "name": "yellow_plaster_02_nor_gl_1k.jpg",
+          "sha256": "2babe196e8dbe8271415df77b116194fcc9bd4de93404661d48e06a25564e654"
+        },
+        {
+          "name": "yellow_plaster_02_rough_1k.jpg",
+          "sha256": "971b2cc0562ea02d92ed31da8e65e7693759e2ee7c2e5d6e8bdbeca95e11c63e"
+        }
+      ]
+    }
+  }
+}

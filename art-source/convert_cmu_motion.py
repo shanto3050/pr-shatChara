@@ -96,9 +96,10 @@ def convert(name,filename,min_period):
         'contact_samples':[sum(f['leftContact'] for f in output),sum(f['rightContact'] for f in output)],
         'heading':heading.tolist(),'sha256':hashlib.sha256((SOURCE/filename).read_bytes()).hexdigest()}
     return clip,info
-clips=[];summary=[]
-for args in [('Walk','02_01.amc',65),('Jog','02_03.amc',40)]:
-    clip,info=convert(*args);clips.append(clip);summary.append(info)
-(OUT/'CapturedLocomotion.json').write_text(json.dumps({'bones':[a for a,b,c in MAP],'children':[b for a,b,c in MAP],'clips':clips},separators=(',',':')))
-(ROOT/'captured-motion-summary.json').write_text(json.dumps(summary,indent=2))
-print('CMU_CONVERTED',json.dumps(summary,indent=2))
+if __name__=='__main__':  # importable by convert_cmu_actions.py
+    clips=[];summary=[]
+    for args in [('Walk','02_01.amc',65),('Jog','02_03.amc',40)]:
+        clip,info=convert(*args);clips.append(clip);summary.append(info)
+    (OUT/'CapturedLocomotion.json').write_text(json.dumps({'bones':[a for a,b,c in MAP],'children':[b for a,b,c in MAP],'clips':clips},separators=(',',':')))
+    (ROOT/'captured-motion-summary.json').write_text(json.dumps(summary,indent=2))
+    print('CMU_CONVERTED',json.dumps(summary,indent=2))
