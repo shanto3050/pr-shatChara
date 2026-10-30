@@ -5,8 +5,9 @@
 ## Current state
 
 - Epic Games Launcher is installed and signed in.
-- Unreal Engine 5.8.4 with MetaHuman Creator Core Data: **installation started, not yet verified complete**.
-- Separate authoring project descriptor prepared under `art-source/metahuman/BabluCreator`; first launch pending.
+- Unreal Engine 5.8.4 with MetaHuman Creator Core Data: **installed**, verified against the launcher manifest and installed preset/example files.
+- Separate authoring project under `art-source/metahuman/BabluCreator`: **engine initialization completed** in the project log. First launch took about 454 seconds. Visual inspection is pending because Windows denied desktop input and capture was blank.
+- `art-source/metahuman/create_bablu_candidate.py` is prepared using the installed Epic scripting examples. It duplicates the Bo preset into a separate Bablu asset and applies a 170 cm height target. It has passed Python syntax validation but **has not run inside Unreal**; there is no saved candidate asset yet.
 - MetaHuman Bablu asset, textures, rig, portrait renders, clothing fit, Unity import, and Android tests: **pending**.
 - Unity gameplay code and currently installed APK have not been replaced by this authoring setup.
 
