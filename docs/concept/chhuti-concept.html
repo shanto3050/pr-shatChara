@@ -1,0 +1,706 @@
+<title>Chhuti Game Concept</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600&display=swap">
+<style>
+/* Layout: a field guide to one village holiday. Sticky chapter rail on the left, one reading column on the right; stacks on phones. */
+:root {
+  --bg: #F1F3EA;        /* pale paddy-field light */
+  --surface: #E4E9D9;   /* sun-dried mat */
+  --line: #C9D1BA;
+  --ink: #1B251E;
+  --muted: #56614F;
+  --pond: #1D665A;      /* pond water green: headings, links */
+  --mustard: #C08A12;   /* mustard flower: highlights */
+  --mustard-soft: #F3E3B4;
+  --kantha: #A3302B;    /* kantha thread red: cautions */
+  --kantha-soft: #F4DCD8;
+  --display: "Baloo Da 2", "Hind Siliguri", system-ui, sans-serif;
+  --body: "Hind Siliguri", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111713; --surface: #1A221C; --line: #2E3A31; --ink: #E3E9DC; --muted: #9AA695;
+  --pond: #63BBA9; --mustard: #E1B64B; --mustard-soft: #3A3119; --kantha: #E5817A; --kantha-soft: #3A1F1D; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111713; --surface: #1A221C; --line: #2E3A31; --ink: #E3E9DC; --muted: #9AA695;
+  --pond: #63BBA9; --mustard: #E1B64B; --mustard-soft: #3A3119; --kantha: #E5817A; --kantha-soft: #3A1F1D; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16.5px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: var(--pond) }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--mustard); outline-offset: 2px }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 56px; padding-block: 40px 96px }
+nav.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; font-size: 14px }
+nav.rail .lbl { font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px }
+nav.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: ch }
+nav.rail li { counter-increment: ch }
+nav.rail a { display: block; padding: 4px 8px; border-radius: 6px; color: var(--ink); text-decoration: none }
+nav.rail a::before { content: counter(ch); display: inline-block; width: 22px; color: var(--muted); font-variant-numeric: tabular-nums }
+nav.rail a:hover { background: var(--surface) }
+main { min-width: 0 }
+main > section { max-width: 760px; padding-top: 28px; margin-top: 28px; border-top: 1px solid var(--line) }
+header.hero { max-width: 760px }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(44px, 8vw, 76px); line-height: 1; margin: 10px 0 6px; color: var(--ink); text-wrap: balance }
+h1 .bn { color: var(--pond) }
+.tagline { font-family: var(--display); font-size: clamp(20px, 3vw, 25px); line-height: 1.35; font-weight: 600; color: var(--ink); margin: 14px 0 18px; text-wrap: balance }
+h2 { font-family: var(--display); font-size: 31px; line-height: 1.15; margin: 0 0 14px; font-weight: 700; text-wrap: balance }
+h2 .bn, h3 .bn { color: var(--pond); font-weight: 600 }
+h3 { font-family: var(--display); font-size: 21px; line-height: 1.25; margin: 28px 0 8px; font-weight: 700; text-wrap: balance }
+h4 { font-size: 15px; margin: 18px 0 4px; font-weight: 600 }
+p { margin: 0 0 12px }
+ul, ol { margin: 0 0 14px; padding-left: 22px }
+li { margin-bottom: 5px }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; color: var(--muted); margin-top: 6px }
+.meta b { color: var(--ink); font-weight: 600 }
+.note { background: var(--mustard-soft); border-radius: 10px; padding: 14px 18px; margin: 16px 0 }
+.caution { background: var(--kantha-soft); border-radius: 10px; padding: 14px 18px; margin: 16px 0 }
+.caution strong { color: var(--kantha) }
+.pillars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 16px 0 }
+.pillar { background: var(--surface); border-radius: 10px; padding: 16px 18px }
+.pillar h4 { margin: 0 0 4px; font-family: var(--display); font-size: 18px; font-weight: 700 }
+.pillar p { margin: 0; font-size: 15px }
+.tbl { overflow-x: auto; margin: 12px 0 18px; border: 1px solid var(--line); border-radius: 10px }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; line-height: 1.5 }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line) }
+th { background: var(--surface); font-weight: 600; font-size: 13px; letter-spacing: .02em; white-space: nowrap }
+tr:last-child td { border-bottom: 0 }
+td .bn { color: var(--muted); display: block; font-size: 13px }
+.chip { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); white-space: nowrap }
+.chip.core { background: var(--pond); color: var(--bg); border-color: var(--pond) }
+.chip.mid { background: var(--mustard-soft); border-color: var(--mustard) }
+.dayline { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin: 16px 0 }
+.slot { background: var(--surface); border-radius: 8px; padding: 10px 10px 12px; font-size: 13.5px; line-height: 1.45 }
+.slot b { display: block; font-family: var(--display); font-size: 16px }
+.slot .t { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; display: block; margin-bottom: 4px }
+.slot.hot { background: var(--mustard-soft) }
+.days { display: grid; gap: 10px; margin: 14px 0 }
+details.day { background: var(--surface); border-radius: 10px; padding: 0 16px }
+details.day summary { cursor: pointer; padding: 12px 0; display: flex; gap: 12px; align-items: baseline; list-style: none }
+details.day summary::-webkit-details-marker { display: none }
+details.day summary .n { font-family: var(--display); font-weight: 800; color: var(--pond); min-width: 54px; font-variant-numeric: tabular-nums }
+details.day summary .h { font-weight: 600 }
+details.day summary .w { margin-left: auto; color: var(--muted); font-size: 13px; white-space: nowrap }
+details.day[open] { padding-bottom: 10px }
+details.day ul { font-size: 15px }
+.map { overflow-x: auto; margin: 14px 0; border-radius: 12px; background: var(--surface) }
+.map svg { display: block; width: 100%; min-width: 620px; height: auto }
+.map .land { fill: var(--surface) }
+.map .field { fill: var(--mustard-soft); stroke: var(--mustard); stroke-width: 1.2 }
+.map .water { fill: var(--pond); opacity: .55 }
+.map .zone { fill: var(--bg); stroke: var(--line); stroke-width: 1.5 }
+.map .home { fill: var(--bg); stroke: var(--pond); stroke-width: 2.4 }
+.map .path { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 5 5; opacity: .6 }
+.map .grove { fill: var(--pond); opacity: .22 }
+.map text { fill: var(--ink); font-family: var(--body); font-size: 12.5px }
+.map text.s { fill: var(--muted); font-size: 11px }
+.cols2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 28px }
+.qa { display: grid; gap: 10px }
+.qa > div { border-left: 3px solid var(--mustard); padding: 2px 0 2px 14px }
+footer { max-width: 760px; margin-top: 48px; color: var(--muted); font-size: 13.5px }
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-block: 24px 64px }
+  nav.rail { position: static; max-height: none }
+  nav.rail ol { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .dayline { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+}
+@media (max-width: 560px) { .pillars, .cols2 { grid-template-columns: minmax(0, 1fr) } h2 { font-size: 26px } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important } }
+html { scroll-behavior: smooth }
+</style>
+
+<div class="wrap">
+<nav class="rail" aria-label="Chapters">
+  <div class="lbl">Contents</div>
+  <ol>
+    <li><a href="#pitch">The pitch</a></li>
+    <li><a href="#pillars">Design pillars</a></li>
+    <li><a href="#setting">Setting and era</a></li>
+    <li><a href="#people">Characters</a></li>
+    <li><a href="#map">The village map</a></li>
+    <li><a href="#day">A day in the holiday</a></li>
+    <li><a href="#story">Main story</a></li>
+    <li><a href="#days">Day-by-day outline</a></li>
+    <li><a href="#games">Folk games</a></li>
+    <li><a href="#side">Side quests</a></li>
+    <li><a href="#life">Life interrupts</a></li>
+    <li><a href="#systems">Game systems</a></li>
+    <li><a href="#respect">Culture and respect</a></li>
+    <li><a href="#art">Art and sound</a></li>
+    <li><a href="#tech">Controls and tech</a></li>
+    <li><a href="#biz">Audience and business</a></li>
+    <li><a href="#plan">Production plan</a></li>
+    <li><a href="#risks">Risks</a></li>
+    <li><a href="#open">Open questions</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero" id="top">
+  <div class="eyebrow">Game concept · draft 1 · 30 October 2026</div>
+  <h1>ছুটি <span class="bn">Chhuti</span></h1>
+  <p class="tagline">Fourteen days of summer holiday at Nanabari. Play Sat Chara, cricket and ha-du-du, steal mangoes at noon, and get home before the maghrib azan.</p>
+  <div class="meta">
+    <span><b>Genre</b> nostalgic open-village adventure with folk-game matches</span>
+    <span><b>Platform</b> Android first</span>
+    <span><b>Engine</b> Unity (URP)</span>
+    <span><b>Working title</b> Chhuti (ছুটি, "holiday")</span>
+  </div>
+</header>
+
+<section id="pitch">
+  <h2>The pitch</h2>
+  <p><strong>One line:</strong> the street games you grew up with, set in the village you remember, over one summer holiday you never wanted to end.</p>
+  <p>Shuvo is twelve and lives in a Dhaka flat. When school closes for the summer he is sent to Nanabari, his grandparents' village of Hijoltoli, for two weeks. His cousins and the neighbourhood kids have a problem. The end-of-holiday tournament against Uttar Para is in fourteen days, last year they lost badly, and their team has fallen apart: the captain has quit, one boy works on the river every afternoon, one girl isn't allowed on the field, and one is banned for breaking a window.</p>
+  <p>Shuvo is a city kid. He can't swim, he has never flown a kite, and he doesn't know the rules of Sat Chara. Over fourteen days he learns the village, brings the team back together one friend at a time, and finds out that his quiet Nana was once the best Sat Chara player the village had ever seen.</p>
+
+  <h3>What kind of game this is (and isn't)</h3>
+  <p>The idea started as "GTA in rural Bangladesh": an open place to wander with missions in it. The open village and the missions stay. The crime goes. The closest models are:</p>
+  <div class="tbl"><table>
+    <tr><th>Reference</th><th>What we take from it</th></tr>
+    <tr><td><em>Boku no Natsuyasumi</em> (My Summer Vacation, Japan)</td><td>The whole frame: a child's summer at relatives' house in the countryside, days with a rhythm, nostalgia as the main feeling. It proves the genre works.</td></tr>
+    <tr><td><em>Bully</em> (Rockstar)</td><td>A small open world seen at a kid's level, missions built from everyday trouble, friendships and rivals, a schedule you are supposed to follow and can break.</td></tr>
+    <tr><td><em>Yakuza</em> series</td><td>Dense small districts packed with real-life minigames that are fun on their own.</td></tr>
+    <tr><td><em>Stardew Valley</em></td><td>A calendar, people with daily routines, relationships that grow through small favours.</td></tr>
+    <tr><td><em>Real Cricket 24</em></td><td>The graphics benchmark for the matches, and proof that Bangladeshi players buy into realistic local sport.</td></tr>
+  </table></div>
+
+  <h3>Why people will play</h3>
+  <ul>
+    <li><strong>To install it:</strong> nostalgia. Almost every Bangladeshi adult has these memories, and nobody has made this game. It's the kind of thing people share on Facebook with "this was my childhood".</li>
+    <li><strong>To keep playing:</strong> the matches. Sat Chara's rebuild-under-fire round, tape-ball cricket and ha-du-du are tense, short and skill-based. Each one has to be fun on its own, even without the story.</li>
+    <li><strong>To finish it:</strong> the people. You want to get Sajib back as captain, see Nusrat play, beat Tipu's team and hear the end of Nana's story.</li>
+    <li><strong>To come back after finishing:</strong> playing Sat Chara and cricket online with friends, in the village they now know.</li>
+  </ul>
+</section>
+
+<section id="pillars">
+  <h2>Design pillars</h2>
+  <p>Every feature has to serve at least one of these. If it serves none, it's cut.</p>
+  <div class="pillars">
+    <div class="pillar"><h4>It feels like being there</h4><p>The light at 4 pm, the sound of the azan across the fields, the noon heat, the smell you can almost see in the steam off the rice. Realistic graphics serve this pillar, not the other way round.</p></div>
+    <div class="pillar"><h4>Play is the core</h4><p>Folk games are the main verbs, not side content. Each one has real rules, real skill, and is worth playing again.</p></div>
+    <div class="pillar"><h4>Small stakes, big feelings</h4><p>Nobody dies, nothing explodes. The stakes are a lost ball, a scolding, a friend who won't talk to you, a match you want to win. That's what childhood stakes were.</p></div>
+    <div class="pillar"><h4>Warm and respectful</h4><p>Elders, religion, poverty and village life are shown the way people remember them: with affection and humour, never mockery.</p></div>
+  </div>
+</section>
+
+<section id="setting">
+  <h2>Setting and era</h2>
+  <h3>Hijoltoli <span class="bn">হিজলতলী</span></h3>
+  <p>A fictional village in central Bangladesh, named after the hijol trees along its khal. It's about an hour by launch and van from the district town. A river on one side, rice fields on the other, a bazaar where the two roads meet. It's fictional so we can put everything iconic in one walkable place, and so no real village is singled out.</p>
+  <p>The village is split into paras (neighbourhoods). Shuvo's grandparents live in <strong>Dokkhin Para</strong> (south). The rivals are <strong>Uttar Para</strong> (north). There's also <strong>Pal Para</strong>, where the potter families live, and <strong>Ghat Para</strong> by the river, where the fishing families live.</p>
+
+  <h3>Season: Jaistha, the honey month <span class="bn">জ্যৈষ্ঠ · মধুমাস</span></h3>
+  <p>Mid-May to mid-June. Schools close for the summer holiday. It's mango, lychee and jackfruit season, the afternoons are hot and long, and kalboishakhi storms come in late in the day. Every storm ends with children running out to collect the mangoes it knocked down.</p>
+
+  <h3>Era: around 2001</h3>
+  <p>Recommended: the summer after Bangladesh became a Test-playing nation (June 2000). It's the peak nostalgia window for today's 25–40-year-olds, and it removes smartphones from the story:</p>
+  <ul>
+    <li>One television in the village, at Shiuli's father's tea stall: black-and-white, with the antenna on a bamboo pole. Everyone crowds in for cricket and the Friday film.</li>
+    <li>Cricket fever is everywhere. Every kid wants to bowl like Shoaib Akhtar and has a tape-ball with insulation tape wound tight.</li>
+    <li>Letters and cassettes from relatives working abroad come by the postman's bicycle.</li>
+    <li>Load-shedding every evening, hurricane lanterns and hand fans.</li>
+    <li>Landline at the bazaar phone shop only. Getting a call from Dhaka is an event.</li>
+  </ul>
+  <div class="note">Real cricketers, songs, TV shows and brands are not used by name or likeness. That avoids licensing problems. We reference the feeling (a famous win on the radio, "the Friday film"), not the property.</div>
+</section>
+
+<section id="people">
+  <h2>Characters</h2>
+  <h3>The player</h3>
+  <div class="tbl"><table>
+    <tr><th>Name</th><th>Who</th><th>Arc</th></tr>
+    <tr><td><strong>Shuvo</strong><span class="bn">শুভ</span></td><td>12, from a Dhaka flat. Good at school, bad at everything the village kids can do. Polite, curious, a little scared of cows.</td><td>Starts with weaker match stats (10 points instead of the roster's 13). Every game he practises and every skill he learns (swimming, climbing, kites) raises his stats. By the final he's as good as the locals, and he can't imagine going back.</td></tr>
+  </table></div>
+
+  <h3>The Dokkhin Para team (the existing roster)</h3>
+  <p>The eight kids already designed for Sat Chara are Shuvo's friends and cousins. Their stats, looks and voice lines carry over unchanged. The story gives each one a reason they aren't playing at the start.</p>
+  <div class="tbl"><table>
+    <tr><th>Kid</th><th>Role</th><th>Why they're out of the team at the start</th><th>How Shuvo brings them back</th></tr>
+    <tr><td><strong>Mitu</strong><span class="bn">মিতু · 14</span></td><td>Sharp shooter. Shuvo's elder cousin.</td><td>Not out, but her mother (Mami) wants her at home in the afternoons.</td><td>She's the first friend and the guide. Her arc finishes when Mami comes to watch the final.</td></tr>
+    <tr><td><strong>Tuni</strong><span class="bn">টুনি · 9</span></td><td>Little dodger. Mitu's sister.</td><td>Everyone says she's too small.</td><td>She proves it at kanamachi and gollachut: nobody can catch her. Shuvo argues for her place.</td></tr>
+    <tr><td><strong>Sajib</strong><span class="bn">সজীব · 16</span></td><td>Captain.</td><td>Quit after last year's loss. He blames himself and hangs around the bazaar club playing carrom.</td><td>Beat him at carrom, then lose to him on purpose? No: beat him fairly, and tell him the team needs him. His return is the midpoint.</td></tr>
+    <tr><td><strong>Bablu</strong><span class="bn">বাবলু · 15</span></td><td>Power thrower. Fisherman's son.</td><td>Works on the river with his father every afternoon.</td><td>Help with the morning catch (fishing minigame) so they finish early. His father agrees he can play.</td></tr>
+    <tr><td><strong>Rana</strong><span class="bn">রানা · 13</span></td><td>Fast runner.</td><td>Sprained ankle from jumping off the pond ghat.</td><td>Nani's remedy (turmeric and lime paste), a few days' rest. While he heals he coaches Shuvo's running.</td></tr>
+    <tr><td><strong>Nusrat</strong><span class="bn">নুসরাত · 14</span></td><td>Strategist. Top of her class.</td><td>Her mother says a girl her age shouldn't be running about on the field.</td><td>Nani has a word with her mother. Nusrat comes as "the team's adviser", then plays.</td></tr>
+    <tr><td><strong>Joy</strong><span class="bn">জয় · 12</span></td><td>Joker. Rickshaw puller's son.</td><td>Banned from the school field after his ball broke Haji saheb's window.</td><td>Apologise together, then work three mornings in Haji saheb's orchard to pay for the glass.</td></tr>
+    <tr><td><strong>Shiuli</strong><span class="bn">শিউলি · 13</span></td><td>All-rounder. Tea stall family.</td><td>Has to mind the tea stall in the afternoons when her father goes to the haat.</td><td>Shuvo takes over a shift (serving tea minigame). Her father sees how much she wants to play.</td></tr>
+  </table></div>
+
+  <h3>Family</h3>
+  <div class="tbl"><table>
+    <tr><th>Who</th><th>Role in the game</th></tr>
+    <tr><td><strong>Nani</strong><span class="bn">নানি · Rahima Begum</span></td><td>The heart of the house. Makes pitha, tells ghost stories during load-shedding, enforces the noon nap and the maghrib curfew. Waits at the gate if you're late. She's the save point: talking to her at night saves the day.</td></tr>
+    <tr><td><strong>Nana</strong><span class="bn">নানা · Abdul Karim</span></td><td>Retired headmaster of the primary school, quiet, reads the paper on the verandah. Everyone in the village calls him "Karim master". Secretly the legendary Sat Chara player of his generation. Keeps his seven river stones in a tin trunk.</td></tr>
+    <tr><td><strong>Mama</strong><span class="bn">মামা · Selim</span></td><td>Shuvo's uncle, runs a grocery stall at the bazaar. Gives coins for errands. Mitu and Tuni's father.</td></tr>
+    <tr><td><strong>Mami</strong><span class="bn">মামি</span></td><td>Strict about Mitu, soft about food. Her change of heart is a quiet story beat.</td></tr>
+    <tr><td><strong>Ammu (on the phone)</strong></td><td>Shuvo's mother calls the bazaar phone shop twice during the holiday. Short, warm scenes. She doesn't want him swimming in the pond.</td></tr>
+  </table></div>
+
+  <h3>The village</h3>
+  <div class="tbl"><table>
+    <tr><th>Who</th><th>Role</th></tr>
+    <tr><td><strong>Tipu</strong>, Uttar Para captain</td><td>The rival. Chairman's nephew, has a real cricket bat and a leather ball. Cocky, but fair in the end. Becomes a friend in the epilogue.</td></tr>
+    <tr><td><strong>Haji saheb</strong></td><td>Owns the mango orchard. Grumpy, guards his mangoes at noon, but kind underneath. The "steal mangoes" stealth missions are against him, and he forgives you.</td></tr>
+    <tr><td><strong>Imam saheb</strong></td><td>Gentle, runs the morning maktab where the little ones learn to read Arabic. Gives the azan. Reminds the kids to go home at maghrib.</td></tr>
+    <tr><td><strong>The tablighi brothers</strong></td><td>A group of men from another district staying at the mosque for three days. In the afternoons they walk through the village (gasht) and invite people to the mosque. Friendly, a bit formal, they offer the kids dates. See <a href="#life">Life interrupts</a>.</td></tr>
+    <tr><td><strong>Monu mia</strong></td><td>Shiuli's father, tea stall owner. The stall is the news centre: TV, radio, carrom board, gossip.</td></tr>
+    <tr><td><strong>Gopal kaka</strong></td><td>Potter in Pal Para. Makes the clay pots; lets kids watch the wheel. His son Bishu is on Uttar Para's team but is Shuvo's friend.</td></tr>
+    <tr><td><strong>Rahman majhi</strong></td><td>Boatman at the kheya ghat (ferry crossing). Rows you across to the char for the kite day.</td></tr>
+    <tr><td><strong>Postman</strong></td><td>On a bicycle with a bell. Brings Bablu's family a letter and a cassette from his uncle working in Saudi Arabia, a short bittersweet scene.</td></tr>
+    <tr><td><strong>Hawkers</strong></td><td>Malai ice cream man with a bell and a wooden box, the hawai mithai (candy floss) seller, the bioscope man on haat day, the kite seller. Each is a small shop and a sound you learn to recognise.</td></tr>
+    <tr><td><strong>Animals</strong></td><td>Cows that wander onto the cricket pitch, goats that eat your kite string, chickens, ducks on the pond, a village dog (Bhulu) who follows you after you feed him.</td></tr>
+  </table></div>
+</section>
+
+<section id="map">
+  <h2>The village map</h2>
+  <p>One village, about 400 × 400 m, walkable end to end in two to three minutes. Small enough to fill with detail and to run on mid-range phones; big enough that the far orchard feels like an adventure. Everything is reachable on foot; Mama's van-rickshaw is a shortcut later on.</p>
+  <div class="map" role="img" aria-label="Sketch map of Hijoltoli village: river along the west with the ferry ghat, Ghat Para by the river, the bazaar at the centre crossroads, Nanabari and its pond to the south-east, school field and Eidgah in the middle, mango orchard to the north-east, bamboo grove, rice fields to the east and south, Uttar Para to the north, Pal Para to the south-west, brick kiln at the edge.">
+  <svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg">
+    <rect class="land" x="0" y="0" width="760" height="520"/>
+    <path class="water" d="M0 0 H70 C95 90 60 160 90 240 C120 330 70 420 95 520 H0 Z"/>
+    <text x="14" y="270" class="s" transform="rotate(-90 22 270)">River (nodi)</text>
+    <path class="water" d="M95 300 C200 290 280 330 380 320" fill="none" stroke-width="7" style="fill:none;stroke:var(--pond);opacity:.5"/>
+    <text x="180" y="290" class="s">khal with hijol trees</text>
+    <rect class="field" x="560" y="200" width="185" height="300" rx="6"/>
+    <text x="600" y="355">Rice fields</text><text x="600" y="371" class="s">ail paths, drying straw</text>
+    <rect class="field" x="330" y="440" width="220" height="70" rx="6"/>
+    <text x="370" y="480">Rice fields</text>
+    <path class="path" d="M90 160 H560"/><path class="path" d="M330 20 V500"/>
+    <rect class="zone" x="110" y="120" width="120" height="70" rx="8"/>
+    <text x="122" y="150">Ghat Para</text><text x="122" y="167" class="s">fishing families</text>
+    <rect class="zone" x="70" y="60" width="70" height="40" rx="6"/>
+    <text x="76" y="84" class="s">Kheya ghat</text>
+    <rect class="zone" x="285" y="130" width="100" height="62" rx="8"/>
+    <text x="298" y="157">Bazaar</text><text x="298" y="174" class="s">tea stall, TV, club</text>
+    <rect class="zone" x="400" y="110" width="58" height="42" rx="6"/>
+    <text x="406" y="136" class="s">Mosque</text>
+    <rect class="field" x="390" y="210" width="150" height="95" rx="8"/>
+    <text x="410" y="252">School field</text><text x="410" y="269" class="s">cricket, tournament</text>
+    <rect class="zone" x="390" y="160" width="80" height="40" rx="6"/>
+    <text x="398" y="185" class="s">Primary school</text>
+    <ellipse class="grove" cx="640" cy="100" rx="105" ry="70"/>
+    <text x="580" y="98">Haji's mango orchard</text><text x="580" y="115" class="s">lychee, jackfruit</text>
+    <ellipse class="grove" cx="250" cy="420" rx="70" ry="40"/>
+    <text x="205" y="424" class="s">Bamboo grove (bashjhar)</text>
+    <rect class="zone" x="200" y="20" width="200" height="70" rx="8"/>
+    <text x="214" y="50">Uttar Para</text><text x="214" y="67" class="s">rival team's courtyard</text>
+    <rect class="home" x="390" y="330" width="150" height="90" rx="10"/>
+    <text x="404" y="360" style="font-weight:600">Nanabari</text><text x="404" y="377" class="s">uthan · Sat Chara court</text><text x="404" y="393" class="s">haystack · clothes line</text>
+    <ellipse class="water" cx="485" cy="455" rx="42" ry="20"/>
+    <text x="450" y="500" class="s">pond + ghat</text>
+    <rect class="zone" x="120" y="340" width="110" height="55" rx="8"/>
+    <text x="132" y="366">Pal Para</text><text x="132" y="382" class="s">potters</text>
+    <rect class="zone" x="600" y="30" width="0" height="0"/>
+    <rect class="field" x="250" y="230" width="110" height="50" rx="6"/>
+    <text x="262" y="260" class="s">Eidgah field</text>
+    <rect class="zone" x="660" y="460" width="85" height="45" rx="6"/>
+    <text x="668" y="487" class="s">Brick kiln</text>
+  </svg>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Place</th><th>What happens there</th></tr>
+    <tr><td><strong>Nanabari</strong><span class="bn">নানাবাড়ি</span></td><td>Home base. Uthan (courtyard, where Sat Chara is played), kitchen hut with the clay stove, verandah, haystack, clothes line, tube well, the family pond with its brick ghat. Already partly built: the village props in the repo are this place.</td></tr>
+    <tr><td><strong>Pond and ghat</strong><span class="bn">পুকুরঘাট</span></td><td>Swimming lessons, diving for the lost ball, fishing with a borshi (hook and line), bathing scenes at noon.</td></tr>
+    <tr><td><strong>School field</strong><span class="bn">ইস্কুলের মাঠ</span></td><td>Cricket, ha-du-du, the final tournament. The goal posts are bamboo.</td></tr>
+    <tr><td><strong>Bazaar</strong><span class="bn">বাজার</span></td><td>Tea stall with the TV and radio, Mama's grocery, the youth club with the carrom board, phone shop, kite seller. Haat (weekly market) every Tuesday: crowded, noisy, the bioscope man comes.</td></tr>
+    <tr><td><strong>Mosque and maktab</strong><span class="bn">মসজিদ</span></td><td>Azan five times a day. Morning maktab for the little ones. Where the tablighi brothers stay.</td></tr>
+    <tr><td><strong>Mango orchard</strong><span class="bn">আমবাগান</span></td><td>Noon stealth missions, climbing, storm-mango collection, hide-and-seek.</td></tr>
+    <tr><td><strong>River and kheya ghat</strong><span class="bn">নদী · খেয়াঘাট</span></td><td>Bablu's family's boats, fishing with nets, the ferry to the char (sandbank) for the kite fight day, a boat race in the last days.</td></tr>
+    <tr><td><strong>Rice fields</strong><span class="bn">ধানক্ষেত</span></td><td>Ail paths to walk on, the boro harvest being cut, straw drying, flying kites in the wind.</td></tr>
+    <tr><td><strong>Bamboo grove</strong><span class="bn">বাঁশঝাড়</span></td><td>Spooky at night. The courage mission after Nani's ghost story.</td></tr>
+    <tr><td><strong>Uttar Para, Pal Para, Ghat Para</strong></td><td>Neighbourhoods with their own courtyards, friends' homes and side quests.</td></tr>
+  </table></div>
+</section>
+
+<section id="day">
+  <h2>A day in the holiday</h2>
+  <p>Each day runs on the village clock. A full day takes about 20–25 minutes of play, which fits a phone session. Time flows while you roam and stops in conversations, cutscenes and matches (a match takes a fixed slice of the afternoon). Prayer times give the day its shape, as they do in a real village.</p>
+  <div class="dayline">
+    <div class="slot"><span class="t">05:00–08:00</span><b>Bhor</b>Fajr azan, roosters. Fishing with Nana or Bablu, maktab for Tuni, panta bhat or muri for breakfast.</div>
+    <div class="slot"><span class="t">08:00–12:30</span><b>Sokal</b>Errands and missions: bazaar, orchard work, helping Nani. Free roam.</div>
+    <div class="slot hot"><span class="t">12:30–15:30</span><b>Dupur</b>Bath in the pond, lunch, then Nani's enforced nap. Sneak out: noon is mango-stealing time.</div>
+    <div class="slot hot"><span class="t">15:30–18:15</span><b>Bikel</b>Asr azan. The best time: matches, games, practice, the team.</div>
+    <div class="slot"><span class="t">18:15–19:00</span><b>Sondha</b>Maghrib azan: everyone runs home. Wash feet, lamps lit.</div>
+    <div class="slot"><span class="t">19:00–22:00</span><b>Raat</b>Study, load-shedding, Nani's stories, fireflies, the TV at the bazaar on some nights. Sleep saves the day.</div>
+  </div>
+  <h3>Rules of the day</h3>
+  <ul>
+    <li><strong>Maghrib curfew.</strong> When the azan starts you have about two real minutes to get home. Late means Nani waiting at the gate, a scolding scene and an extra chore tomorrow. Never a game over.</li>
+    <li><strong>Noon nap.</strong> Nani makes everyone lie down. You can wait out the clock or sneak out (a short stealth sequence past the sleeping house). Getting caught costs you nothing but face.</li>
+    <li><strong>Energy and hunger</strong> are light: you get slower and your aim worse if you skip meals. Eat at home (free) or buy snacks (ice cream, chanachur, jhalmuri).</li>
+    <li><strong>Nights are short.</strong> One or two things at most, then sleep.</li>
+  </ul>
+</section>
+
+<section id="story">
+  <h2>Main story</h2>
+  <h3>Structure</h3>
+  <p>Fourteen days in four chapters. Chapter 1 is a full Sat Chara game in a small part of the village and can ship on its own.</p>
+  <div class="tbl"><table>
+    <tr><th>Chapter</th><th>Days</th><th>What it's about</th><th>New places and games</th></tr>
+    <tr><td><strong>1. Arrival</strong></td><td>1–3</td><td>Shuvo arrives, meets the family and cousins, learns Sat Chara, loses badly to Uttar Para in a friendly. Learns about the tournament.</td><td>Nanabari, pond, the para courtyards. Sat Chara, kanamachi, marbles.</td></tr>
+    <tr><td><strong>2. Gathering the team</strong></td><td>4–7</td><td>Win back Bablu, Joy, Shiuli and Nusrat. The first storm. The tablighi visit. The haat.</td><td>Bazaar, orchard, river. Cricket, fishing, carrom, mango collecting.</td></tr>
+    <tr><td><strong>3. The captain</strong></td><td>8–11</td><td>Sajib comes back. Nana's secret comes out. Kite day on the char. The first real win against Uttar Para (in cricket).</td><td>Kheya ghat, char, bamboo grove at night. Kites, ha-du-du, swimming race.</td></tr>
+    <tr><td><strong>4. The tournament</strong></td><td>12–14</td><td>A cousin's wedding, the last practice, the final, the goodbye.</td><td>Wedding courtyard, the full school field. Danguli, the final Sat Chara match.</td></tr>
+  </table></div>
+
+  <h3>The ending</h3>
+  <p>The tournament final is Sat Chara, best of five rounds, on the school field with the whole village watching. Nana walks out before the last round and gives Shuvo his seven old river stones to use as the tower. Win or lose, the team celebrates; the game gives a slightly different scene for each, and both are good endings.</p>
+  <p>On day 14 the family walks Shuvo to the launch ghat. The team runs along the bank as the launch pulls out. Tuni throws him something: a marble, the one he lost on day 2.</p>
+  <h3>Epilogue: twenty years later</h3>
+  <p>Grown-up Shuvo comes back with his own child. The orchard is smaller, the bazaar has a mobile-phone shop and a concrete mosque, the field has a fence. Nana's verandah is empty. Under the hijol tree, a group of kids are playing Sat Chara with a stack of flat stones. Shuvo's child asks, "Baba, how do you play this?" The game hands you the controls one last time. This scene is the emotional payoff and the trailer's last shot.</p>
+</section>
+
+<section id="days">
+  <h2>Day-by-day outline</h2>
+  <p>Main beats only. Every day also has free time for side quests and games. Tap a day to open it.</p>
+  <div class="days">
+    <details class="day" open><summary><span class="n">Day 1</span><span class="h">The launch ghat</span><span class="w">Tue · haat day</span></summary>
+      <ul>
+        <li>Opening: the launch arriving at the ghat in the morning haze; Mama waiting with the van. Credits over the van ride through the rice fields (tutorial: looking around).</li>
+        <li>Nani at the gate, Nana on the verandah, cousins Mitu and Tuni. Explore the house and courtyard (movement tutorial).</li>
+        <li>Noon: Mitu shows the pond ghat. Shuvo can't swim, which is a running joke and a later goal.</li>
+        <li>Afternoon: kids playing Sat Chara in the uthan. Mitu teaches the rules: knock the tower, then rebuild while the others try to hit you (Sat Chara tutorial).</li>
+        <li>Maghrib: the first azan; everyone scatters home. Curfew tutorial.</li>
+        <li>Night: load-shedding, hurricane lamp, Nani's first story.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 2</span><span class="h">Uttar Para</span><span class="w"></span></summary>
+      <ul>
+        <li>Morning: marbles with Joy and Tuni. Shuvo loses his best marble to Tipu.</li>
+        <li>Meet the rest of the para kids. Learn about the end-of-holiday tournament run by the youth club, and last year's defeat.</li>
+        <li>Afternoon: a friendly Sat Chara match against Uttar Para. Shuvo's team loses badly (the game is tuned so a loss is likely; winning gives a bonus scene).</li>
+        <li>Night: Mitu says it plainly: "We don't have a team any more." Shuvo makes a list of who's missing. This list is the main quest log.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 3</span><span class="h">Tuni is too small</span><span class="w"></span></summary>
+      <ul>
+        <li>Kanamachi and gollachut in the courtyard with the younger kids; Tuni can't be caught.</li>
+        <li>Rana's sprained ankle; Nani's remedy. He'll heal by day 8 and coaches running meanwhile.</li>
+        <li>Shuvo argues Tuni into the team. Chapter 1 ends: the first four kids together.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 4</span><span class="h">Bablu's river</span><span class="w"></span></summary>
+      <ul>
+        <li>Before dawn: go out on the river with Bablu and his father. Net fishing minigame.</li>
+        <li>Finish the catch early, sell it at the bazaar. Bablu's father agrees to let him play in the afternoons.</li>
+        <li>Afternoon: first cricket match at the school field. The cow on the pitch.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 5</span><span class="h">Kalboishakhi</span><span class="w"></span></summary>
+      <ul>
+        <li>Joy's ball through Haji saheb's window (flashback cutscene). Apologise together; Haji saheb puts both boys to work in the orchard for three mornings.</li>
+        <li>Late afternoon: the sky goes dark green, wind, the first kalboishakhi storm. Run home. Then the best scene in the game: everyone running out into the wet orchard collecting fallen mangoes (aam kurano), timed collection race against Tipu's gang.</li>
+        <li>Night: mango feast on the verandah.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 6</span><span class="h">Friday</span><span class="w">Fri · jumma</span></summary>
+      <ul>
+        <li>Morning: bath, new panjabi, Nana takes Shuvo to jumma prayer. A short, quiet, non-interactive scene; meeting half the village outside after prayer.</li>
+        <li>Afternoon: the tablighi brothers on their gasht stop at the field before asr and invite the boys to the mosque. Play continues or the boys go; both are fine (see <a href="#life">Life interrupts</a>).</li>
+        <li>Evening: the Friday film on the tea-stall TV. The whole bazaar crowded in.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 7</span><span class="h">Shiuli's shift, Nusrat's mother</span><span class="w"></span></summary>
+      <ul>
+        <li>Cover Shiuli's tea-stall shift: tea-making and serving minigame, eavesdrop on village gossip (story hints).</li>
+        <li>Nusrat's mother: Nani visits with a box of pitha and a long chat. Nusrat joins as "adviser".</li>
+        <li>End of chapter 2: seven of eight. The captain is still missing.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 8</span><span class="h">The carrom board</span><span class="w"></span></summary>
+      <ul>
+        <li>Sajib at the youth club. Challenge him at carrom (best of three). Win, and he listens.</li>
+        <li>He says he'll come back if Shuvo can swim across the pond: "A team can't carry someone who can't even swim." Swimming lessons begin, with Bablu.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 9</span><span class="h">Nana's trunk</span><span class="w"></span></summary>
+      <ul>
+        <li>Noon: looking for a cricket bat in the storeroom, Shuvo finds Nana's tin trunk: an old photo of a boys' team, a dented trophy, and seven smooth river stones.</li>
+        <li>Night: Nana tells the story of the 1960s match (a cutscene with grainy, sepia visuals). He teaches one old trick: how to stack under pressure.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 10</span><span class="h">Across the pond</span><span class="w"></span></summary>
+      <ul>
+        <li>Shuvo swims across the pond. Sajib returns as captain: the midpoint of the story. The full team practises together for the first time.</li>
+        <li>Ha-du-du practice match against the Ghat Para teenagers.</li>
+        <li>Night: fireflies by the bamboo grove; the courage walk past the grove after Nani's story.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 11</span><span class="h">Kite day on the char</span><span class="w"></span></summary>
+      <ul>
+        <li>Make a kite with Joy (paper, bamboo strips, rice glue); coat the string with glass manja.</li>
+        <li>Rahman majhi rows everyone to the char. Kite fight against Uttar Para.</li>
+        <li>Cricket rematch against Uttar Para. The first win. Tipu is rattled.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 12</span><span class="h">The wedding</span><span class="w"></span></summary>
+      <ul>
+        <li>A cousin's wedding: gaye holud in the courtyard, turmeric on everyone's faces, decorating the gate with banana stems and marigolds, running errands for the cooks.</li>
+        <li>Night: the whole village at the feast. Shuvo and Tipu end up sitting together.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 13</span><span class="h">The last practice</span><span class="w"></span></summary>
+      <ul>
+        <li>Morning danguli; afternoon full-team Sat Chara practice with Nana watching from the edge of the field.</li>
+        <li>Ammu calls the bazaar phone: Shuvo goes home the day after tomorrow.</li>
+        <li>Night: the team on the pond ghat, feet in the water, talking about next summer.</li>
+      </ul></details>
+    <details class="day"><summary><span class="n">Day 14</span><span class="h">The final</span><span class="w"></span></summary>
+      <ul>
+        <li>Morning: the youth club marks the field with lime powder. Everyone dresses up a bit.</li>
+        <li>Afternoon: the tournament final, Sat Chara, best of five rounds. Nana's stones for the last round.</li>
+        <li>After asr: celebration (or a consolation scene). The next morning: the launch, the team on the bank, Tuni's marble. Then the epilogue.</li>
+      </ul></details>
+  </div>
+</section>
+
+<section id="games">
+  <h2>Folk games</h2>
+  <p>The core of the game. Each game is built so it works as a standalone mode from the main menu once you've played it in the story. The three marked <span class="chip core">core</span> get full production (realistic animation, AI teammates, online play). The <span class="chip mid">medium</span> ones get solid but simpler builds. The rest are short, one-screen minigames.</p>
+  <div class="tbl"><table>
+    <tr><th>Game</th><th>What you do</th><th>Phone controls</th><th>Size</th></tr>
+    <tr><td><strong>Sat Chara</strong><span class="bn">সাতচারা</span></td><td>Knock the seven-stone tower with the ball, then rebuild it while the other team hits you out. 4 vs 4. Already designed and in progress.</td><td>Joystick to move, drag to aim and release to throw, tap to dodge or duck, hold near the stones to stack.</td><td><span class="chip core">core</span></td></tr>
+    <tr><td><strong>Tape-ball cricket</strong><span class="bn">টেপ টেনিস ক্রিকেট</span></td><td>Gully cricket with local rules: one-tip-one-hand (caught after one bounce with one hand is out), hit into the pond is out and you fetch it, last man can bat alone, the bat is a coconut-frond stem until you earn a real one.</td><td>Batting: swipe direction and timing. Bowling: drag for line and length, hold for pace.</td><td><span class="chip core">core</span></td></tr>
+    <tr><td><strong>Ha-du-du</strong><span class="bn">হাডুডু</span></td><td>The national game (kabaddi). Raid the other half on one breath, chanting "ha-du-du", touch defenders and get back; defenders try to hold you.</td><td>Hold a button to keep the breath meter going while you move; release and you're out of breath. Tap to tag, mash to break free.</td><td><span class="chip core">core</span></td></tr>
+    <tr><td><strong>Carrom</strong><span class="bn">ক্যারম</span></td><td>At the youth club. The Sajib challenge.</td><td>Place the striker, drag back to aim and shoot.</td><td><span class="chip mid">medium</span></td></tr>
+    <tr><td><strong>Marbles</strong><span class="bn">মার্বেল</span></td><td>Shoot your marble to hit others out of a ring or into a hole (gutti). Win marbles from other kids; they're collectables.</td><td>Flick with a finger, with a spin control.</td><td><span class="chip mid">medium</span></td></tr>
+    <tr><td><strong>Kite fight</strong><span class="bn">ঘুড়ি কাটাকাটি</span></td><td>Build a kite, coat the string, then cut rivals' strings in the air by crossing and pulling.</td><td>Two thumbs: one lets out string, one pulls; tilt to steer.</td><td><span class="chip mid">medium</span></td></tr>
+    <tr><td><strong>Fishing</strong><span class="bn">বড়শি · জাল</span></td><td>Hook and line in the pond (wait, watch the float, strike); casting a net on the river with Bablu.</td><td>Tap to strike when the float dips; swipe to cast the net in a circle.</td><td><span class="chip mid">medium</span></td></tr>
+    <tr><td><strong>Swimming and diving</strong><span class="bn">সাঁতার</span></td><td>Learn to swim (rhythm), then races across the pond and diving for the lost ball.</td><td>Alternate left and right taps in rhythm; hold to dive.</td><td><span class="chip mid">medium</span></td></tr>
+    <tr><td><strong>Danguli</strong><span class="bn">ডাংগুলি</span></td><td>Flip the small stick (guli) up with the long one (dang) and whack it as far as you can; fielders try to catch it.</td><td>Tap to flip, timed second tap to strike.</td><td>short</td></tr>
+    <tr><td><strong>Kanamachi</strong><span class="bn">কানামাছি</span></td><td>Blindfolded catching game. When you're "it", the screen goes dark and you hunt by sound.</td><td>Joystick; stereo sound and phone vibration guide you.</td><td>short</td></tr>
+    <tr><td><strong>Gollachut</strong><span class="bn">গোল্লাছুট</span></td><td>Hold hands around a pole, then break away and run to a far point without being touched.</td><td>Pick your moment, then dodge-run.</td><td>short</td></tr>
+    <tr><td><strong>Ekka dokka</strong><span class="bn">এক্কা দোক্কা</span></td><td>Hopscotch drawn in the courtyard dirt; Mitu and Tuni's game.</td><td>Throw the tile, then hop in rhythm without touching lines.</td><td>short</td></tr>
+    <tr><td><strong>Latim</strong><span class="bn">লাটিম</span></td><td>Wind and throw a spinning top; knock other tops out of a circle.</td><td>Swipe to wind, flick to throw.</td><td>short</td></tr>
+    <tr><td><strong>Mango collection</strong><span class="bn">আম কুড়ানো</span></td><td>After a storm, race other kids through the orchard to collect the most mangoes.</td><td>Run and tap; mangoes still falling.</td><td>short</td></tr>
+    <tr><td><strong>Tyre rolling</strong><span class="bn">চাকা চালানো</span></td><td>Roll an old bicycle rim with a stick along the ail paths. Also a way to move faster around the village.</td><td>Hold to keep it rolling, steer.</td><td>short</td></tr>
+    <tr><td><strong>Football in the rain</strong></td><td>On storm days, barefoot football in the mud.</td><td>Joystick plus kick; the ball sticks in puddles.</td><td>short</td></tr>
+    <tr><td><strong>Ludo at night</strong><span class="bn">লুডু</span></td><td>With cousins during load-shedding, by lantern light.</td><td>Tap to roll and move.</td><td>short</td></tr>
+  </table></div>
+  <div class="note">The three core games also become the online modes. Sat Chara stays the headline: it's the most distinctive and the most "only from Bangladesh" game on the list.</div>
+</section>
+
+<section id="side">
+  <h2>Side quests</h2>
+  <p>About 30 small stories, each 5–15 minutes, picked up by talking to people. They reward coins, collectables, friendship and stat points.</p>
+  <div class="cols2">
+    <ul>
+      <li><strong>The ball in the pond.</strong> Dive for it before the match (after swimming is learned; before that, persuade Bablu).</li>
+      <li><strong>Kite in the tree.</strong> Climb the jackfruit tree to get Joy's kite.</li>
+      <li><strong>Tiffin carrier.</strong> Take Mama's lunch to the bazaar before it gets cold.</li>
+      <li><strong>The lost goat.</strong> Find a neighbour's goat by following the sound of its bell.</li>
+      <li><strong>A real bat.</strong> Save coins to buy a willow-look bat from the bazaar. Replaces the frond stem.</li>
+      <li><strong>Tape for the ball.</strong> Buy insulation tape and wind your own tape-ball.</li>
+      <li><strong>Pitha morning.</strong> Help Nani make bhapa pitha (timing minigame).</li>
+      <li><strong>Fish for dinner.</strong> Catch three fish for Nani.</li>
+      <li><strong>The letter from abroad.</strong> Read Bablu's uncle's letter aloud for his grandmother, who can't read.</li>
+      <li><strong>The radio.</strong> Find batteries for Nana's radio before the big match broadcast.</li>
+      <li><strong>The bioscope.</strong> Pay a coin to look through the bioscope on haat day.</li>
+      <li><strong>Buy a kite.</strong> Bargain with the kite seller.</li>
+      <li><strong>Marigolds.</strong> Collect flowers for the wedding gate.</li>
+      <li><strong>Gopal kaka's wheel.</strong> Try making a clay pot; it collapses (comic).</li>
+      <li><strong>Bhulu the dog.</strong> Feed the stray every day; he follows you and later finds lost things.</li>
+    </ul>
+    <ul>
+      <li><strong>The hidden marble.</strong> Win back the marble Tipu took on day 2.</li>
+      <li><strong>Maktab morning.</strong> Walk Tuni to the maktab; wait outside, chat with the Imam.</li>
+      <li><strong>Matchbox labels.</strong> Collect all 20 village matchbox labels.</li>
+      <li><strong>The cow on the pitch.</strong> Gently herd the cow off the field before the match.</li>
+      <li><strong>Haji saheb's mornings.</strong> Three mornings in the orchard: chase off crows, gather fallen mangoes, fix the fence.</li>
+      <li><strong>The van ride.</strong> Ride with Mama to the haat; help unload.</li>
+      <li><strong>Firefly jar.</strong> Catch fireflies, then let them go (Nani's rule).</li>
+      <li><strong>The bamboo grove.</strong> Walk past it at night to prove you're not scared.</li>
+      <li><strong>Phone call.</strong> Wait at the phone shop for Ammu's call.</li>
+      <li><strong>The photo.</strong> Find out who the other boys in Nana's old team photo were; two still live in the village.</li>
+      <li><strong>Straw drying.</strong> Help spread the boro straw before the rain comes.</li>
+      <li><strong>Hawai mithai.</strong> Spend your first coin on candy floss.</li>
+      <li><strong>Boat race.</strong> Cheer and help Ghat Para's boat team prepare.</li>
+      <li><strong>The broken window.</strong> Buy glass from the bazaar with saved coins.</li>
+      <li><strong>Tipu's leather ball.</strong> It goes into the khal; get it back for him, and make a friend.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="life">
+  <h2>Life interrupts</h2>
+  <p>A system, not just story beats: the village happens around you and sometimes stops your game. These are the moments people remember and the ones that make the world feel real. Each event has a probability, a time window and a reaction from the kids.</p>
+  <div class="tbl"><table>
+    <tr><th>Event</th><th>When</th><th>What happens</th></tr>
+    <tr><td><strong>Maghrib azan</strong></td><td>Every evening</td><td>The match ends at once. Kids grab their sandals and run in every direction. Curfew starts.</td></tr>
+    <tr><td><strong>Asr azan during play</strong></td><td>Afternoons</td><td>Older boys pause and some leave for the mosque; the game continues with fewer players or waits, the kids decide (a short vote).</td></tr>
+    <tr><td><strong>Tablighi gasht</strong></td><td>Days 5–7, afternoons</td><td>Three or four of the visiting brothers walk up to the field, greet the boys warmly and invite them to the mosque for asr and a short talk. Choose: go now (the match pauses; short respectful scene at the pond ghat doing wudu, then a fade to the mosque courtyard afterwards, dates and a kind word), or "after the match, inshallah" (they smile and walk on). No choice is punished or rewarded with stats.</td></tr>
+    <tr><td><strong>Mother calling</strong></td><td>Any afternoon</td><td>"Baaabluuu!" across the fields. That kid has to go home; you finish a player short, or go and ask his mother for ten more minutes.</td></tr>
+    <tr><td><strong>The cow</strong></td><td>Cricket matches</td><td>A cow wanders onto the pitch and lies down. Play stops until someone moves it.</td></tr>
+    <tr><td><strong>Ball lost</strong></td><td>Any match</td><td>Into the pond, the bamboo grove or Haji saheb's yard. Short fetch mission, or the match ends.</td></tr>
+    <tr><td><strong>Kalboishakhi</strong></td><td>Days 5 and 11, plus random</td><td>Sky goes dark, wind, dust, everyone runs. Then mangoes.</td></tr>
+    <tr><td><strong>Hawker's bell</strong></td><td>Afternoons</td><td>The malai ice cream man rings his bell. Half the team runs off. Buy for everyone and gain friendship, or play on.</td></tr>
+    <tr><td><strong>Load-shedding</strong></td><td>Most nights</td><td>Lights go out mid-scene. Lanterns, hand fans, the kids come out to the courtyard, stories begin.</td></tr>
+    <tr><td><strong>Wedding procession</strong></td><td>Day 12</td><td>The band and the decorated car pass; everyone stops to watch.</td></tr>
+    <tr><td><strong>Big match on the radio</strong></td><td>One afternoon</td><td>Everyone at the tea stall around the radio and TV; no game today.</td></tr>
+    <tr><td><strong>Visitor from the city</strong></td><td>Random</td><td>A relative arrives with sweets; you're called home to greet them.</td></tr>
+  </table></div>
+</section>
+
+<section id="systems">
+  <h2>Game systems</h2>
+  <h3>Progression</h3>
+  <ul>
+    <li><strong>Shuvo's stats</strong> (speed, aim, power, agility, plus swimming, climbing and stamina) rise through practice and life skills. The four match stats start at 10 points and cap at 14.</li>
+    <li><strong>Friendship</strong> (0–5 per kid). Raised by helping them, playing with them, small gifts (a kite, an ice cream). At 3 you unlock their personal story; at 5, a team move in matches (e.g. Mitu's covering throw).</li>
+    <li><strong>Village standing.</strong> How the adults see you. High standing opens doors: Haji saheb lets you into the orchard, Monu mia lets you watch TV for free.</li>
+    <li><strong>Mischief.</strong> Stealing mangoes, sneaking out at noon, climbing where you shouldn't. Fun, and the kids like you for it; but if an adult sees you, word reaches Nani by evening (a gossip system with a delay) and you get a scolding and a chore. Never violence, never failure.</li>
+  </ul>
+  <h3>Money and items</h3>
+  <ul>
+    <li>Coins and small notes (taka) from errands, selling fish, helping at stalls, and Nana on the last day. Prices are era-appropriate (to be checked with people who were kids then).</li>
+    <li>Spend on: snacks, ice cream, kites and string, tape, a tennis ball, the bat, gifts, the bioscope, glass for the window.</li>
+    <li>Equipment: bat (frond stem → plank → bought bat), ball (rag ball → tape-ball → Tipu's leather ball as a gift), kite, borshi, marbles, latim.</li>
+  </ul>
+  <h3>Collections</h3>
+  <p>Marbles (with names and patterns), matchbox labels, kites, stamps from letters, bird sightings (doel, kingfisher, koel, myna, egret), fish species caught, Nani's stories heard. A "memory book" stores the photos Shuvo takes with a borrowed film camera on special days, which double as the gallery for the ending.</p>
+  <h3>Matches</h3>
+  <ul>
+    <li>Pick the team from the kids who are available today (who's ill, at work, called home).</li>
+    <li>AI teammates follow the captain's calls once Sajib is back.</li>
+    <li>Difficulty tunes itself gently in the story; the standalone and online modes are fixed and fair.</li>
+  </ul>
+  <h3>Save and time</h3>
+  <ul>
+    <li>Auto-save at each phase of the day; full save at night with Nani.</li>
+    <li>Missed something? Most side quests stay open for a few days; nothing in the main story can be missed. After the ending, "one more summer" mode lets you roam the village freely with every game unlocked.</li>
+  </ul>
+</section>
+
+<section id="respect">
+  <h2>Culture and respect</h2>
+  <p>This game will be played by the people it depicts, and the reaction in Bangladesh will make or break it. These are rules, not suggestions.</p>
+  <h3>Religion</h3>
+  <ul>
+    <li>Azan, prayer, maktab, the Imam and the tablighi visit are part of village life and are shown warmly and accurately. They're never a joke, a villain or an obstacle the game wants you to resent.</li>
+    <li>Prayer itself is never a minigame and never shown in close interactive detail. Scenes cut to before and after.</li>
+    <li>Going to the mosque is always a free choice with no stat reward or penalty. The game doesn't preach in either direction.</li>
+    <li>Recorded azan by a real muezzin, with permission. Quran recitation is not used as background music.</li>
+    <li>The Pal Para potter family is Hindu and shown as neighbours like any others: Gopal kaka's courtyard, a small shrine (tulsi plant) in their yard, a sweet from their kitchen. No interfaith conflict storylines.</li>
+  </ul>
+  <h3>People</h3>
+  <ul>
+    <li>Poverty is present (Joy's father pulls a rickshaw, Bablu works) but nobody is pitied or mocked for it.</li>
+    <li>Girls play, lead and win. The real-life friction (Nusrat's mother, Mami) is shown honestly and resolved with family warmth, not lectures.</li>
+    <li>No mockery of disability, mental illness, skin colour or dialect. Nicknames stay kind (no "Kalu").</li>
+    <li>Adults scold; they don't hit. A teacher's cane can appear on a wall, never in use.</li>
+  </ul>
+  <h3>Children's safety</h3>
+  <ul>
+    <li>Swimming is learned with an older kid present; the game shows why (Nani's warnings, Ammu's call). No drowning content.</li>
+    <li>Kite manja is shown, with Nani warning about cut fingers; no injuries shown.</li>
+    <li>No smoking or tobacco items, even as collectables (cigarette pack collecting was real; matchbox labels replace it).</li>
+  </ul>
+  <h3>Politics</h3>
+  <p>No party symbols, no hartal storylines, no real politicians. The "chairman" is a family relation, not a political figure.</p>
+  <div class="caution"><strong>Review step:</strong> before each chapter ships, three or four reviewers from different backgrounds (one religious scholar, one from a village family, one woman who grew up in a village, one from a Hindu family) play it and sign off on these points.</div>
+</section>
+
+<section id="art">
+  <h2>Art and sound</h2>
+  <h3>Visual direction</h3>
+  <ul>
+    <li><strong>Realistic</strong>, with Real Cricket 24 as the bar for the matches. Believable proportions, real materials, natural movement.</li>
+    <li><strong>The light is the star.</strong> Hazy dawn, hard white noon, the golden afternoon (most of the play happens here), purple dusk with smoke from the clay stoves, lantern nights. Lighting presets per phase, baked where possible for phone performance.</li>
+    <li><strong>Season colours:</strong> ripe yellow-green mangoes, dry gold straw, deep green banana and bamboo, red-brown mud walls, the blue-grey of a coming storm.</li>
+    <li><strong>Built so far</strong> (in this repo): the Nanabari courtyard props (mud house, haystack, tube well, banana and coconut palm, kolshi, jute sack, clothes line, straw drying, pond, van-rickshaw, fence), the Bablu character mockup, and motion-captured actions (throws, pick-ups, duck, dodges, walk and jog). All of it carries straight into chapter 1.</li>
+    <li><strong>Reference trip:</strong> a weekend in a real village with a phone: photos for textures and proportions, video for motion, audio for the soundscape. This is the single most valuable art task.</li>
+  </ul>
+  <h3>Sound</h3>
+  <ul>
+    <li><strong>Field recordings</strong> (free, and better than any library): azan from the village mosque at distance, roosters, the koel calling in the heat, doel song at dawn, frogs after rain, crickets at night, the tube well handle, pond splashes, the haat crowd, a bicycle bell, the ice cream bell, a launch horn.</li>
+    <li><strong>Voices:</strong> standard Bangla with a light regional colour. Child voice actors for the kids (with guardians present, properly paid), older actors for Nani and Nana. Short barks for matches ("দৌড়া!", "ধর!").</li>
+    <li><strong>Music:</strong> original score with bamboo flute (banshi), ektara and dotara, light percussion. Quiet in free roam, livelier in matches, solo flute for the ending. No licensed songs.</li>
+  </ul>
+</section>
+
+<section id="tech">
+  <h2>Controls and tech</h2>
+  <h3>Controls</h3>
+  <ul>
+    <li>Left thumb: virtual joystick. Right thumb: one context button (talk, pick up, climb, throw) plus a run toggle.</li>
+    <li>Each game has its own gesture set (see <a href="#games">Folk games</a>), introduced by a kid teaching you, never by a text wall.</li>
+    <li>Camera follows behind; matches use a broadcast camera like the existing Sat Chara build.</li>
+  </ul>
+  <h3>Technical targets</h3>
+  <div class="tbl"><table>
+    <tr><th>Item</th><th>Target</th></tr>
+    <tr><td>Engine</td><td>Unity 6 with URP (the current project)</td></tr>
+    <tr><td>Phones</td><td>Three quality presets. Low: 3 GB RAM, Android 10, 720p, 30 fps, baked lighting, short draw distance. Medium: 4–6 GB. High: 8 GB+, 60 fps option, real-time shadows, denser grass.</td></tr>
+    <tr><td>World</td><td>One 400 × 400 m village in streamed sections (Nanabari, bazaar, field, orchard, river). Indoor rooms load separately.</td></tr>
+    <tr><td>People</td><td>About 40 named NPCs with daily schedules; at most 12–15 animated people near the player at once.</td></tr>
+    <tr><td>Download</td><td>Base app under 150 MB from the Play Store; chapters as on-demand asset packs (Play Asset Delivery). Full game about 1.5–2 GB.</td></tr>
+    <tr><td>Online</td><td>Sat Chara, cricket and ha-du-du for 2–8 players. Small dedicated servers or a hosted relay; matches are short and need little bandwidth.</td></tr>
+    <tr><td>Language</td><td>Bangla first, English subtitles. Bangla text rendering tested on low-end phones.</td></tr>
+  </table></div>
+</section>
+
+<section id="biz">
+  <h2>Audience and business</h2>
+  <h3>Who it's for</h3>
+  <ul>
+    <li><strong>Main audience:</strong> Bangladeshi adults aged 18–40, in the country and abroad, who grew up with these games or heard about them from their parents. They have mid-range phones or better and buy games occasionally.</li>
+    <li><strong>Second:</strong> teenagers who want a local game that isn't a battle royale, and play the online folk-game modes with friends.</li>
+    <li><strong>Third:</strong> players outside Bangladesh who like slow, warm games (the <em>Boku no Natsuyasumi</em> and <em>Stardew</em> audience), reached through English subtitles and festivals.</li>
+    <li>Expected rating: Everyone / PEGI 7.</li>
+  </ul>
+  <h3>Making money</h3>
+  <p>Recommended: <strong>chapter 1 free, the rest a one-time unlock</strong>, plus optional cosmetics for online play (kite designs, lungi and jersey colours, marble skins). No ads during the story, no loot boxes, no pay-to-win, no energy timers. Price to be tested; check local payment options (carrier billing, mobile wallets) because card ownership in Bangladesh is low.</p>
+  <p>Chapter 1 free does two jobs: it's the marketing (the nostalgia hits in the first ten minutes) and it tests whether people want more before the expensive chapters are built.</p>
+</section>
+
+<section id="plan">
+  <h2>Production plan</h2>
+  <p>This is several times the size of Sat Chara alone. It's only realistic if it's built in shippable slices, with each slice tested on real players before the next.</p>
+  <div class="tbl"><table>
+    <tr><th>Phase</th><th>What's built</th><th>Proves</th></tr>
+    <tr><td><strong>0 · Now</strong></td><td>Finish the Sat Chara match in Unity on the phone (current work). Playtest the browser prototype with 5–10 people.</td><td>The rebuild-under-fire round is fun.</td></tr>
+    <tr><td><strong>1 · Vertical slice</strong></td><td>Day 1 only: launch arrival, Nanabari and its courtyard, Nani and the cousins, the Sat Chara tutorial match, the maghrib azan and curfew, one load-shedding night.</td><td>The feeling works. Show it to people who grew up in villages; if they don't get a lump in their throat, rethink before going further.</td></tr>
+    <tr><td><strong>2 · Chapter 1</strong></td><td>Days 1–3, Nanabari, pond and two paras, Sat Chara, kanamachi, marbles, swimming basics. Release free on the Play Store.</td><td>People download, finish, and ask for more.</td></tr>
+    <tr><td><strong>3 · Chapters 2–4</strong></td><td>The rest of the village, cricket and ha-du-du at full quality, the other games, the full story and ending.</td><td>The paid unlock sells.</td></tr>
+    <tr><td><strong>4 · Online</strong></td><td>Online Sat Chara, cricket and ha-du-du with friends.</td><td>Long-term play.</td></tr>
+  </table></div>
+  <h3>Who does what</h3>
+  <div class="tbl"><table>
+    <tr><th>Work</th><th>How</th></tr>
+    <tr><td>Game code, systems, tools, build pipeline</td><td>Claude, with you testing on the phone and the Unity PC.</td></tr>
+    <tr><td>Props and environment by script</td><td>Claude (as with the current village props), improved with reference photos.</td></tr>
+    <tr><td>Character models and faces</td><td>MetaHuman (free in Unreal) or MPFB as now; a 3D artist for the final hero characters is strongly recommended.</td></tr>
+    <tr><td>Animals</td><td>Free scans or a 3D artist; they don't come out well by script.</td></tr>
+    <tr><td>Animation</td><td>Free mocap (CMU, as now) plus phone-camera mocap of real kids' movements for local actions (stacking stones, ha-du-du raids, kite flying).</td></tr>
+    <tr><td>Story script and Bangla dialogue</td><td>A Bangla writer, with Claude drafting outlines and English versions.</td></tr>
+    <tr><td>Voices and music</td><td>Paid actors and a musician; the biggest unavoidable cost.</td></tr>
+    <tr><td>Field recordings and reference photos</td><td>You, on a village trip with a phone.</td></tr>
+    <tr><td>Cultural review</td><td>The reviewer group, each chapter.</td></tr>
+  </table></div>
+</section>
+
+<section id="risks">
+  <h2>Risks</h2>
+  <div class="tbl"><table>
+    <tr><th>Risk</th><th>Why it matters</th><th>What we do</th></tr>
+    <tr><td>Scope</td><td>An open village with a story, many games and realistic art is a team-sized project.</td><td>Ship in chapters; cut medium and short games before cutting quality on the core three.</td></tr>
+    <tr><td>Realism on cheap phones</td><td>Most Bangladeshi phones are low or mid-range.</td><td>Quality presets from day one; test on a 3 GB phone every build; small, dense world.</td></tr>
+    <tr><td>Religious and cultural backlash</td><td>One careless scene can sink the game in Bangladesh.</td><td>The rules in <a href="#respect">Culture and respect</a> and a reviewer sign-off per chapter.</td></tr>
+    <tr><td>Nostalgia without fun</td><td>Pretty and warm but nothing to do after an hour.</td><td>The core games must stand alone; phase 0 and 1 test exactly this.</td></tr>
+    <tr><td>Children in the game</td><td>Kids as characters (and as voice actors) need care.</td><td>No harm shown to children; guardians and proper contracts for child actors.</td></tr>
+    <tr><td>Market size and payments</td><td>Bangladeshi players pay less for games, and card payment is rare.</td><td>Free chapter 1, low price, carrier billing, the diaspora and international audience.</td></tr>
+    <tr><td>Piracy</td><td>Modded APKs are common.</td><td>Online modes and cosmetics need an account; the story can't be fully protected, so keep the price fair.</td></tr>
+  </table></div>
+</section>
+
+<section id="open">
+  <h2>Open questions</h2>
+  <p>Decisions for you. My recommendation is first in each.</p>
+  <div class="qa">
+    <div><strong>Title.</strong> Chhuti (ছুটি). Alternatives: Nanabari (নানাবাড়ি), Shesh Bikel (শেষ বিকেল, "the last afternoon"), Gramer Chhuti.</div>
+    <div><strong>Era.</strong> Around 2001. Alternatives: late 1990s (more radio, fewer TVs), or present day (phones everywhere, which kills much of the nostalgia).</div>
+    <div><strong>Player character.</strong> Fixed boy, Shuvo, with Mitu as the co-lead. Alternative: choose Shuvo or his cousin sister from the city; costs more writing and voice work.</div>
+    <div><strong>Region and dialect.</strong> Unnamed central district, standard Bangla with light colour. Alternative: a named region (Mymensingh, Barishal, Sylhet) with its dialect; more authentic, more limiting.</div>
+    <div><strong>The tablighi and jumma scenes.</strong> Keep, as written above, with the reviewer sign-off. Alternative: keep only the azan and curfew.</div>
+    <div><strong>Business model.</strong> Free chapter 1 plus one-time unlock. Alternative: fully free with cosmetics only.</div>
+    <div><strong>What happens to the current Sat Chara game.</strong> It becomes chapter 1 and the first online mode; nothing built so far is thrown away.</div>
+  </div>
+</section>
+
+<footer>Draft 1 of the concept. The story, names and day plan are a starting point for discussion with a Bangla writer; details such as era prices, local game rules and dialect need checking with people who grew up in villages.</footer>
+</main>
+</div>
