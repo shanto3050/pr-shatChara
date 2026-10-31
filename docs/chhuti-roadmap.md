@@ -1,6 +1,6 @@
 # Chhuti implementation roadmap
 
-Working revision · 30 October 2026. This reconciles the [Chhuti concept](concept/chhuti-concept.html) with the existing [Sat Chara production plan](production-plan.md). The concept is a direction and content draft; implementation evidence is tracked separately. Adjust this roadmap as playtests and art reviews change the scope.
+Working revision · 31 October 2026. This reconciles the [Chhuti concept](concept/chhuti-concept.html) with the existing [Sat Chara production plan](production-plan.md). The concept is a direction and content draft; implementation evidence is tracked separately. Adjust this roadmap as playtests and art reviews change the scope.
 
 ## Delivery order
 
@@ -18,7 +18,7 @@ The current match is the foundation of Stage 0 and the Day 1 tutorial. The villa
 
 1. Captured action runtime integration — implemented and documented in the [0.2.5 checkpoint](reports/2026-10-30-action-integration.md); final animation/clothing approval remains open.
 2. Village URP prop integration, distance LODs, terrain and physical-device comparison — [0.2.6 checkpoint](reports/2026-10-30-village-props.md).
-3. Regenerate/export the free Bablu v3 into Unity and review him at match and close-up distances. Correct cloth/contact problems and establish a reference-matched target frame. The MetaHuman comparison remains an optional character-source evaluation with its own hardware/account/license checks; it is not a required engine migration.
+3. Complete the immersive third-person courtyard with MetaHuman Bablu as the selected character track. The [first clothed walking trial](reports/2026-10-31-metahuman-courtyard.md) now runs on the test phone. Finish outfit/likeness polish and action deformation before full match integration. Keep Unity as the runtime and the free Bablu model as fallback; Unreal remains the MetaHuman authoring tool.
 4. Finish focused touch/rule tests (pass, duck, dodge, catches, timers, interruptions) and a small uncoached playtest. Record findings before balance changes.
 5. Run sustained active gameplay/memory/thermal tests on SC-03K, then on a selected lower-memory phone. Select the real minimum from evidence.
 6. Build the smallest Day 1 shell: save schema, content-driven dialogue/quest state, phase transitions, then arrival-to-bed content. Add each system with a working end-to-end scene before expanding the map.

@@ -25,3 +25,7 @@ Third-person orbit, camera-relative move/aim, acceleration/deceleration, shoulde
 ## Verified first pass
 
 Android 0.3.0 (code 11) was built and installed on the connected Samsung test phone. Explore, orbit gestures and camera-relative movement were tested. Short idle samples were about 29.9 FPS at 720p using the fallback character. The separate Unity MetaHuman trial imports actual exported geometry and textures; it is not yet the phone character. See [the integration report](reports/2026-10-31-third-person.md).
+
+## Clothed MetaHuman walking checkpoint
+
+The separate 0.3.1 walking courtyard now runs on the Samsung phone with the actual MetaHuman, fitted garments, retargeted locomotion and four-weight skinning. Short 720p samples were 29.9 FPS; one PSS snapshot was about 391 MiB. The first-pass phone build described above is historical. Full actions, art approval, environment finish and the 4 GB/eight-character/sustained gates remain open. See [the current checkpoint](reports/2026-10-31-metahuman-courtyard.md).
