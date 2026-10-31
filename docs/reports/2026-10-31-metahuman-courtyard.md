@@ -2,6 +2,16 @@
 
 31 October 2026. The actual MetaHuman now runs in a separate Android walking trial. This checkpoint does not replace the full match character or close the art gate.
 
+## Current installed build: 0.3.2
+
+The phone now has **0.3.2, code 13**. This adds a courtyard-only stop-heading fix: the character keeps his travel direction rather than turning back toward the legacy throw direction. A rightward movement logged 89.9 degrees; a paused check 2.5 seconds later logged 90.0 degrees. The stationary baked body minimum was -0.0198 m, using four-weight skinning.
+
+Current APK size: **90,347,399 bytes**. SHA-256: `E87412D7A510F322D5FD21F0F41C0C5B3C854C525B3DE0D6AE24D2221087FBC9`. The local APK path is the same as below; successive development builds overwrite that file.
+
+A 20.03-second sample spanning the recorded 0.3.2 control test reported 29.9 FPS, p95 33.46 ms, p99 33.94 ms and no frames over 100 ms. A post-test PSS snapshot was 405,348 KiB, about 396 MiB. The geometry budget is unchanged. These remain single-active-character smoke tests on the Samsung phone.
+
+The verified compact 0.3.2 preview is `.verification/metahuman-unity/phone-meta-032-preview-short.mp4` (H.264, 1280 x 624). Its full decode and sampled frames were checked. The app was restarted after testing and left at the initial courtyard view, ready for manual play.
+
 ## Implemented
 
 - Fitted the lungi and gamcha to the new skeleton. Rebuilt the vest on the MetaHuman torso with a U neckline, shoulder coverage and matching body weights. The old body's crouch correction was removed; it is not valid for this body.
@@ -12,7 +22,7 @@
 
 The dressed trial has **52,599 triangles, 40,784 vertices, 10 skinned renderers and 55 weighted bones**. These are the current hero trial's source counts, not an approved eight-character budget. Lower-detail NPC variants remain necessary work.
 
-## Verified Android artifact
+## Initial 0.3.1 Android artifact
 
 - Version: **0.3.1, code 12**, ARM64 development build.
 - APK: `unity/SatChara/Builds/Android/SatChara-MetaHumanCourtyard.apk`.

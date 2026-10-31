@@ -28,4 +28,6 @@ Android 0.3.0 (code 11) was built and installed on the connected Samsung test ph
 
 ## Clothed MetaHuman walking checkpoint
 
-The separate 0.3.1 walking courtyard now runs on the Samsung phone with the actual MetaHuman, fitted garments, retargeted locomotion and four-weight skinning. Short 720p samples were 29.9 FPS; one PSS snapshot was about 391 MiB. The first-pass phone build described above is historical. Full actions, art approval, environment finish and the 4 GB/eight-character/sustained gates remain open. See [the current checkpoint](reports/2026-10-31-metahuman-courtyard.md).
+The initial 0.3.1 walking courtyard was checked on the Samsung phone with the actual MetaHuman, fitted garments, retargeted locomotion and four-weight skinning. Short 720p samples were 29.9 FPS; one PSS snapshot was about 391 MiB. The first-pass phone build described above is historical. Full actions, art approval, environment finish and the 4 GB/eight-character/sustained gates remain open. See [the current checkpoint](reports/2026-10-31-metahuman-courtyard.md).
+
+The installed trial is now **0.3.2, code 13**, which preserves the character's heading when stopping. Device checks confirmed a 90-degree heading after a rightward run and subsequent stop. Current short samples remain 29.9 FPS; the latest PSS snapshot was about 396 MiB.

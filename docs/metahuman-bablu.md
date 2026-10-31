@@ -13,7 +13,7 @@
 - A separate export copy now has a generated joints-only rig and 2K skin sources. Head/body/full-body FBXs were inspected in Blender; PNG skin maps and the installed short-messy hair/natural eyebrow cards were exported. The editable source candidate remains separate.
 - A Unity URP review scene and mobile trial now exist: 35,149 triangles, 55 weighted bones, collapsed facial joints, skin/eye materials and source hair cards. A Unity portrait was rendered and inspected. An initial clothed, retargeted walking trial has subsequently been checked on Android: 52,599 triangles, 55 weighted bones and explicit four-weight skinning. Final garment/action deformation, hair/brow/eye finish, likeness and sustained/eight-character Android tests remain **pending**. See [the first integration report](reports/2026-10-31-third-person.md).
 - The editor identified required settings for 16-bit bone indices, unlimited bone influences, and skin-cache shaders; these were added to the authoring project. They are Unreal authoring settings, not Android runtime budgets or Unity requirements.
-- The installed development APK is now a separate MetaHuman walking courtyard (0.3.1, code 12). The full-match scene retains its fallback character until action/outfit gates pass. See [the clothed courtyard checkpoint](reports/2026-10-31-metahuman-courtyard.md).
+- The installed development APK is now a separate MetaHuman walking courtyard (0.3.2, code 13). The full-match scene retains its fallback character until action/outfit gates pass. See [the clothed courtyard checkpoint](reports/2026-10-31-metahuman-courtyard.md).
 
 ## Design brief
 
