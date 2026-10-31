@@ -6,11 +6,12 @@
 
 - Epic Games Launcher is installed and signed in.
 - Unreal Engine 5.8.4 with MetaHuman Creator Core Data: **installed**, verified against the launcher manifest and installed preset/example files.
-- Separate authoring project under `art-source/metahuman/BabluCreator`: **engine initialization completed** in the project log. First launch took about 454 seconds. Visual inspection is pending because Windows denied desktop input and capture was blank.
+- Separate authoring project under `art-source/metahuman/BabluCreator`: **engine initialization completed** in the project log. First launch took about 454 seconds. Studio inspection and portrait capture subsequently completed.
 - `art-source/metahuman/create_bablu_candidate.py` ran successfully inside Unreal. It duplicated the Bo preset into `/Game/Characters/MetaHumans/Bablu.Bablu`, applied a 170 cm height target, saved the candidate, and opened its editor. The source asset is `art-source/metahuman/BabluCreator/Content/Characters/MetaHumans/Bablu.uasset` (9,413,140 bytes at initial save).
 - The first face preview was visually inspected: realistic skin and eye appearance, but the starting preset is too heavy and mature to be approved as Bablu. Face/body refinement is still pending. The preview uses preset hair and a T-shirt, not the target garments.
 - A second, Mateo-derived candidate is saved as `/Game/Characters/MetaHumans/BabluConcept.BabluConcept`. Its preview assembly and corrected 1200 x 1200 portrait were visually inspected. See [the actual model render and source details](mockups/metahuman/README.md). It has cleared beard/mustache selections and selected short messy hair; final likeness, colour, age, and clothing remain open.
-- High-resolution cloud textures, generated rig, finished portrait renders, custom clothing fit, Unity import, and Android tests: **pending**.
+- A separate export copy now has a generated joints-only rig and 2K skin sources. Head/body/full-body FBXs were inspected in Blender; PNG skin maps and the installed short-messy hair/natural eyebrow cards were exported. The editable source candidate remains separate.
+- A Unity URP review scene and mobile trial now exist: 35,149 triangles, 55 weighted bones, collapsed facial joints, skin/eye materials and source hair cards. A Unity portrait was rendered and inspected. Garment fit, final hair/brow/eye finish, animation retargeting, final likeness and MetaHuman Android tests remain **pending**. See [the first integration report](reports/2026-10-31-third-person.md).
 - The editor identified required settings for 16-bit bone indices, unlimited bone influences, and skin-cache shaders; these were added to the authoring project. They are Unreal authoring settings, not Android runtime budgets or Unity requirements.
 - Unity gameplay code and currently installed APK have not been replaced by this authoring setup.
 

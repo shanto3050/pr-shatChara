@@ -21,3 +21,7 @@ Accept the slice only after the user reviews actual playable footage and confirm
 ## Initial implementation status
 
 Third-person orbit, camera-relative move/aim, acceleration/deceleration, shoulder framing and an Explore mode are implemented in the first pass. Unity camera checks passed for yaw-relative movement, follow distance, a static obstruction, and shoulder framing. Scenery needs colliders before obstruction can be demonstrated. Captured movement and action clips remain provisional. The fallback character sole probes now use actual skinning weights and bind poses; 12 sampled locomotion poses passed the body-floor tolerance check. This does not establish final animation quality or action contact correctness. MetaHuman runtime integration, complete courtyard actions, new environment finish and on-device verification remain open.
+
+## Verified first pass
+
+Android 0.3.0 (code 11) was built and installed on the connected Samsung test phone. Explore, orbit gestures and camera-relative movement were tested. Short idle samples were about 29.9 FPS at 720p using the fallback character. The separate Unity MetaHuman trial imports actual exported geometry and textures; it is not yet the phone character. See [the integration report](reports/2026-10-31-third-person.md).
