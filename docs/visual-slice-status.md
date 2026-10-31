@@ -21,7 +21,7 @@ Recorded CMU walk/jog now drives basic movement, with flat-ground foot locking a
 
 ## Still open
 
-This is an early proof, not the approved M2 visual target. All eight players share one model; motion remains procedural, with no completed mocap/animation pipeline. The courtyard is a scripted approximation, not a reconstruction of supplied reference photos. Lighting, skin, hair, silhouettes, terrain edges, vegetation, HUD and camera need further work. No sustained 30 FPS, 4 GB compatibility or final benchmark match is established.
+This is an early proof, not the approved M2 visual target. All eight players share one model; captured locomotion and action clips have since been integrated, but close-camera animation quality remains unapproved. The courtyard is a scripted approximation, not a reconstruction of supplied reference photos. Lighting, skin, hair, silhouettes, terrain edges, vegetation, HUD and camera need further work. No sustained 30 FPS, 4 GB compatibility or final benchmark match is established.
 
 The earlier graybox reports remain historical evidence for that build. Use the new report for the graphical build; a Blender still or editor render is never a device capture.
 
@@ -45,4 +45,8 @@ Ground albedo uses built-in image generation. Original prompt: "Perfectly overhe
 
 ## Village prop continuation (0.2.6)
 
-[Village integration report](reports/2026-10-30-village-props.md): 13 URP prop types, preserved import transforms, shared-material combined meshes, house/palm/haystack LODs and blended dry/grass terrain. Source bounds, zero added colliders, preset restoration, animation and full-match checks pass. Samsung touch gameplay passes; Low/Realistic/High short windows stay around 29.7–29.9 FPS. One PSS snapshot is about 380 MiB. M2 art approval, sustained thermals and the proposed 3 GB floor remain open. Continue via the [Chhuti roadmap](chhuti-roadmap.md), starting with free Bablu v3 export/clothing and focused touch/rule review.
+[Village integration report](reports/2026-10-30-village-props.md): 13 URP prop types, preserved import transforms, shared-material combined meshes, house/palm/haystack LODs and blended dry/grass terrain. Source bounds, zero added colliders, preset restoration, animation and full-match checks pass. Samsung touch gameplay passes; Low/Realistic/High short windows stay around 29.7–29.9 FPS. One PSS snapshot is about 380 MiB. M2 art approval, sustained thermals and the provisional 4 GB floor remain open. Continue via the [Chhuti roadmap](chhuti-roadmap.md), starting with the immersive courtyard camera/movement review and MetaHuman mobile export.
+
+## Direction reset: 31 October 2026
+
+The user rejected the elevated-camera prototype as the intended final experience and confirmed an immersive third-person direction. See [the new serial milestone](game-feel-direction.md). Captured locomotion/action clips exist, but close-camera movement quality, clothing and terrain contacts remain unapproved. The saved MetaHuman portrait is a character direction, not an integrated mobile character.

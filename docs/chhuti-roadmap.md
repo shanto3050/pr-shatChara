@@ -35,14 +35,18 @@ The free-with-ads concept is a future release requirement. Keep the current look
 
 | Topic | Current implementation/evidence | Concept target / next decision |
 |---|---|---|
-| Low hardware | Exact low-memory phone unselected; physical checks use SC-03K (~6 GB) | Concept asks for 3 GB / Android 10; treat this as an unverified candidate, replacing the earlier 4 GB candidate in planning |
+| Low hardware | Exact low-memory phone unselected; physical checks use SC-03K (~6 GB) | User selected 4 GB / Android 9+ as the provisional target on 31 October; requires a representative device benchmark |
 | Resolution | Low 540px, Realistic 720px, High 900px height; 30 FPS cap | Concept Low 720p / High optional 60 FPS needs measurement; keep the measured settings until justified |
 | OS | Development APK minimum API 26, target API 36 | Decide oldest supported OS after selecting hardware; Android 10 in the concept is not yet an enforced minimum |
 | Size | Direct development APK; size/fingerprint recorded per checkpoint | Concept base download under 150 MB and eventual full content around 1.5–2 GB are budgets, not measured store delivery sizes |
 | Content delivery | Assets bundled in the prototype | Evaluate chapter/voice asset packs at Chapter 1; do not equate development APK bytes with Play download size |
 
-Both Samsung and the mentioned Xiaomi can test aspects of the game; neither establishes the proposed 3 GB floor. A short near-30-FPS sample does not close the sustained thermal gate.
+Both Samsung and the mentioned Xiaomi can test aspects of the game; neither establishes the proposed 4 GB floor. A short near-30-FPS sample does not close the sustained thermal gate.
 
 ## Still open
 
 Final title/branding, launch regions and voices, art source/budget, exact local rule variants, lowest device, approved village references/target frame, and the availability of Bangla writers, cultural reviewers and playtesters. The full 14-day concept is substantially larger than the current sports prototype; its chapter gates control expansion.
+
+## Immersive third-person direction (31 October)
+
+User approved GTA V / Red Dead Redemption / Modern Combat as camera, movement and atmosphere references. Follow [the immersive village milestone](game-feel-direction.md) before adding more content. Unity remains the runtime; MetaHuman remains the character authoring track.
