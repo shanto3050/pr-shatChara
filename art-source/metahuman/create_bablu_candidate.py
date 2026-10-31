@@ -37,7 +37,10 @@ try:
         'startingPreset': '/MetaHumanCharacter/Optional/Presets/Bo.Bo',
         'heightTargetCm': 170,
         'stage': 'Editable starting candidate; face, skin, hair, clothing and art approval pending',
-        'bodyConstraints': [str(c.name) for c in constraints],
+        'bodyConstraints': [
+            {'name': str(c.name), 'target': c.target_measurement, 'active': c.is_active}
+            for c in constraints
+        ],
         'rigAndCloudTexturesRequested': False,
     }
     output = Path(unreal.Paths.project_saved_dir()) / 'bablu-candidate.json'

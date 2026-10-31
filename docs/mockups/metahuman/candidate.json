@@ -1,0 +1,11 @@
+{
+  "asset": "/Game/Characters/MetaHumans/BabluConcept.BabluConcept",
+  "preset": "Mateo",
+  "heightTargetCm": 170,
+  "hair": "/MetaHumanCharacter/Optional/Grooms/Bindings/Hair/WI_Hair_S_Messy",
+  "removedWardrobeSlots": [
+    "Beard",
+    "Mustache"
+  ],
+  "stage": "Second starting candidate; likeness, teenage age, clothing and mobile adaptation unapproved"
+}

@@ -7,8 +7,11 @@
 - Epic Games Launcher is installed and signed in.
 - Unreal Engine 5.8.4 with MetaHuman Creator Core Data: **installed**, verified against the launcher manifest and installed preset/example files.
 - Separate authoring project under `art-source/metahuman/BabluCreator`: **engine initialization completed** in the project log. First launch took about 454 seconds. Visual inspection is pending because Windows denied desktop input and capture was blank.
-- `art-source/metahuman/create_bablu_candidate.py` is prepared using the installed Epic scripting examples. It duplicates the Bo preset into a separate Bablu asset and applies a 170 cm height target. It has passed Python syntax validation but **has not run inside Unreal**; there is no saved candidate asset yet.
-- MetaHuman Bablu asset, textures, rig, portrait renders, clothing fit, Unity import, and Android tests: **pending**.
+- `art-source/metahuman/create_bablu_candidate.py` ran successfully inside Unreal. It duplicated the Bo preset into `/Game/Characters/MetaHumans/Bablu.Bablu`, applied a 170 cm height target, saved the candidate, and opened its editor. The source asset is `art-source/metahuman/BabluCreator/Content/Characters/MetaHumans/Bablu.uasset` (9,413,140 bytes at initial save).
+- The first face preview was visually inspected: realistic skin and eye appearance, but the starting preset is too heavy and mature to be approved as Bablu. Face/body refinement is still pending. The preview uses preset hair and a T-shirt, not the target garments.
+- A second, Mateo-derived candidate is saved as `/Game/Characters/MetaHumans/BabluConcept.BabluConcept`. Its preview assembly and corrected 1200 x 1200 portrait were visually inspected. See [the actual model render and source details](mockups/metahuman/README.md). It has cleared beard/mustache selections and selected short messy hair; final likeness, colour, age, and clothing remain open.
+- High-resolution cloud textures, generated rig, finished portrait renders, custom clothing fit, Unity import, and Android tests: **pending**.
+- The editor identified required settings for 16-bit bone indices, unlimited bone influences, and skin-cache shaders; these were added to the authoring project. They are Unreal authoring settings, not Android runtime budgets or Unity requirements.
 - Unity gameplay code and currently installed APK have not been replaced by this authoring setup.
 
 ## Design brief
@@ -31,7 +34,7 @@ No real person's identity is required. The concept and the two public textile re
 
 ## First deliverable
 
-A saved, editable MetaHuman Bablu candidate with neutral-light portrait and full-body renders, plus a clear comparison with the concept. This is the next art review milestone. A generated character is not considered delivered until the asset opens and the renders are inspected.
+A saved, editable MetaHuman Bablu candidate with neutral-light portrait and full-body renders, plus a clear comparison with the concept. Saved candidates and a verified studio portrait now exist; full-body target-outfit renders and likeness approval are still pending. A generated character is not considered finished until these art gates pass.
 
 ## Sources checked
 

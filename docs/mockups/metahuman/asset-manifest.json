@@ -1,0 +1,20 @@
+{
+  "engine": "5.8.4",
+  "assets": [
+    {
+      "path": "art-source/metahuman/BabluCreator/Content/Characters/MetaHumans/Bablu.uasset",
+      "bytes": 9423023,
+      "sha256": "2096a5d5c7f6862689ae86f8a4b412bace7fdf8aee555585a81ffa7d99fff51e"
+    },
+    {
+      "path": "art-source/metahuman/BabluCreator/Content/Characters/MetaHumans/BabluConcept.uasset",
+      "bytes": 9067027,
+      "sha256": "4cd9568fb1efc02f308dababca4841260905bc01c532a9dba65aa2cdab361e72"
+    }
+  ],
+  "portraitSize": [
+    1200,
+    1200
+  ],
+  "stage": "Art candidates; not approved or integrated into Android"
+}

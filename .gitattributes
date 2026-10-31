@@ -24,3 +24,5 @@ unity/SatChara/Assets/TutorialInfo/** whitespace=-blank-at-eol
 unity/SatChara/Assets/SatChara/Art/Environment/Village/RuntimeMeshes/*.asset filter=lfs diff=lfs merge=lfs -text
 
 *.terrainlayer text eol=lf whitespace=-blank-at-eol
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text

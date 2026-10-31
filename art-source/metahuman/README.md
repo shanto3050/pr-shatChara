@@ -6,7 +6,11 @@ Status on 31 October 2026: Unreal Engine **5.8.4** installation started through 
 
 Installation subsequently completed and is verified by the launcher manifest and installed preset/example files. The `BabluCreator.uproject` descriptor enables the documented MetaHuman Character, Python, and Editor Scripting plugins. Unreal completed project initialization (about 454 seconds on first launch). Desktop input/capture was denied before visual inspection. There is no MetaHuman character asset yet.
 
-`create_bablu_candidate.py` is prepared from the installed Epic examples and syntax-checked, but not executed. Run it inside this project using Unreal's Python script tools after desktop access is restored. It creates a separate starting candidate from the Bo preset, sets a 170 cm height target, saves a report under `Saved`, and opens the asset editor. Face, skin, clothing, and art review remain subsequent work. Re-running preserves an existing candidate instead of replacing it.
+`create_bablu_candidate.py` was executed successfully through Unreal's Python script tools. The saved candidate is `Content/Characters/MetaHumans/Bablu.uasset`: a separate starting candidate from the Bo preset, with a 170 cm height target. It saves a report under `Saved` and opens the asset editor. The first preview has been inspected; it is too heavy and mature for the approved concept, so face/body refinement remains open. Re-running preserves an existing candidate instead of replacing it.
+
+The candidate depends on Epic's installed MetaHuman Creator Core Data. Its `.uasset` is an Unreal source asset, not a portable Unity mesh or assembled gameplay character. Epic's MetaHuman/Unreal license applies to it; it is not a MakeHuman CC0 asset. No cloud texture or autorig request has been made for this candidate yet.
+
+A second candidate, `BabluConcept.uasset`, is now saved from the Mateo preset. `create_concept_candidate.py` and `adjust_studio.py` create its preview assembly and studio capture using Unreal's native APIs. See the [inspected portrait and remaining art gates](../../docs/mockups/metahuman/README.md). The preview actor is transient, and the disposable studio map is not tracked as final scene content.
 
 ## Launch after installation
 
